@@ -1,6 +1,6 @@
 <!-- Very simple button component -->
 <template>
-  <input class="customButton" type="button" :value="buttonName" />
+  <b-button size="sm" :variant="variant">{{ buttonName }}</b-button>
 </template>
 
 <script>
@@ -9,6 +9,10 @@ export default {
     buttonName: {
       type: String,
       required: true
+    },
+    variant: {
+      type: String,
+      required: false
     }
   }
 };

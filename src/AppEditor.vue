@@ -2,6 +2,22 @@
   <div id="app">
     <h1>imscED</h1>
 
+    <!-- switch between original menu and new generic menu  -->
+    <div class="styleSelect">
+      <label for="genericMenu">Generic menu:</label>
+      <input type="checkbox" id="genericMenu" v-model="genericMenu" />
+    </div>
+
+    <!-- Choose menu style  -->
+    <DropDownGeneric
+      v-if="genericMenu"
+      class="styleSelect"
+      :options="menuStyleOptions"
+      :selected="menuStyle"
+      :labelName="'Menu style:'"
+      @valueChanged="setMenuStyle"
+    />
+
     <!-- Export IMSC as XML  -->
     <ButtonGeneric :buttonName="'Save File'" @click.native="saveXml" />
 
@@ -10,10 +26,11 @@
       :buttonName="showConfigUi ? 'Hide Configuration' : 'Configuration'"
       @click.native="toggleShowConfigUi"
     />
-
+    <br />&nbsp;
     <transition name="fade">
       <div v-if="showConfigUi" id="config">
         <RadioGeneric
+          v-if="genericMenu == false"
           :options="['show', 'hide']"
           :selected="showBodyMenu"
           :labelName="'Menu for <Body>'"
@@ -21,6 +38,7 @@
         />
 
         <RadioGeneric
+          v-if="genericMenu == false"
           :options="['show', 'hide']"
           :selected="showDivMenu"
           :labelName="'Menu for <div>'"
@@ -28,6 +46,7 @@
         />
 
         <RadioGeneric
+          v-if="genericMenu == false"
           :options="['show', 'hide']"
           :selected="showPMenu"
           :labelName="'Menu for <p>'"
@@ -35,6 +54,7 @@
         />
 
         <RadioGeneric
+          v-if="genericMenu == false"
           :options="['show', 'hide']"
           :selected="showSpanMenu"
           :labelName="'Menu for <span>'"
@@ -56,6 +76,7 @@
         />
       </div>
     </transition>
+
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
       v-if="debug"
@@ -70,12 +91,13 @@
     <!-- All styles that apply to <body> -->
     <div
       v-if="
-        body &&
+        genericMenu == false &&
+          body &&
           showBodyMenu === 'show' &&
           helper.objectHasEntries(body.styleAttrs)
       "
     >
-      <h4 class="styleMenuHeading">BODY Styles</h4>
+      <h3 class="styleMenuHeading">BODY Styles</h3>
       <MenuStyle
         :styles="body.styleAttrs"
         :contentKind="'body'"
@@ -86,12 +108,13 @@
     <!-- All Styles that apply to <div> -->
     <div
       v-if="
-        activeDiv &&
+        genericMenu == false &&
+          activeDiv &&
           showDivMenu === 'show' &&
           helper.objectHasEntries(activeDiv.styleAttrs)
       "
     >
-      <h4 class="styleMenuHeading">DIV Styles</h4>
+      <h3 class="styleMenuHeading">DIV Styles</h3>
       <MenuStyle
         :styles="activeDiv.styleAttrs"
         :contentKind="'p'"
@@ -105,9 +128,14 @@
     -->
     <div
       class="regionMenu"
-      v-if="showRegionSelect === 'show' && activeP && activeP.regionID"
+      v-if="
+        genericMenu == false &&
+          showRegionSelect === 'show' &&
+          activeP &&
+          activeP.regionID
+      "
     >
-      <h4 class="styleMenuHeading">REGION Styles</h4>
+      <h3 class="styleMenuHeading">REGION Styles</h3>
       <DropDownGeneric
         :options="myRegionIds"
         :selected="activeP.regionID"
@@ -122,8 +150,8 @@
       />
     </div>
     <!-- Styles for <p>  -->
-    <div v-if="activeP && showPMenu === 'show'">
-      <h4 class="styleMenuHeading">P Styles</h4>
+    <div v-if="genericMenu == false && activeP && showPMenu === 'show'">
+      <h3 class="styleMenuHeading">P Styles</h3>
       <MenuStyle
         :styles="activeP.styleAttrs"
         :contentKind="'p'"
@@ -132,14 +160,17 @@
       />
     </div>
     <!-- Styles for <span> -->
-    <div v-if="activeSpan && showSpanMenu === 'show'">
-      <h4 class="styleMenuHeading">SPAN Styles</h4>
+    <div v-if="genericMenu == false && activeSpan && showSpanMenu === 'show'">
+      <h3 class="styleMenuHeading">SPAN Styles</h3>
       <MenuStyle
         :styles="activeSpan.styleAttrs"
         :contentKind="'span'"
         class="spanMenu"
       />
     </div>
+
+    <!-- Show menu depending on menustyle -->
+    <MenuGeneric v-if="genericMenu && showMenu" class="mt-2" />
     <br />&nbsp;
     <!-- Select video file  -->
     <FileChooserGeneric
@@ -197,6 +228,7 @@ import FileChooserGeneric from "./helper/FileChooserGeneric.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
+import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
@@ -212,6 +244,7 @@ export default {
     DropDownGeneric,
     FileChooserGeneric,
     LiveActionsMenu,
+    MenuGeneric,
     MenuStyle,
     MyDebug,
     RadioGeneric,
@@ -224,11 +257,32 @@ export default {
     };
   },
   computed: {
+    genericMenu: {
+      get() {
+        return this.$store.state.genericMenu;
+      },
+      set(val) {
+        this.$store.commit("setGenericMenu", val);
+      }
+    },
+    menuStyleOptions() {
+      var styles = [];
+      for (var style in this.menuStyleConfig.styles) {
+        styles.push(style);
+      }
+      return styles;
+    },
     myRegionIds: {
       cache: false,
       get: function() {
         return Object.keys(this.currentSubtitleData.regionHash);
       }
+    },
+    showMenu() {
+      return (
+        this.activeP || this.activeSpan || this.activeDiv
+        //|| (this.body && this.helper.objectHasEntries(this.body.styleAttrs)) // TODO
+      );
     },
     ...mapState([
       "activeP",
@@ -238,6 +292,8 @@ export default {
       "currentSubtitleData",
       "debug",
       "helper",
+      "menuStyleConfig",
+      "menuStyle",
       "movieSrc",
       "playTime",
       "showBodyMenu",
@@ -400,6 +456,7 @@ export default {
       "addSubtitleData",
       "changeVideo",
       "setDebug",
+      "setMenuStyle",
       "setShowBodyMenu",
       "setShowDivMenu",
       "setShowPMenu",
@@ -531,11 +588,17 @@ input:focus {
   text-align: center;
 }
 
-.BackgroundColor {
+.styleSelect {
+  position: relative;
+  float: right;
+  margin-right: 1em;
+}
+
+/* .BackgroundColor {
   background-size: 15%;
   background-repeat: no-repeat;
   background-position-y: 50%;
   padding-left: 20% !important;
   margin-left: 10%;
-}
+} */
 </style>

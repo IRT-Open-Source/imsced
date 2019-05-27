@@ -1,15 +1,16 @@
 <!-- Simple UI component for text values -->
 <template>
   <div :class="[className]">
-    <label>
-      {{ labelName }}
-      <input
-        type="text"
-        :value="value"
-        @change="changedValue"
-        @focus="focusBubble"
-      />
-    </label>
+    <b>{{ labelName }}</b>
+    <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
+    <b-form-input
+      class="mt-1"
+      size="sm"
+      :value="value"
+      type="text"
+      @change.native="changedValue"
+      @focus.native="focusBubble"
+    ></b-form-input>
   </div>
 </template>
 

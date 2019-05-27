@@ -132,7 +132,6 @@ var proto = {
     imscJS data structure type
   */
   setAttr(name, styles, val) {
-    var valueEntry;
     //access to values depends on data structure type
     var isValueObject = this.attrs[name].valueObject;
     var isValueArray = this.attrs[name].valueArray;
@@ -184,7 +183,6 @@ var proto = {
     if (name.includes("$")) {
       var composition = name.split("$");
       var wrapperName = composition[0];
-      var propertyName = composition[1];
       if (styles[this.attrs[name].ns + " " + wrapperName]) {
         styleIsSet = true;
       }

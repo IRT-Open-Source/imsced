@@ -1,23 +1,21 @@
 <!-- Simple UI component for radio buttons  -->
 <template>
-  <fieldset>
-    <legend>{{ labelName }}</legend>
-    <span v-for="option in options" :key="option">
-      <input
-        type="radio"
-        :value="option"
-        :checked="option == selected ? true : false"
-        :name="nameOfSet"
-        @change="changedValue"
-        @focus="focusBubble"
-      />
-      <label for="option">{{ option }}</label>
-    </span>
-  </fieldset>
+  <b-form-group>
+    <b>{{ labelName }}</b>
+    <b-form-radio-group
+      class="mt-1"
+      :checked="selected"
+      :options="options"
+      :name="nameOfSet"
+      @change.native="changedValue"
+      @focus.native="focusBubble"
+      stacked
+    ></b-form-radio-group>
+  </b-form-group>
 </template>
 
 <script>
-import helperGeneric from "../modules/helperGeneric.js";
+import helperGeneric from "../../modules/helperGeneric.js";
 import { mapState } from "vuex";
 
 export default {

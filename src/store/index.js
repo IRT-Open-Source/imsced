@@ -1,6 +1,7 @@
 import DefaultConfig from "../config/defaultConfig.js";
 import helperGeneric from "../modules/helperGeneric.js";
 import imsc from "imsc";
+import MenuStyleConfig from "../config/menuStyleConfig.js";
 import MyRec from "../recommendations/myRec.js";
 import MyRegion from "../modules/myRegion.js";
 import MyTextTrack from "../modules/texttrack.js";
@@ -21,8 +22,11 @@ export const store = new Vuex.Store({
     custom: new MyRec(), // user configuration
     debug: false, // show debug info in editor view
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
+    genericMenu: false, // use new generic menu with bootstrap
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
+    menuStyle: "default",
+    menuStyleConfig: new MenuStyleConfig(),
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
@@ -173,6 +177,12 @@ export const store = new Vuex.Store({
     },
     setCurrentTrackMode(state, payload) {
       state.currentVideoTextTrack.track.mode = payload.mode;
+    },
+    setGenericMenu(state, val) {
+      state.genericMenu = val;
+    },
+    setMenuStyle(state, val) {
+      state.menuStyle = val;
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
