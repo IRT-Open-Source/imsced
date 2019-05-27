@@ -20,10 +20,12 @@ export const store = new Vuex.Store({
     currentVideoTextTrack: undefined,
     custom: new MyRec(), // user configuration
     debug: false, // show debug info in editor view
+    draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
+    resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     showBodyMenu: "hide",
     showConfigUi: false,
     showDivMenu: "hide",
@@ -107,6 +109,29 @@ export const store = new Vuex.Store({
     },
     videoDom(state) {
       return document.getElementById(state.config.defaultVideo.videoId);
+    },
+    // get a specific value from region styles (like "extent$h") (TODO: check if working for every case)
+    getRegionValue(state, getters) {
+      return name => {
+        var namespace = state.styleData.attrs[name].ns;
+        var valueEntry;
+        var value;
+        //composed values e.g. extent or origin
+        var composition = name.split("$");
+        var wrapperName = composition[0];
+        var propertyName = composition[1];
+        valueEntry =
+          getters.regionStylesActiveP[namespace + " " + wrapperName][
+            propertyName
+          ];
+
+        if (!valueEntry.value) {
+          value = valueEntry; // better to check on string type?
+        } else {
+          value = valueEntry.value;
+        }
+        return value;
+      };
     }
   },
   mutations: {
@@ -180,6 +205,18 @@ export const store = new Vuex.Store({
     },
     toggleShowConfigUi(state) {
       state.showConfigUi = state.showConfigUi ? false : true;
+    },
+    toggleDraggingActive(state) {
+      state.draggingActive = !state.draggingActive;
+      if (state.draggingActive && state.resizingActive) {
+        state.resizingActive = false;
+      }
+    },
+    toggleResizingActive(state) {
+      state.resizingActive = !state.resizingActive;
+      if (state.resizingActive && state.draggingActive) {
+        state.draggingActive = false;
+      }
     }
   },
   actions: {

@@ -102,7 +102,7 @@
     <!-- 
       Styles from region that are referenced by current subtitle
       and otpions to create new region/reference another region 
-     -->
+    -->
     <div
       class="regionMenu"
       v-if="showRegionSelect === 'show' && activeP && activeP.regionID"
@@ -141,7 +141,6 @@
       />
     </div>
     <br />&nbsp;
-
     <!-- Select video file  -->
     <FileChooserGeneric
       :name="'choosevideo1'"
@@ -172,6 +171,7 @@
       </div>
       <!-- Video to be displayed -->
       <div>
+        <LiveActionsMenu />
         <VideoGeneric
           :containerid="config.defaultVideo.containerId"
           :id="config.defaultVideo.videoId"
@@ -196,6 +196,7 @@ import ContentImsc from "./editorComponents/ContentImsc.vue";
 import FileChooserGeneric from "./helper/FileChooserGeneric.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
+import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
@@ -210,6 +211,7 @@ export default {
     ContentImsc,
     DropDownGeneric,
     FileChooserGeneric,
+    LiveActionsMenu,
     MenuStyle,
     MyDebug,
     RadioGeneric,
@@ -334,6 +336,7 @@ export default {
       this.initSubs(subtitleText);
       this.addVideoTextTrack(); //generatate track
       this.updateSubtitlePlanePlayTime();
+      this.resetFocusContent();
       if (this.debug) {
         window.imscdata = this.currentSubtitleData;
       }
