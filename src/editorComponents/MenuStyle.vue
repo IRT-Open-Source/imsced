@@ -179,6 +179,14 @@
     />
 
     <AttrStyle
+      v-if="editable('wrapOption')"
+      :name="'wrapOption'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
       v-if="editable('opacity', regionStyles)"
       :name="'opacity'"
       :styles="regionStyles"

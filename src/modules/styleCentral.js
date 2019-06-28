@@ -111,6 +111,11 @@ var proto = {
       allowedValues: ["normal", "embed", "bidiOverride"],
       editOn: ["p", "span"]
     },
+    wrapOption: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      allowedValues: ["wrap", "noWrap"],
+      editOn: ["body", "div", "p", "span"]
+    },
     writingMode: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["lrtb", "rltb", "tbrl", "tblr", "lr", "rl", "tb"],

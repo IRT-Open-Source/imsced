@@ -182,6 +182,14 @@ var proto = {
         }
       }
     },
+    wrapOption: {
+      label: {
+        lang: {
+          en: "Line Wrapping",
+          de: "Zeilenumbruch"
+        }
+      }
+    },
     writingMode: {
       label: {
         lang: {
