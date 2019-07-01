@@ -182,6 +182,9 @@ let proto = {
   "http://www.w3.org/ns/ttml#styling unicodeBidi": function(obj) {
     this.setAttribute("tts:unicodeBidi", obj);
   },
+  "http://www.w3.org/ns/ttml#styling wrapOption": function(obj) {
+    this.setAttribute("tts:wrapOption", obj);
+  },
   "http://www.w3.org/ns/ttml#styling writingMode": function(obj) {
     this.setAttribute("tts:writingMode", obj);
   },

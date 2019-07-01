@@ -300,6 +300,7 @@ export default {
               <br/>\
               <span\
                tts:direction='ltr'\
+               tts:wrapOption='noWrap'\
                tts:unicodeBidi='normal'>\
                  Hi, Mork from Ork!</span>\
             </p>\
