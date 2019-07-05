@@ -132,7 +132,7 @@ export default {
           value = this.helper[this.getter](value);
         }
       }
-      if (typeof value !== "string" && typeof value !== "number") {
+      if (typeof value !== "string" && typeof value !== "number" && typeof value !== "boolean") {
         value = value[0];
       }
       return value;

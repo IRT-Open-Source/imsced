@@ -78,6 +78,14 @@ var proto = {
         }
       }
     },
+    forcedDisplay: {
+      label: {
+        lang: {
+          en: "Forced Display",
+          de: "Forced Display"
+        }
+      }
+    },
     fillLineGap: {
       label: {
         lang: {

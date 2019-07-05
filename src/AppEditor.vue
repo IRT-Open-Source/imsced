@@ -82,6 +82,13 @@
           :labelName="'Debug info'"
           @valueChanged="setDebug"
         />
+
+        <RadioGeneric
+          :options="['on', 'off']"
+          :selected="forcedOnly ? 'on' : 'off'"
+          :labelName="'Display forced only mode'"
+          @valueChanged="setForcedOnlyMode"
+        />        
       </div>
     </transition>
 
@@ -299,6 +306,7 @@ export default {
       "custom",
       "currentSubtitleData",
       "debug",
+      "forcedOnly",      
       "helper",
       "menuStyleConfig",
       "menuStyle",
@@ -339,6 +347,15 @@ export default {
                tts:showBackground='whenActive'\
                tts:backgroundColor='transparent'\
                tts:opacity='1'/>\
+              <region xml:id='r2'\
+               tts:origin='10% 50%'\
+               tts:extent='80% 40%'\
+               tts:displayAlign='before' \
+               tts:writingMode='lrtb'\
+               tts:showBackground='whenActive'\
+               tts:backgroundColor='transparent'\
+               tts:opacity='1'\
+               itts:forcedDisplay='true'/>\
            </layout>\
           </head>\
          <body\
@@ -374,6 +391,12 @@ export default {
                tts:visibility='visible'>\
                 I'm visible...\
               </span>\
+            </p>\
+            <p begin='2s'\
+              end='10s' \
+              region='r2'\
+              tts:fontSize='80%'>\
+              This text should be displayed in all circumstances.\
             </p>\
           </div>\
          </body>\
@@ -486,6 +509,7 @@ export default {
       "addVideoTextTrack",
       "removeSub",
       "resetFocusContent",
+      "setForcedOnlyMode",
       "setNewRegionActiveP",
       "triggerTimeUpdate",
       "updateSubtitlePlane",

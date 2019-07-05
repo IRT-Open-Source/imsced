@@ -22,6 +22,7 @@ export const store = new Vuex.Store({
     custom: new MyRec(), // user configuration
     debug: false, // show debug info in editor view
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
+    forcedOnly: false, // enable/disable displayForcedOnlyMode
     genericMenu: false, // use new generic menu with bootstrap
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
@@ -295,6 +296,10 @@ export const store = new Vuex.Store({
         dispatch("removeSub");
       }
     },
+    setForcedOnlyMode({ state, dispatch }, val) {
+      state.forcedOnly = (val === "on");
+      dispatch("updateSubtitlePlane", { time: state.playTime });
+    },    
     setNewRegionActiveP({ state, dispatch }, payload) {
       state.activeP.regionID = payload.regId;
       dispatch("updateSubtitlePlane", { time: state.playTime });
@@ -325,7 +330,7 @@ export const store = new Vuex.Store({
       if (state.subActive) {
         dispatch("removeSub");
       }
-      imsc.renderHTML(isd, getters.renderDivDom, null);
+      imsc.renderHTML(isd, getters.renderDivDom, null, null, null, state.forcedOnly);
       commit("activateSub");
     },
     updateSubtitlePlanePlayTime({ state, dispatch }) {

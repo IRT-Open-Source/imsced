@@ -135,6 +135,14 @@
     />
 
     <AttrStyle
+      v-if="editable('forcedDisplay')"
+      :name="'forcedDisplay'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
       v-if="editable('fillLineGap')"
       :name="'fillLineGap'"
       :styles="styles"

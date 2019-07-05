@@ -47,6 +47,11 @@ var proto = {
       editOn: ["body", "div", "p"],
       valueObject: true
     },
+    forcedDisplay: {
+      ns: "http://www.w3.org/ns/ttml/profile/imsc1#styling",
+      allowedValues: [true, false],
+      editOn: ["body", "div", "p", "region", "span"]
+    },
     fillLineGap: {
       ns: "http://www.w3.org/ns/ttml/profile/imsc1#styling",
       allowedValues: [true, false],

@@ -147,6 +147,9 @@ let proto = {
     var value = obj.w.value + obj.w.unit + " " + obj.h.value + obj.h.unit;
     this.setAttribute("tts:extent", value);
   },
+  "http://www.w3.org/ns/ttml/profile/imsc1#styling forcedDisplay": function(obj) {
+    this.setAttribute("itts:forcedDisplay", obj);
+  },
   "http://www.w3.org/ns/ttml/profile/imsc1#styling fillLineGap": function(obj) {
     this.setAttribute("itts:fillLineGap", obj);
   },
