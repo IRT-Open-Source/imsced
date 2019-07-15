@@ -179,6 +179,14 @@
     />
 
     <AttrStyle
+      v-if="editable('visibility')"
+      :name="'visibility'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
       v-if="editable('wrapOption')"
       :name="'wrapOption'"
       :styles="styles"
