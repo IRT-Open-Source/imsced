@@ -182,6 +182,14 @@ var proto = {
         }
       }
     },
+    visibility: {
+      label: {
+        lang: {
+          en: "Visibility",
+          de: "Sichtbarkeit"
+        }
+      }
+    },
     wrapOption: {
       label: {
         lang: {

@@ -302,7 +302,12 @@ export default {
                tts:direction='ltr'\
                tts:wrapOption='noWrap'\
                tts:unicodeBidi='normal'>\
-                 Hi, Mork from Ork!</span>\
+                Hi, Mork from Ork!\
+              </span>\
+              <span\
+               tts:visibility='visible'>\
+                I'm visible...\
+              </span>\
             </p>\
           </div>\
          </body>\

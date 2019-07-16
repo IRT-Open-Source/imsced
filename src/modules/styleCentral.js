@@ -111,6 +111,11 @@ var proto = {
       allowedValues: ["normal", "embed", "bidiOverride"],
       editOn: ["p", "span"]
     },
+    visibility: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      allowedValues: ["visible", "hidden"],
+      editOn: ["body", "div", "image", "p", "region", "span"]
+    },
     wrapOption: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["wrap", "noWrap"],
