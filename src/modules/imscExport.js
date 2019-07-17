@@ -7,6 +7,8 @@
   Getting the imscJS parsed and through the editor
   manipulated data object as input for the constructor.
 */
+import helperGeneric from "./helperGeneric.js";
+
 function ImscExport(obj) {
   this.ttText =
     "<tt xmlns='http://www.w3.org/ns/ttml' \
@@ -14,6 +16,7 @@ function ImscExport(obj) {
 		 xmlns:tts='http://www.w3.org/ns/ttml#styling' \
 		 xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'/>";
   this.parser = new DOMParser();
+  this.help = new helperGeneric();
   this.xmlDoc = this.parser.parseFromString(this.ttText, "text/xml");
   this.convertColorHex = true;
   this.doc = this.xmlDoc.documentElement;
@@ -181,6 +184,22 @@ let proto = {
   },
   "http://www.w3.org/ns/ttml#styling textAlign": function(obj) {
     this.setAttribute("tts:textAlign", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling textShadow": function(obj) {
+    var value = obj[0]
+      .filter((x) => x !== null)
+      .map(function(x) {
+        if (x.value) { 
+          return `${x.value}${x.unit}`;
+        }
+        else {
+          return this.convertColorHex ? 
+            `#${this.help.colorArrayToHexRgba(x)}` :
+            `rgba(${x.join()})`;
+        }
+      }, this)
+      .join(" ");    
+    this.setAttribute("tts:textShadow", value);
   },
   "http://www.w3.org/ns/ttml#styling unicodeBidi": function(obj) {
     this.setAttribute("tts:unicodeBidi", obj);

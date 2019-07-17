@@ -203,6 +203,40 @@
     />
 
     <AttrStyle
+      v-if="editable('textShadow$0')"
+      :name="'textShadow$0'"
+      :styles="styles"
+      :type="'simple'"
+      @gotFocus="focusBubble"
+    />    
+
+    <AttrStyle
+      v-if="editable('textShadow$1')"
+      :name="'textShadow$1'"
+      :styles="styles"
+      :type="'simple'"
+      @gotFocus="focusBubble"
+    />   
+
+    <AttrStyle
+      v-if="editable('textShadow$2')"
+      :name="'textShadow$2'"
+      :styles="styles"
+      :type="'simple'"
+      @gotFocus="focusBubble"
+    /> 
+
+    <AttrStyle
+      v-if="editable('textShadow$3')"
+      :name="'textShadow$3'"
+      :styles="styles"
+      :type="'simple'"
+      :getter="helper.colorArrayToHexRgb"
+      :setter="helper.hexRgbToColorArray"
+      @gotFocus="focusBubble"
+    />      
+
+    <AttrStyle
       v-if="editable('opacity', regionStyles)"
       :name="'opacity'"
       :styles="regionStyles"

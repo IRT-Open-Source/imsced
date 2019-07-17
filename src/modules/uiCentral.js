@@ -182,6 +182,38 @@ var proto = {
         }
       }
     },
+    textShadow$0: {
+      label: {
+        lang: {
+          en: "Text Shadow - Horizontal Offset",
+          de: "Text Schatten - Horizontaler Offset"
+        }
+      }
+    },
+    textShadow$1: {
+      label: {
+        lang: {
+          en: "Text Shadow - Vertical Offset",
+          de: "Text Schatten - Vertikaler Offset"
+        }
+      }
+    },
+    textShadow$2: {
+      label: {
+        lang: {
+          en: "Text Shadow - Blur Radius",
+          de: "Text Schatten - Weichzeichnenradius"
+        }
+      }
+    },
+    textShadow$3: {
+      label: {
+        lang: {
+          en: "Text Shadow - Color of shadow",
+          de: "Text Shadow - Farbe des Schattens"
+        }
+      }
+    },
     unicodeBidi: {
       label: {
         lang: {

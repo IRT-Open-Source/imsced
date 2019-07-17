@@ -111,6 +111,27 @@ var proto = {
       allowedValues: ["start", "center", "end", "left", "right"],
       editOn: ["body", "p"]
     },
+    textShadow$0: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      editOn: ["span"],
+      valueObject: true
+    },
+    textShadow$1: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      editOn: ["span"],
+      valueObject: true
+    },
+    textShadow$2: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      editOn: ["span"],
+      valueObject: true
+    },
+    textShadow$3: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      editOn: ["span"],
+      valueArray: true,
+      delimiter: "," //value array, delimter mandatory
+    },    
     unicodeBidi: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["normal", "embed", "bidiOverride"],
@@ -153,26 +174,65 @@ var proto = {
         val = val.split(this.attrs[name].delimiter);
       }
     }
-    //e.g. h property of extent { h: { unit: "%", value: 80} }
-    if (name.includes("$")) {
-      var composition = name.split("$");
-      var wrapperName = composition[0]; // e.g. 'extent'
-      var propertyName = composition[1]; //e.g. 'h'
-      if (isValueObject) {
-        styles[this.attrs[name].ns + " " + wrapperName][
-          propertyName
-        ].value = val;
-      } else {
-        styles[this.attrs[name].ns + " " + wrapperName][propertyName] = val;
+    var styleName = this.getStyleName(name);
+    if (isValueArray && name.includes("$")) {
+      var composition = this.getComposition(name);
+      if (Array.isArray(styles[styleName])) {
+        styles[styleName][0][composition.propertyName] = val;
       }
-    } else {
-      if (isValueObject) {
-        styles[this.attrs[name].ns + " " + name].value = val;
-      } else {
-        styles[this.attrs[name].ns + " " + name] = val;
+      else {
+        styles[styleName][composition.propertyName] = val;
       }
     }
+    else if (isValueObject) {
+      var valueEntry = this.getValueEntry(name, styles);
+      valueEntry.value = val;
+    }
+    else {
+      styles[styleName] = val;
+    }
   },
+  getComposition(name) {
+    var composition = name.split("$");
+    return {
+      'wrapperName': composition[0],
+      'propertyName': composition[1]
+    }; 
+  },
+  /*
+    get style name depends on data structure type
+  */
+  getStyleName(name) {
+    var namespace = this.attrs[name].ns;
+    if (name.includes("$")) {
+      var composition = this.getComposition(name);
+      name = composition.wrapperName;
+    }
+    return namespace + " " + name;
+  },
+  /*
+    get composed value entry
+  */
+  getComposedValueEntry(name, styles) {
+    var styleName = this.getStyleName(name);
+    var composition = this.getComposition(name);
+    var propertyName =composition.propertyName; 
+    var styleEntry = styles[styleName];
+    styleEntry = Array.isArray(styleEntry) ? styleEntry[0] : styleEntry;
+    return styleEntry[propertyName];
+  },
+  /*
+    get value entry depends on data structure type
+  */
+  getValueEntry(name, styles) {
+    if (name.includes("$")) {
+      return this.getComposedValueEntry(name, styles);
+    }
+    else {
+      var styleName = this.getStyleName(name);
+      return styles[styleName];
+    }
+  },  
   /*
     Checks if a concrete style attribute should have the option
     to be edited. This could be used for example to decide if 

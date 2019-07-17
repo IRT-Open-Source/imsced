@@ -108,18 +108,8 @@ export default {
   },
   computed: {
     currentValue() {
-      var namespace = this.styleData.attrs[this.name].ns;
-      var valueEntry;
       var value;
-      //composed values e.g. extent or origin
-      if (this.name.includes("$")) {
-        var composition = this.name.split("$");
-        var wrapperName = composition[0];
-        var propertyName = composition[1];
-        valueEntry = this.styles[namespace + " " + wrapperName][propertyName];
-      } else {
-        valueEntry = this.styles[namespace + " " + this.name];
-      }
+      var valueEntry = this.styleData.getValueEntry(this.name, this.styles);
       if (!valueEntry.value) {
         value = valueEntry;
       } else {

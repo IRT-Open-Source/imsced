@@ -384,6 +384,7 @@ export default {
               <span\
                tts:direction='ltr'\
                tts:wrapOption='noWrap'\
+               tts:textShadow='10% 20% 5% white'\
                tts:unicodeBidi='normal'>\
                 Hi, Mork from Ork!\
               </span>\
