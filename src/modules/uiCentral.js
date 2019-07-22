@@ -216,6 +216,18 @@ var proto = {
     } else {
       return "";
     }
+  },
+  getAvailableLanguages() {
+    var availableLanguages = [];
+    for (var key in this.elements) {
+      var attrs = this.elements[key];
+      for (var lang in attrs.label.lang) {
+        if (!availableLanguages.includes(lang)) {
+          availableLanguages.push(lang);
+        }
+      }
+    }
+    return availableLanguages;
   }
 };
 

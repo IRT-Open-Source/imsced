@@ -17,6 +17,14 @@
       :labelName="'Menu style:'"
       @valueChanged="setMenuStyle"
     />
+    <!-- Select language for User Interface  -->      
+    <DropDownGeneric
+      id="selectLang"
+      :options=getAvailableLanguages()
+      :selected="lang"
+      :labelName="'Language'"
+      @valueChanged="setLang"
+    />
 
     <!-- Export IMSC as XML  -->
     <ButtonGeneric :buttonName="'Save File'" @click.native="saveXml" />
@@ -294,6 +302,7 @@ export default {
       "helper",
       "menuStyleConfig",
       "menuStyle",
+      "lang",
       "movieSrc",
       "playTime",
       "showBodyMenu",
@@ -301,7 +310,8 @@ export default {
       "showDivMenu",
       "showPMenu",
       "showRegionSelect",
-      "showSpanMenu"
+      "showSpanMenu",
+      "uiData"
     ]),
     ...mapGetters([
       "activeDiv",
@@ -383,6 +393,9 @@ export default {
       //equivalent to
       //this.$store.commit('changeVideo', file.URL);
     },
+    getAvailableLanguages() {
+      return this.uiData.getAvailableLanguages();
+    },
     getPlaytimeAsVttTime() {
       return this.helper.vttTimestamp(this.playTime);
     },
@@ -457,6 +470,7 @@ export default {
       "changeVideo",
       "setDebug",
       "setMenuStyle",
+      "setLang",
       "setShowBodyMenu",
       "setShowDivMenu",
       "setShowPMenu",
@@ -601,4 +615,8 @@ input:focus {
   padding-left: 20% !important;
   margin-left: 10%;
 } */
+
+#selectLang {
+  margin-bottom: 10px;
+}
 </style>

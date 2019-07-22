@@ -172,6 +172,9 @@ export const store = new Vuex.Store({
         state.debug = false;
       }
     },
+    setLang(state, val) {
+      state.lang = val;
+    },
     setCurrentTrack(state, payload) {
       state.currentVideoTextTrack = payload.track;
     },
