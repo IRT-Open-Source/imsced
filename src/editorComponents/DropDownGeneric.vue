@@ -1,6 +1,24 @@
 <!-- Simple select form element  -->
 <template>
-  <div>
+  <DropDownGenericPlain
+    v-if="uiLayout == 'plain'"
+    :dropKey="dropKey"
+    :labelName="labelName"
+    :options="options"
+    :selected="selected"
+    @gotFocus="focusBubble"
+    @valueChanged="changedValue"
+  />
+  <DropDownGenericBS
+    v-else
+    :dropKey="dropKey"
+    :labelName="labelName"
+    :options="options"
+    :selected="selected"
+    @gotFocus="focusBubble"
+    @valueChanged="changedValue"
+  />
+  <!--<div>
     <label
       >{{ labelName }}
       <select @change="changedValue" @focus="focusBubble">
@@ -13,11 +31,18 @@
         </option>
       </select>
     </label>
-  </div>
+  </div>-->
 </template>
 
 <script>
+import DropDownGenericPlain from "./plainComponents/DropDownGenericPlain.vue";
+import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
+import { mapState } from "vuex";
 export default {
+  components: {
+    DropDownGenericPlain,
+    DropDownGenericBS
+  },
   props: {
     //Sometimes needed for reactivly
     //updating the list of selection options
@@ -38,9 +63,12 @@ export default {
       required: true
     }
   },
+  computed: {
+    ...mapState(["uiLayout"])
+  },
   methods: {
-    changedValue: function(e) {
-      this.$emit("valueChanged", e.target.value);
+    changedValue(val) {
+      this.$emit("valueChanged", val);
     },
     focusBubble() {
       this.$emit("gotFocus");

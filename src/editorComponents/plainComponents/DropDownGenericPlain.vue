@@ -1,16 +1,18 @@
 <!-- Simple select form element  -->
 <template>
   <div>
-    <div class="attr-label">
-      <b>{{ labelName }}</b>
-    </div>
-    <b-form-select
-      class="mt-1"
-      v-model="selected"
-      :options="options"
-      @change.native="changedValue"
-      @focus.native="focusBubble"
-    ></b-form-select>
+    <label
+      >{{ labelName }}
+      <select @change="changedValue" @focus="focusBubble">
+        <option
+          v-for="option in options"
+          :key="option"
+          :selected="option == selected ? true : false"
+        >
+          {{ option }}
+        </option>
+      </select>
+    </label>
   </div>
 </template>
 
@@ -46,9 +48,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-* {
-  @import "~bootstrap/dist/css/bootstrap.min";
-}
-</style>

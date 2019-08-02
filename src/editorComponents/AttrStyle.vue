@@ -1,39 +1,8 @@
 <!-- 
   UI to read and write a style attribute of an IMSC document
-  Currently two different types of menues are supported: 
-    * "genericMenu": a configurable menu using bootstrap
-    * a default menu using the plain HTML input types with
-      mininmal CSS styling
 -->
 <template>
-  <div v-if="genericMenu">
-    <DropDownGenericBS
-      v-if="type == 'drop'"
-      :options="filteredOptions"
-      :selected="currentValue"
-      :labelName="getLabelText(name)"
-      @valueChanged="setNewValue"
-      @gotFocus="focusBubble"
-    />
-
-    <RadioGenericBS
-      v-else-if="type == 'radio'"
-      :options="filteredOptions"
-      :selected="currentValue"
-      :labelName="getLabelText(name)"
-      @valueChanged="setNewValue"
-      @gotFocus="focusBubble"
-    />
-
-    <InputGenericBS
-      v-else-if="type == 'simple'"
-      :value="currentValue"
-      :labelName="getLabelText(name)"
-      @valueChanged="setNewValue"
-      @gotFocus="focusBubble"
-    />
-  </div>
-  <div v-else>
+  <div>
     <DropDownGeneric
       v-if="type == 'drop'"
       :options="filteredOptions"
@@ -65,20 +34,14 @@
 <script>
 import { mapState, mapActions } from "vuex";
 import DropDownGeneric from "./DropDownGeneric.vue";
-import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
 import InputGeneric from "./InputGeneric.vue";
-import InputGenericBS from "./bootstrapComponents/InputGenericBS.vue";
 import RadioGeneric from "./RadioGeneric.vue";
-import RadioGenericBS from "./bootstrapComponents/RadioGenericBS.vue";
 
 export default {
   components: {
     DropDownGeneric,
-    DropDownGenericBS,
     InputGeneric,
-    InputGenericBS,
-    RadioGeneric,
-    RadioGenericBS
+    RadioGeneric
   },
   props: {
     getter: {
@@ -141,7 +104,7 @@ export default {
     },
     ...mapState([
       "custom",
-      "genericMenu",
+      "uiLayout",
       "helper",
       "styleData",
       "playTime",

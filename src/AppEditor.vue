@@ -1,97 +1,108 @@
 <template>
   <div id="app">
-    <h1>imscED</h1>
+    <h1Generic :text="'imscEd'" />
 
-    <!-- switch between original menu and new generic menu  -->
-    <div class="styleSelect">
-      <label for="genericMenu">Generic menu:</label>
-      <input type="checkbox" id="genericMenu" v-model="genericMenu" />
+
+
+      <!-- Select language for User Interface  -->
+      <DropDownGeneric
+        id="selectLang"
+        :options="getAvailableLanguages()"
+        :selected="lang"
+        :labelName="'Language'"
+        @valueChanged="setLang"
+      />
+
+
+      <!-- Choose UI layout  -->
+      <DropDownGeneric
+        class="floatRightBox"
+        :options="['bootstrap', 'plain']"
+        :selected="uiLayout"
+        :labelName="'UI Layout:'"
+        @valueChanged="setUiLayout"
+      />
+
+      <!-- Choose menu style  -->
+      <DropDownGeneric
+        v-if="uiLayout == 'bootstrap'"
+        class="floatRightBox"
+        :options="menuStyleOptions"
+        :selected="menuStyle"
+        :labelName="'Menu style:'"
+        @valueChanged="setMenuStyle"
+      />
+
+
+    <div id="saveConfig">
+      <!-- Export IMSC as XML  -->
+      <ButtonGeneric :buttonName="'Save File'" @click.native="saveXml" />
+
+
+      <!-- UI to customize display-->
+      <ButtonGeneric
+        :buttonName="showConfigUi ? 'Hide Configuration' : 'Configuration'"
+        @click.native="toggleShowConfigUi"
+      />
+      <br />&nbsp;
+      <transition name="fade">
+        <div v-if="showConfigUi">
+          <RadioGeneric
+            v-if="uiLayout == 'plain'"
+            :options="['show', 'hide']"
+            :selected="showBodyMenu"
+            :labelName="'Menu for <Body>'"
+            @valueChanged="setShowBodyMenu"
+          />
+
+          <RadioGeneric
+            v-if="uiLayout == 'plain'"
+            :options="['show', 'hide']"
+            :selected="showDivMenu"
+            :labelName="'Menu for <div>'"
+            @valueChanged="setShowDivMenu"
+          />
+
+          <RadioGeneric
+            v-if="uiLayout == 'plain'"
+            :options="['show', 'hide']"
+            :selected="showPMenu"
+            :labelName="'Menu for <p>'"
+            @valueChanged="setShowPMenu"
+          />
+
+          <RadioGeneric
+            v-if="uiLayout == 'plain'"
+            :options="['show', 'hide']"
+            :selected="showSpanMenu"
+            :labelName="'Menu for <span>'"
+            @valueChanged="setShowSpanMenu"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :selected="showRegionSelect"
+            :labelName="'Regions'"
+            @valueChanged="setShowRegionSelect"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :selected="forcedOnly ? 'on' : 'off'"
+            :labelName="'Display forced only mode'"
+            @valueChanged="setForcedOnlyMode"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :selected="debug ? 'on' : 'off'"
+            :labelName="'Debug info'"
+            @valueChanged="setDebug"
+          />
+
+        </div>
+      </transition>
     </div>
-
-    <!-- Choose menu style  -->
-    <DropDownGeneric
-      v-if="genericMenu"
-      class="styleSelect"
-      :options="menuStyleOptions"
-      :selected="menuStyle"
-      :labelName="'Menu style:'"
-      @valueChanged="setMenuStyle"
-    />
-    <!-- Select language for User Interface  -->
-    <DropDownGeneric
-      id="selectLang"
-      :options="getAvailableLanguages()"
-      :selected="lang"
-      :labelName="'Language'"
-      @valueChanged="setLang"
-    />
-
-    <!-- Export IMSC as XML  -->
-    <ButtonGeneric :buttonName="'Save File'" @click.native="saveXml" />
-
-    <!-- UI to customize display-->
-    <ButtonGeneric
-      :buttonName="showConfigUi ? 'Hide Configuration' : 'Configuration'"
-      @click.native="toggleShowConfigUi"
-    />
-    <br />&nbsp;
-    <transition name="fade">
-      <div v-if="showConfigUi" id="config">
-        <RadioGeneric
-          v-if="genericMenu == false"
-          :options="['show', 'hide']"
-          :selected="showBodyMenu"
-          :labelName="'Menu for <Body>'"
-          @valueChanged="setShowBodyMenu"
-        />
-
-        <RadioGeneric
-          v-if="genericMenu == false"
-          :options="['show', 'hide']"
-          :selected="showDivMenu"
-          :labelName="'Menu for <div>'"
-          @valueChanged="setShowDivMenu"
-        />
-
-        <RadioGeneric
-          v-if="genericMenu == false"
-          :options="['show', 'hide']"
-          :selected="showPMenu"
-          :labelName="'Menu for <p>'"
-          @valueChanged="setShowPMenu"
-        />
-
-        <RadioGeneric
-          v-if="genericMenu == false"
-          :options="['show', 'hide']"
-          :selected="showSpanMenu"
-          :labelName="'Menu for <span>'"
-          @valueChanged="setShowSpanMenu"
-        />
-
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :selected="showRegionSelect"
-          :labelName="'Regions'"
-          @valueChanged="setShowRegionSelect"
-        />
-
-        <RadioGeneric
-          :options="['on', 'off']"
-          :selected="debug ? 'on' : 'off'"
-          :labelName="'Debug info'"
-          @valueChanged="setDebug"
-        />
-
-        <RadioGeneric
-          :options="['on', 'off']"
-          :selected="forcedOnly ? 'on' : 'off'"
-          :labelName="'Display forced only mode'"
-          @valueChanged="setForcedOnlyMode"
-        />        
-      </div>
-    </transition>
-
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
       v-if="debug"
@@ -106,7 +117,7 @@
     <!-- All styles that apply to <body> -->
     <div
       v-if="
-        genericMenu == false &&
+        uiLayout == 'plain' &&
           body &&
           showBodyMenu === 'show' &&
           helper.objectHasEntries(body.styleAttrs)
@@ -123,7 +134,7 @@
     <!-- All Styles that apply to <div> -->
     <div
       v-if="
-        genericMenu == false &&
+        uiLayout == 'plain' &&
           activeDiv &&
           showDivMenu === 'show' &&
           helper.objectHasEntries(activeDiv.styleAttrs)
@@ -144,7 +155,10 @@
     <div
       class="regionMenu"
       v-if="
-        genericMenu == false && showRegionSelect === 'show' && activeRegionId
+        uiLayout == 'plain' &&
+          showRegionSelect === 'show' &&
+          activeP &&
+          activeP.regionID
       "
     >
       <h3 class="styleMenuHeading">REGION Styles</h3>
@@ -173,7 +187,7 @@
       </div>
     </div>
     <!-- Styles for <p>  -->
-    <div v-if="genericMenu == false && activeP && showPMenu === 'show'">
+    <div v-if="uiLayout == 'plain' && activeP && showPMenu === 'show'">
       <h3 class="styleMenuHeading">P Styles</h3>
       <MenuStyle
         :styles="activeP.styleAttrs"
@@ -182,7 +196,7 @@
       />
     </div>
     <!-- Styles for <span> -->
-    <div v-if="genericMenu == false && activeSpan && showSpanMenu === 'show'">
+    <div v-if="uiLayout == 'plain' && activeSpan && showSpanMenu === 'show'">
       <h3 class="styleMenuHeading">SPAN Styles</h3>
       <MenuStyle
         :styles="activeSpan.styleAttrs"
@@ -192,7 +206,7 @@
     </div>
 
     <!-- Show menu depending on menustyle -->
-    <MenuGeneric v-if="genericMenu && showMenu" class="mt-2" />
+    <MenuGeneric v-if="uiLayout == 'bootstrap' && showMenu" class="mt-2" />
     <br />&nbsp;
     <!-- Select video file  -->
     <FileChooserGeneric
@@ -212,6 +226,7 @@
     />
     <!-- Playtime in 00:00:00.000 format -->
     <p>Playtime: {{ getPlaytimeAsVttTime() }}</p>
+
     <div v-if="debug">
       <p>ID of active p element</p>
       <p v-if="activeP">{{ activeP.editorId }}</p>
@@ -223,8 +238,7 @@
         <ContentImsc :content="body" v-if="body" />
       </div>
       <!-- Video to be displayed -->
-      <div id="fullScreenContainer" 
-        @fullscreenchange="handleFullscreenChange">
+      <div id="fullScreenContainer" @fullscreenchange="handleFullscreenChange">
         <LiveActionsMenu />
         <VideoGeneric
           :containerid="config.defaultVideo.containerId"
@@ -247,7 +261,8 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
-import FileChooserGeneric from "./helper/FileChooserGeneric.vue";
+import FileChooserGeneric from "./editorComponents/FileChooserGeneric.vue";
+import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
@@ -266,6 +281,7 @@ export default {
     ContentImsc,
     DropDownGeneric,
     FileChooserGeneric,
+    h1Generic,
     LiveActionsMenu,
     MenuGeneric,
     MenuStyle,
@@ -280,12 +296,12 @@ export default {
     };
   },
   computed: {
-    genericMenu: {
+    uiLayout: {
       get() {
-        return this.$store.state.genericMenu;
+        return this.$store.state.uiLayout;
       },
       set(val) {
-        this.$store.commit("setGenericMenu", val);
+        this.$store.commit("setuiLayout", val);
       }
     },
     menuStyleOptions() {
@@ -314,7 +330,7 @@ export default {
       "custom",
       "currentSubtitleData",
       "debug",
-      "forcedOnly",      
+      "forcedOnly",
       "helper",
       "menuStyleConfig",
       "menuStyle",
@@ -328,7 +344,8 @@ export default {
       "showPMenu",
       "showRegionSelect",
       "showSpanMenu",
-      "uiData"
+      "uiData",
+      "uiLayout"
     ]),
     ...mapGetters([
       "activeDiv",
@@ -517,7 +534,8 @@ export default {
       "setVideoCustomWidth",
       "setVideoDomHeight",
       "setVideoDomWidth",
-      "toggleShowConfigUi"
+      "toggleShowConfigUi",
+      "setUiLayout"
     ]),
     ...mapActions([
       "addVideoTextTrack",
@@ -537,7 +555,7 @@ export default {
 body {
   margin-left: 5vw;
   margin-right: 5vw;
-  font-size: 80%;
+  font-size: 100%;
 }
 
 h1 {
@@ -640,22 +658,19 @@ input:focus {
   text-align: center;
 }
 
-.styleSelect {
+.floatRightBox {
   position: relative;
   float: right;
   margin-right: 1em;
 }
 
-/* .BackgroundColor {
-  background-size: 15%;
-  background-repeat: no-repeat;
-  background-position-y: 50%;
-  padding-left: 20% !important;
-  margin-left: 10%;
-} */
+#saveConfig {
+  margin-top: 7rem;
+}
 
 #selectLang {
-  margin-bottom: 10px;
+   margin-bottom: 20px;
+   float: left;
 }
 
 #fullScreenContainer:fullscreen #renderDiv {

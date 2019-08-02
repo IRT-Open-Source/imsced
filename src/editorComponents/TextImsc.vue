@@ -1,22 +1,30 @@
 <template>
   <div>
     <!-- Add on change event and trigger update in parent component? -->
-    <label>
+    <InputGeneric
+      :value="element.text"
+      :labelName="''"
+      @valueChanged="changedValue"
+      @gotFocus="focusBubble"
+    />
+    <!--    <label>
       <input
         type="text"
-        size="50"
+        size="100"
         :value="element.text"
         @keyup="changedValue"
         @focus="focusBubble"
       />
-    </label>
+    </label>-->
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
+import InputGeneric from "./InputGeneric.vue";
 
 export default {
+  components: { InputGeneric },
   props: {
     element: {
       type: Object,
@@ -27,8 +35,9 @@ export default {
     ...mapState(["playTime", "debug"])
   },
   methods: {
-    changedValue(e) {
-      this.element.text = e.target.value;
+    changedValue(val) {
+      this.element.text = val;
+      console.log("change:" + this.element.text);
       this.updateSubtitlePlane({ time: this.playTime });
     },
     focusBubble() {

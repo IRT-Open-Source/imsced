@@ -1,6 +1,6 @@
 <!-- Simple UI component for radio buttons  -->
 <template>
-  <!--<fieldset>
+  <fieldset>
     <legend>{{ labelName }}</legend>
     <span v-for="option in options" :key="option">
       <input
@@ -13,31 +13,14 @@
       />
       <label for="option">{{ option }}</label>
     </span>
-  </fieldset>-->
-  <RadioGenericPlain
-    v-if="uiLayout == 'plain'"
-    :options="options"
-    :selected="selected"
-    :labelName="labelName"
-    @valueChanged="changedValue"
-  />
-  <radioGenericBS
-    v-else
-    :options="options"
-    :selected="selected"
-    :labelName="labelName"
-    @valueChanged="changedValue"
-  />
+  </fieldset>
 </template>
 
 <script>
-import helperGeneric from "../modules/helperGeneric.js";
+import helperGeneric from "../../modules/helperGeneric.js";
 import { mapState } from "vuex";
-import RadioGenericBS from "./bootstrapComponents/RadioGenericBS.vue";
-import RadioGenericPlain from "./plainComponents/RadioGenericPlain.vue";
 
 export default {
-  components: { RadioGenericPlain, RadioGenericBS },
   props: {
     labelName: {
       type: String,
@@ -62,8 +45,8 @@ export default {
     ...mapState(["uiLayout"])
   },
   methods: {
-    changedValue: function(val) {
-      this.$emit("valueChanged", val);
+    changedValue: function(e) {
+      this.$emit("valueChanged", e.target.value);
     },
     focusBubble() {
       this.$emit("gotFocus");

@@ -1,22 +1,31 @@
 <!-- Select file and pass on fileObj and (if needed) parsed text -->
 <template>
   <div>
-    <div id="fileSelect">
-      <label :for="id">
-        {{ labelText }}
-        <input
-          type="file"
-          :id="id"
-          :name="name"
-          @change="fileChanged($event)"
-        />
-      </label>
-    </div>
+    <FileChooserGenericPlain
+      v-if="uiLayout == 'plain'"
+      :name="name"
+      :id="id"
+      :labelText="labelText"
+      @valueChanged="fileChanged"
+    />
+
+    <FileChooserGenericBS
+      v-else
+      :id="id"
+      :name="name"
+      :labelText="labelText"
+      @valueChanged="fileChanged"
+    />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import FileChooserGenericBS from "./bootstrapComponents/FileChooserGenericBS.vue";
+import FileChooserGenericPlain from "./plainComponents/FileChooserGenericPlain.vue";
+
 export default {
+  components: { FileChooserGenericBS, FileChooserGenericPlain },
   props: {
     getText: {
       type: Boolean,
@@ -37,6 +46,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  computed: {
+    ...mapState(["uiLayout"])
   },
   methods: {
     fileChanged: function(e) {
@@ -66,9 +78,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-#fileSelect {
-  color: #0e84fa;
-}
-</style>

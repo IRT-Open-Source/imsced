@@ -1,23 +1,26 @@
 <!-- Simple UI component for text values -->
 <template>
   <div :class="[className]">
-    <b>{{ labelName }}</b>
-    <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
-    <b-form-input
-      class="mt-1"
-      size="300"
-      :value="value"
-      type="text"
-      @keyup.native="changedValue"
-      @change.native="changedValue"
-      @focus.native="focusBubble"
-    ></b-form-input>
+    <label>
+      {{ labelName }}
+      <input
+        type="text"
+        :value="value"
+        :size="size"
+        @keyup="changedValue"
+        @change="changedValue"
+        @focus="focusBubble"
+      />
+    </label>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    value: {
+      required: true
+    },
     labelName: {
       type: String | Number,
       required: true
@@ -25,9 +28,6 @@ export default {
     size: {
       type: Number,
       required: false
-    },
-    value: {
-      required: true
     }
   },
   computed: {
@@ -39,7 +39,6 @@ export default {
   methods: {
     changedValue: function(e) {
       this.$emit("valueChanged", e.target.value);
-      console.log("changed");
     },
     focusBubble() {
       this.$emit("gotFocus");
@@ -47,9 +46,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-* /deep/ {
-  @import "~bootstrap/dist/css/bootstrap.min";
-}
-</style>

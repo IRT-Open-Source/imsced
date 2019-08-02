@@ -172,6 +172,15 @@ export default {
 </script>
 
 <style>
+.content {
+  flex: 1;
+  margin-right: 5px;
+}
+
+.content input[type="text"] {
+  width: 100%;
+}
+
 .passiveP {
   background-color: ghostwhite;
 }

@@ -24,7 +24,6 @@ export const store = new Vuex.Store({
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
     forcedOnly: false, // enable/disable displayForcedOnlyMode
     fullScreenActive: false,
-    genericMenu: false, // use new generic menu with bootstrap
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
     menuStyle: "default",
@@ -42,7 +41,8 @@ export const store = new Vuex.Store({
     styleData: new StyleCentral(), // setting for and processing of style attributes
     subActive: false, // if subtitle data is rendered on video
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
-    uiData: new UiCentral() // language specific labels for ui
+    uiData: new UiCentral(), // language specific labels for ui
+    uiLayout: "plain" // choose UI layout for editor (e.g. bootstrap), plain is default
   },
   getters: {
     activeDiv(state) {
@@ -228,9 +228,6 @@ export const store = new Vuex.Store({
     setFullScreenActive(state, val) {
       state.fullScreenActive = val;
     },
-    setGenericMenu(state, val) {
-      state.genericMenu = val;
-    },
     setMenuStyle(state, val) {
       state.menuStyle = val;
     },
@@ -254,6 +251,9 @@ export const store = new Vuex.Store({
     },
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
+    },
+    setUiLayout(state, val) {
+      state.uiLayout = val;
     },
     setVideoDomHeight(state, payload) {
       document.getElementById(state.config.defaultVideo.videoId).style.height =

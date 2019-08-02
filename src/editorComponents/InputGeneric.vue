@@ -1,38 +1,60 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div :class="[className]">
-    <label>
-      {{ labelName }}
-      <input
-        type="text"
-        :value="value"
-        @change="changedValue"
-        @focus="focusBubble"
-      />
-    </label>
+  <div>
+    <InputGenericPlain
+      v-if="uiLayout == 'plain'"
+      :labelName="labelName"
+      :size="size"
+      :value="value"
+      @valueChanged="changedValue"
+      @gotFocus="focusBubble"
+    />
+    <InputGenericBS
+      v-else
+      :labelName="labelName"
+      :size="size"
+      :value="value"
+      @valueChanged="changedValue"
+      @gotFocus="focusBubble"
+    />
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import InputGenericBS from "./bootstrapComponents/InputGenericBS.vue";
+import InputGenericPlain from "./plainComponents/InputGenericPlain.vue";
+
 export default {
+  components: {
+    InputGenericBS,
+    InputGenericPlain
+  },
   props: {
-    value: {
-      required: true
-    },
     labelName: {
       type: String | Number,
       required: true
-    }
+    },
+    size: {
+      type: Number,
+      required: false
+    },
+    value: {
+      required: true
+    },
+
   },
   computed: {
     className: function() {
       var name = this.labelName.replace(" ", "");
       return name;
-    }
+    },
+    ...mapState(["uiLayout"])
   },
   methods: {
-    changedValue: function(e) {
-      this.$emit("valueChanged", e.target.value);
+    changedValue: function(val) {
+      this.$emit("valueChanged", val);
+      //console.log(val);
     },
     focusBubble() {
       this.$emit("gotFocus");

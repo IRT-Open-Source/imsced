@@ -49,7 +49,7 @@
                 >
                   <!-- 
                     UI type of the AttrStyle component is selected based on value
-                     of store setting (currently the setting of "genericMenu")
+                     of store setting (currently the setting of "uiLayout")
                   -->
                   <AttrStyle
                     class="ml-2 attribute"

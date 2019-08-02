@@ -40,7 +40,7 @@ export default {
       var helper = new helperGeneric();
       return helper.uuidv4();
     },
-    ...mapState(["genericMenu"])
+    ...mapState(["uiLayout"])
   },
   methods: {
     changedValue: function(e) {
@@ -52,3 +52,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+* /deep/ {
+  @import "~bootstrap/dist/css/bootstrap.min";
+}
+</style>
