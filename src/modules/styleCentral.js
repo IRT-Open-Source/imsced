@@ -35,16 +35,16 @@ var proto = {
     displayAlign: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["before", "after"],
-      editOn: ["body", "div", "p"]
+      editOn: ["region"]
     },
     extent$h: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p"],
+      editOn: ["region"],
       valueObject: true
     },
     extent$w: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p"],
+      editOn: ["region"],
       valueObject: true
     },
     forcedDisplay: {
@@ -55,7 +55,7 @@ var proto = {
     fillLineGap: {
       ns: "http://www.w3.org/ns/ttml/profile/imsc1#styling",
       allowedValues: [true, false],
-      editOn: ["body", "div", "p"]
+      editOn: ["region"]
     },
     fontFamily: {
       ns: "http://www.w3.org/ns/ttml#styling",
@@ -89,22 +89,22 @@ var proto = {
     },
     opacity: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p"]
+      editOn: ["region"]
     },
     origin$h: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p"],
+      editOn: ["region"],
       valueObject: true
     },
     origin$w: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p"],
+      editOn: ["region"],
       valueObject: true
     },
     showBackground: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["always", "whenActive"],
-      editOn: ["div", "p"]
+      editOn: ["region"]
     },
     textAlign: {
       ns: "http://www.w3.org/ns/ttml#styling",
@@ -150,7 +150,7 @@ var proto = {
     writingMode: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["lrtb", "rltb", "tbrl", "tblr", "lr", "rl", "tb"],
-      editOn: ["body", "div", "p"]
+      editOn: ["region"]
     }
   },
   /*

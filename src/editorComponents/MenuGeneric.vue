@@ -6,10 +6,10 @@
       <b-card sub-title="REGION styles" class="region-style">
         <DropDownGenericBS
           :options="myRegionIds"
-          :selected="activeP.regionID"
+          :selected="activeRegionId"
           :labelName="'Select a region'"
           :dropKey="myDropKey"
-          @valueChanged="setNewRegionForP"
+          @valueChanged="setNewRegion"
         />
         <ButtonGenericBS
           class="mt-1"
@@ -84,7 +84,7 @@ export default {
   },
   data() {
     return {
-      contentKinds: ["body", "div", "p", "span"],
+      contentKinds: ["region", "body", "div", "p", "span"],
       myDropKey: 0
     };
   },
@@ -132,7 +132,7 @@ export default {
       "showRegionSelect",
       "styleData"
     ]),
-    ...mapGetters(["activeDiv", "body", "regionStylesActiveP"])
+    ...mapGetters(["activeDiv", "activeRegionId", "body", "regionStyles"])
   },
   methods: {
     addNewRegion() {
@@ -204,6 +204,11 @@ export default {
 
     getStyles(contentKind, attr) {
       switch (contentKind) {
+        case "region":
+          if(this.activeRegionId){
+            return this.regionStyles;
+          }
+          break;
         case "body":
           if (this.body) {
             return this.body.styleAttrs;
@@ -221,14 +226,6 @@ export default {
           break;
         case "p":
           if (this.activeP) {
-            if (
-              this.configStyles.regionStyles &&
-              this.configStyles.regionStyles.includes(attr)
-            ) {
-              return this.regionStylesActiveP;
-            } else if (this.defaultSettings.regionStyles.includes(attr)) {
-              return this.regionStylesActiveP;
-            }
             return this.activeP.styleAttrs;
           }
           break;
@@ -250,10 +247,7 @@ export default {
       }
       return false;
     },
-    setNewRegionForP(val) {
-      this.setNewRegionActiveP({ regId: val });
-    },
-    /* 
+     /* 
       Check which tabs (e.g. position or style) have any "editable
       property/attribute" (e.g. color or textAlign). This is checked
       for a specific content kind (e.g. body or p).
@@ -270,7 +264,7 @@ export default {
       return tabsWithContent;
     },
     ...mapMutations(["addRegion"]),
-    ...mapActions(["setNewRegionActiveP"])
+    ...mapActions(["setNewRegion"])
   }
 };
 </script>

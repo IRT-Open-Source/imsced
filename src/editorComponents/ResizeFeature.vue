@@ -16,7 +16,7 @@ import { mapActions, mapState, mapMutations, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapState(["resizingActive", "styleData", "playTime"]),
-    ...mapGetters(["regionStylesActiveP", "renderDivDom", "getRegionValue"]),
+    ...mapGetters(["regionStyles", "renderDivDom", "getRegionValue"]),
 
     // get attributes from renderDiv
     videoHeight() {
@@ -55,12 +55,12 @@ export default {
         );
         this.styleData.setAttr(
           "extent$w",
-          this.regionStylesActiveP,
+          this.regionStyles,
           String(newW)
         );
         this.styleData.setAttr(
           "extent$h",
-          this.regionStylesActiveP,
+          this.regionStyles,
           String(newH)
         );
         this.updateSubtitlePlane({ time: this.playTime });

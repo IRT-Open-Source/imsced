@@ -31,6 +31,7 @@ export const store = new Vuex.Store({
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
+    showRegionMenu: "show", //whether to show the style menu for a region
     showBodyMenu: "hide",
     showConfigUi: false,
     showDivMenu: "hide",
@@ -46,6 +47,17 @@ export const store = new Vuex.Store({
     activeDiv(state) {
       if (state.activeP) {
         return state.activeP.parentDiv;
+      }
+    },
+    activeRegionId(state, getters) {
+      if (getters.activeDiv) {
+        if (getters.activeDiv.regionID) {
+          return getters.activeDiv.regionID;
+        } else if (state.activeP && state.activeP.regionID) {
+          return state.activeP.regionID;
+        }
+      } else {
+        return undefined;
       }
     },
     body(state) {
@@ -93,10 +105,37 @@ export const store = new Vuex.Store({
     },
     /*
       The style attributes of the region element that is 
+      referenced by the currently "active" div  element.
+    */
+    regionStyles(state, getters) {
+      if (getters.activeRegionId) {
+        return state.currentSubtitleData.regionHash[getters.activeRegionId]
+          .styleAttrs;
+      } else {
+        return;
+      }
+    },
+    regionStylesActiveDiv(state, getters) {
+      let regionStyles;
+      if (getters.activeDiv) {
+        if (getters.activeDiv.regionID) {
+          if (
+            state.currentSubtitleData.regionHash[getters.activeDiv.regionID]
+          ) {
+            regionStyles =
+              state.currentSubtitleData.regionHash[getters.activeDiv.regionID]
+                .styleAttrs;
+          }
+        }
+      }
+      return regionStyles;
+    },
+    /*
+      The style attributes of the region element that is 
       referenced by the currently "active" p element.
     */
     regionStylesActiveP(state) {
-      var regionStyles = undefined;
+      let regionStyles;
       if (state.activeP) {
         if (state.activeP.regionID) {
           if (state.currentSubtitleData.regionHash[state.activeP.regionID]) {
@@ -118,17 +157,20 @@ export const store = new Vuex.Store({
     // get a specific value from region styles (like "extent$h") (TODO: check if working for every case)
     getRegionValue(state, getters) {
       return name => {
-        var namespace = state.styleData.attrs[name].ns;
-        var valueEntry;
-        var value;
+        let namespace = state.styleData.attrs[name].ns;
+        let valueEntry, value;
+
         //composed values e.g. extent or origin
-        var composition = name.split("$");
-        var wrapperName = composition[0];
-        var propertyName = composition[1];
-        valueEntry =
-          getters.regionStylesActiveP[namespace + " " + wrapperName][
-            propertyName
-          ];
+        let composition = name.split("$");
+        let wrapperName = composition[0];
+        let propertyName = composition[1];
+
+        if (getters.regionStyles) {
+          valueEntry =
+            getters.regionStyles[namespace + " " + wrapperName][propertyName];
+        } else {
+          return;
+        }
 
         if (!valueEntry.value) {
           value = valueEntry; // better to check on string type?
@@ -300,6 +342,23 @@ export const store = new Vuex.Store({
       state.forcedOnly = (val === "on");
       dispatch("updateSubtitlePlane", { time: state.playTime });
     },    
+    /*
+      For the moment a region can only be set if a region
+      is present either on div or p. It will not work
+      if a default region applies
+    */
+    setNewRegion({ getters, dispatch }, val) {
+      let regionId = val;      
+      if (getters.activeDiv && getters.activeDiv.regionID) {
+        dispatch("setNewRegionActiveDiv", {regId: regionId});
+      } else if (getters.activeP && getters.activeP.regionID) {
+        dispatch("setNewRegionActiveP", {regId: regionId});
+      }
+    },
+    setNewRegionActiveDiv({ state, getters, dispatch }, payload) {
+      getters.activeDiv.regionID = payload.regId;
+      dispatch("updateSubtitlePlane", { time: state.playTime });
+    },
     setNewRegionActiveP({ state, dispatch }, payload) {
       state.activeP.regionID = payload.regId;
       dispatch("updateSubtitlePlane", { time: state.playTime });

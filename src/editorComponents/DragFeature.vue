@@ -27,7 +27,7 @@ export default {
 
   computed: {
     ...mapState(["draggingActive", "styleData", "playTime"]),
-    ...mapGetters(["regionStylesActiveP", "renderDivDom", "getRegionValue"]),
+    ...mapGetters(["regionStyles", "renderDivDom", "getRegionValue"]),
 
     // get attributes from renderDiv
     videoHeight() {
@@ -91,12 +91,12 @@ export default {
 
         this.styleData.setAttr(
           "origin$w",
-          this.regionStylesActiveP,
+          this.regionStyles,
           String(newX)
         );
         this.styleData.setAttr(
           "origin$h",
-          this.regionStylesActiveP,
+          this.regionStyles,
           String(newY)
         );
         this.updateSubtitlePlane({ time: this.playTime });

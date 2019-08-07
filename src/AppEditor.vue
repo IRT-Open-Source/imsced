@@ -17,10 +17,10 @@
       :labelName="'Menu style:'"
       @valueChanged="setMenuStyle"
     />
-    <!-- Select language for User Interface  -->      
+    <!-- Select language for User Interface  -->
     <DropDownGeneric
       id="selectLang"
-      :options=getAvailableLanguages()
+      :options="getAvailableLanguages()"
       :selected="lang"
       :labelName="'Language'"
       @valueChanged="setLang"
@@ -144,25 +144,33 @@
     <div
       class="regionMenu"
       v-if="
-        genericMenu == false &&
-          showRegionSelect === 'show' &&
-          activeP &&
-          activeP.regionID
+        genericMenu == false && showRegionSelect === 'show' && activeRegionId
       "
     >
       <h3 class="styleMenuHeading">REGION Styles</h3>
       <DropDownGeneric
         :options="myRegionIds"
-        :selected="activeP.regionID"
+        :selected="activeRegionId"
         :labelName="'Select a region'"
         :dropKey="myDropKey"
-        @valueChanged="setNewRegionForP"
+        @valueChanged="setNewRegion"
         class="regionMenu"
       />
       <ButtonGeneric
         :buttonName="'Add a region'"
         @click.native="addNewRegion"
       />
+      <div
+        v-if="
+          showRegionMenu === 'show' && helper.objectHasEntries(regionStyles)
+        "
+      >
+        <MenuStyle
+          :styles="regionStyles"
+          :contentKind="'region'"
+          class="regionMenu"
+        />
+      </div>
     </div>
     <!-- Styles for <p>  -->
     <div v-if="genericMenu == false && activeP && showPMenu === 'show'">
@@ -170,7 +178,6 @@
       <MenuStyle
         :styles="activeP.styleAttrs"
         :contentKind="'p'"
-        :regionStyles="regionStylesActiveP"
         class="pMenu"
       />
     </div>
@@ -313,6 +320,7 @@ export default {
       "lang",
       "movieSrc",
       "playTime",
+      "showRegionMenu",
       "showBodyMenu",
       "showConfigUi",
       "showDivMenu",
@@ -323,8 +331,9 @@ export default {
     ]),
     ...mapGetters([
       "activeDiv",
+      "activeRegionId",
       "body",
-      "regionStylesActiveP",
+      "regionStyles",
       "renderDivDom",
       "videoDom"
     ])
@@ -362,10 +371,9 @@ export default {
          tts:backgroundColor='black'\
          tts:lineHeight='200%'\
          >\
-           <div tts:fontWeight='normal'>\
+           <div tts:fontWeight='normal' region='r1'>\
             <p begin='2s'\
               end='10s' \
-              region='r1'\
               tts:color='yellow'\
               tts:fontSize='90%'\
               tts:fontFamily='Courier New'\
@@ -482,9 +490,6 @@ export default {
       });
       p1.then(v => saveAs(v, "imsc2.xml"));
     },
-    setNewRegionForP(val) {
-      this.setNewRegionActiveP({ regId: val });
-    },
     testLog() {
       window.subs = this.currentSubtitleData;
     },
@@ -511,7 +516,7 @@ export default {
       "removeSub",
       "resetFocusContent",
       "setForcedOnlyMode",
-      "setNewRegionActiveP",
+      "setNewRegion",
       "triggerTimeUpdate",
       "updateSubtitlePlane",
       "updateSubtitlePlanePlayTime"

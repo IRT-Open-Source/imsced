@@ -15,57 +15,57 @@
 <template>
   <div class="menu">
     <AttrStyle
-      v-if="editable('origin$w', regionStyles)"
+      v-if="editable('origin$w')"
       :name="'origin$w'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('origin$h', regionStyles)"
+      v-if="editable('origin$h')"
       :name="'origin$h'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('extent$w', regionStyles)"
+      v-if="editable('extent$w')"
       :name="'extent$w'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('extent$h', regionStyles)"
+      v-if="editable('extent$h')"
       :name="'extent$h'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('displayAlign', regionStyles)"
+      v-if="editable('displayAlign')"
       :name="'displayAlign'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'radio'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('writingMode', regionStyles)"
+      v-if="editable('writingMode')"
       :name="'writingMode'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'radio'"
       @gotFocus="focusBubble"
     />
 
     <AttrStyle
-      v-if="editable('showBackground', regionStyles)"
+      v-if="editable('showBackground')"
       :name="'showBackground'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'radio'"
       @gotFocus="focusBubble"
     />
@@ -237,9 +237,9 @@
     />      
 
     <AttrStyle
-      v-if="editable('opacity', regionStyles)"
+      v-if="editable('opacity')"
       :name="'opacity'"
-      :styles="regionStyles"
+      :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
     />
@@ -258,10 +258,6 @@ export default {
     contentKind: {
       type: String,
       required: true
-    },
-    regionStyles: {
-      type: Object,
-      required: false
     },
     styles: {
       required: true
