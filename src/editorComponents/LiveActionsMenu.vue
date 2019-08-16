@@ -16,6 +16,11 @@
         @click.native="toggleResizingActive"
         :disabled="activeP == undefined"
       />
+
+      <ButtonGeneric
+        :buttonName="fullScreenActive ? 'Disable full-screen' : 'Enable full-screen'"
+        @click.native="toggleFullScreenMode"
+      />
     </div>
     <ResizeFeature v-if="resizeFeatureActive" />
   </div>
@@ -36,7 +41,11 @@ export default {
   },
 
   computed: {
-    ...mapState(["activeP", "draggingActive", "resizingActive"]),
+    ...mapState([
+      "activeP", 
+      "draggingActive", 
+      "fullScreenActive", 
+      "resizingActive"]),
 
     dragFeatureActive() {
       return this.activeP && this.draggingActive;
@@ -47,7 +56,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["toggleDraggingActive", "toggleResizingActive"])
+    ...mapMutations([
+      "toggleDraggingActive", 
+      "toggleFullScreenMode",
+      "toggleResizingActive"])
   }
 };
 </script>
@@ -63,4 +75,13 @@ export default {
 .dragButton {
   background-color: salmon;
 }
+
+#fullScreenContainer:fullscreen .live-actions input[disabled] {
+  display: none;
+}
+#fullScreenContainer:fullscreen .live-actions {
+  position: absolute;
+  z-index: 10;
+}
+
 </style>

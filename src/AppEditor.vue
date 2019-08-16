@@ -223,7 +223,8 @@
         <ContentImsc :content="body" v-if="body" />
       </div>
       <!-- Video to be displayed -->
-      <div>
+      <div id="fullScreenContainer" 
+        @fullscreenchange="handleFullscreenChange">
         <LiveActionsMenu />
         <VideoGeneric
           :containerid="config.defaultVideo.containerId"
@@ -431,6 +432,10 @@ export default {
     getPlaytimeAsVttTime() {
       return this.helper.vttTimestamp(this.playTime);
     },
+    handleFullscreenChange(event) {
+      this.setFullScreenActive(!!document.fullscreenElement);
+      this.updateSubtitlePlanePlayTime();
+    },
     initSubs: function(subtitleText) {
       var dataItem = new ImscData(subtitleText);
       //dataItem.initParaHash();
@@ -498,6 +503,7 @@ export default {
       "addSubtitleData",
       "changeVideo",
       "setDebug",
+      "setFullScreenActive",
       "setMenuStyle",
       "setLang",
       "setShowBodyMenu",
@@ -648,5 +654,24 @@ input:focus {
 
 #selectLang {
   margin-bottom: 10px;
+}
+
+#fullScreenContainer:fullscreen #renderDiv {
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 2;
+}
+
+#fullScreenContainer:fullscreen video {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translateX(calc((100% - 100vw) / 2));
+  z-index: 1;
+}
+video::-webkit-media-controls-fullscreen-button {
+  display: none;
 }
 </style>

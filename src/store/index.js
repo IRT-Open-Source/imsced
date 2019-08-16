@@ -23,6 +23,7 @@ export const store = new Vuex.Store({
     debug: false, // show debug info in editor view
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
     forcedOnly: false, // enable/disable displayForcedOnlyMode
+    fullScreenActive: false,
     genericMenu: false, // use new generic menu with bootstrap
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
@@ -224,6 +225,9 @@ export const store = new Vuex.Store({
     setCurrentTrackMode(state, payload) {
       state.currentVideoTextTrack.track.mode = payload.mode;
     },
+    setFullScreenActive(state, val) {
+      state.fullScreenActive = val;
+    },
     setGenericMenu(state, val) {
       state.genericMenu = val;
     },
@@ -268,6 +272,14 @@ export const store = new Vuex.Store({
         state.resizingActive = false;
       }
     },
+    toggleFullScreenMode() {
+      if (!document.fullscreenElement) {
+        document.getElementById("fullScreenContainer").requestFullscreen();
+      }
+      else if (document.exitFullscreen) {
+        document.exitFullscreen(); 
+      }
+    },    
     toggleResizingActive(state) {
       state.resizingActive = !state.resizingActive;
       if (state.resizingActive && state.draggingActive) {
