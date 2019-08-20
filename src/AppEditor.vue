@@ -372,8 +372,10 @@ export default {
          tts:backgroundColor='black'\
          tts:lineHeight='200%'\
          >\
-           <div tts:fontWeight='normal' region='r1'>\
-            <p begin='2s'\
+           <div tts:fontWeight='normal'>\
+            <p  \
+              region='r1'\
+              begin='2s'\
               end='10s' \
               tts:color='yellow'\
               tts:fontSize='90%'\
