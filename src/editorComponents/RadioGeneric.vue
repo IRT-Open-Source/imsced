@@ -1,19 +1,5 @@
 <!-- Simple UI component for radio buttons  -->
 <template>
-  <!--<fieldset>
-    <legend>{{ labelName }}</legend>
-    <span v-for="option in options" :key="option">
-      <input
-        type="radio"
-        :value="option"
-        :checked="option == selected ? true : false"
-        :name="nameOfSet"
-        @change="changedValue"
-        @focus="focusBubble"
-      />
-      <label for="option">{{ option }}</label>
-    </span>
-  </fieldset>-->
   <RadioGenericPlain
     v-if="uiLayout == 'plain'"
     :options="options"
@@ -51,6 +37,11 @@ export default {
 
     selected: {
       required: true
+    },
+
+    translateOptions: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -59,7 +50,12 @@ export default {
       var helper = new helperGeneric();
       return helper.uuidv4();
     },
-    ...mapState(["uiLayout"])
+    ...mapState([
+      "genericMenu",
+      "lang",
+      "uiData",
+      "uiLayout"
+    ])
   },
   methods: {
     changedValue: function(val) {
@@ -67,6 +63,10 @@ export default {
     },
     focusBubble() {
       this.$emit("gotFocus");
+    }, 
+    getLabelText(name) {
+      name = this.translateOptions ? this.uiData.getLabel(name, this.lang) : name;
+      return name;
     }
   }
 };

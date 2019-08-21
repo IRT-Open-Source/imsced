@@ -2,20 +2,9 @@
   <div id="app">
     <h1Generic :text="'imscEd'" />
 
+    <!-- Choose menu style  -->
 
-
-      <!-- Select language for User Interface  -->
-      <DropDownGeneric
-        id="selectLang"
-        :options="getAvailableLanguages()"
-        :selected="lang"
-        :labelName="'Language'"
-        @valueChanged="setLang"
-      />
-
-
-      <!-- Choose UI layout  -->
-      <DropDownGeneric
+    <DropDownGeneric
         class="floatRightBox"
         :options="['bootstrap', 'plain']"
         :selected="uiLayout"
@@ -23,29 +12,102 @@
         @valueChanged="setUiLayout"
       />
 
-      <!-- Choose menu style  -->
-      <DropDownGeneric
+    <DropDownGeneric
         v-if="uiLayout == 'bootstrap'"
         class="floatRightBox"
         :options="menuStyleOptions"
         :selected="menuStyle"
-        :labelName="'Menu style:'"
+       :labelName="`${getLabelText('genericMenuType')}:`"
         @valueChanged="setMenuStyle"
       />
 
+      
+    <!-- Select language for User Interface  -->
+    <DropDownGeneric
+      id="selectLang"
+      :options="getAvailableLanguages()"
+      :selected="lang"
+      :labelName="getLabelText('Language')"
+      @valueChanged="setLang"
+    />
 
-    <div id="saveConfig">
-      <!-- Export IMSC as XML  -->
-      <ButtonGeneric :buttonName="'Save File'" @click.native="saveXml" />
 
+ <div id="saveConfig">
+    <!-- Export IMSC as XML  -->
+    <ButtonGeneric 
+      :buttonName="getLabelText('saveFile')" 
+      @click.native="saveXml" 
+    />
+
+    <!-- UI to customize display-->
+    <ButtonGeneric
+      :buttonName="configUiButtonName"
+      @click.native="toggleShowConfigUi"
+    />
+    <br />&nbsp;
+    <transition name="fade">
+      <div v-if="showConfigUi" id="config">
+        <RadioGeneric
+          :options="['show', 'hide']"
+          :translateOptions="true"
+          :selected="showBodyMenu"
+          :labelName="`${getLabelText('elementMenu')} <Body>`"
+          @valueChanged="setShowBodyMenu"
+        />
+
+        <RadioGeneric
+          :options="['show', 'hide']"
+          :translateOptions="true"
+          :selected="showDivMenu"
+          :labelName="`${getLabelText('elementMenu')} <div>`"
+          @valueChanged="setShowDivMenu"
+        />
+
+        <RadioGeneric
+          :options="['show', 'hide']"
+          :translateOptions="true"
+          :selected="showPMenu"
+          :labelName="`${getLabelText('elementMenu')} <p>`"
+          @valueChanged="setShowPMenu"
+        />
+
+        <RadioGeneric
+          :options="['show', 'hide']"
+          :translateOptions="true"
+          :selected="showSpanMenu"
+          :labelName="`${getLabelText('elementMenu')} <span>`"
+          @valueChanged="setShowSpanMenu"
+        />
+
+        <RadioGeneric
+          :options="['show', 'hide']"
+          :translateOptions="true"
+          :selected="showRegionSelect"
+          :labelName="'Regions'"
+          @valueChanged="setShowRegionSelect"
+        />
+
+        <RadioGeneric
+          :options="['on', 'off']"
+          :translateOptions="true"
+          :selected="debug ? 'on' : 'off'"
+          :labelName="'Debug info'"
+          @valueChanged="setDebug"
+        />
+
+        <RadioGeneric
+          :options="['on', 'off']"
+          :translateOptions="true"
+          :selected="forcedOnly ? 'on' : 'off'"
+          :labelName="'Display forced only mode'"
+          @valueChanged="setForcedOnlyMode"
+        />        
+      </div>
+    </transition>
 
       <!-- UI to customize display-->
-      <ButtonGeneric
-        :buttonName="showConfigUi ? 'Hide Configuration' : 'Configuration'"
-        @click.native="toggleShowConfigUi"
-      />
       <br />&nbsp;
-      <transition name="fade">
+      <!--<transition name="fade">
         <div v-if="showConfigUi">
           <RadioGeneric
             :options="['show', 'hide']"
@@ -97,7 +159,7 @@
           />
 
         </div>
-      </transition>
+      </transition>-->
     </div>
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
@@ -161,13 +223,13 @@
       <DropDownGeneric
         :options="myRegionIds"
         :selected="activeRegionId"
-        :labelName="'Select a region'"
+        :labelName="getLabelText('selectRegion')"
         :dropKey="myDropKey"
         @valueChanged="setNewRegion"
         class="regionMenu"
       />
       <ButtonGeneric
-        :buttonName="'Add a region'"
+        :buttonName="getLabelText('addRegion')"
         @click.native="addNewRegion"
       />
       <div
@@ -208,7 +270,7 @@
     <FileChooserGeneric
       :name="'choosevideo1'"
       :id="'vc1'"
-      :labelText="'Video'"
+      :labelText="getLabelText('video')"
       @filechange="changevideofile"
     />
 
@@ -216,7 +278,7 @@
     <FileChooserGeneric
       :name="'chooseSubtitle1'"
       :id="'sc1'"
-      :labelText="'Subs'"
+      :labelText="getLabelText('subtitles')"
       :getText="true"
       @textSent="newSubs"
     />
@@ -292,6 +354,10 @@ export default {
     };
   },
   computed: {
+    configUiButtonName() {
+      var name = this.showConfigUi ? 'hideConfigUi' : 'showConfigUi';
+      return this.getLabelText(name);
+    },
     uiLayout: {
       get() {
         return this.$store.state.uiLayout;
@@ -443,6 +509,9 @@ export default {
     },
     getAvailableLanguages() {
       return this.uiData.getAvailableLanguages();
+    },
+    getLabelText(name) {
+      return this.uiData.getLabel(name, this.lang);
     },
     getPlaytimeAsVttTime() {
       return this.helper.vttTimestamp(this.playTime);

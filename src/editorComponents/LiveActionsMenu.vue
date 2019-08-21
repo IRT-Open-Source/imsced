@@ -4,7 +4,7 @@
     <div class="live-actions">
       <ButtonGeneric
         :class="{ dragButton: dragFeatureActive }"
-        :buttonName="draggingActive ? 'Disable dragging' : 'Enable dragging'"
+        :buttonName="dragButtonName"
         @click.native="toggleDraggingActive"
         :disabled="activeP == undefined"
       />
@@ -12,13 +12,13 @@
 
       <ButtonGeneric
         :class="{ resizeButton: resizeFeatureActive }"
-        :buttonName="resizingActive ? 'Disable resizing' : 'Enable resizing'"
+        :buttonName="resizeButtonName"
         @click.native="toggleResizingActive"
         :disabled="activeP == undefined"
       />
 
       <ButtonGeneric
-        :buttonName="fullScreenActive ? 'Disable full-screen' : 'Enable full-screen'"
+        :buttonName="fullScreenButtonName"
         @click.native="toggleFullScreenMode"
       />
     </div>
@@ -43,17 +43,34 @@ export default {
   computed: {
     ...mapState([
       "activeP", 
-      "draggingActive", 
+      "draggingActive",
+      "lang", 
       "fullScreenActive", 
-      "resizingActive"]),
+      "resizingActive",
+      "uiData"]),
+
+    dragButtonName() {
+      var name = this.draggingActive ? 'disableDragging' : 'enableDragging';
+      return this.uiData.getLabel(name, this.lang); 
+    },
 
     dragFeatureActive() {
       return this.activeP && this.draggingActive;
     },
 
+    resizeButtonName() {
+      var name = this.resizingActive ? 'disableResizing' : 'enableResizing';
+      return this.uiData.getLabel(name, this.lang);
+    },
+
     resizeFeatureActive() {
       return this.activeP && this.resizingActive;
-    }
+    },
+
+    fullScreenButtonName() {
+      var name = this.fullScreenActive ? 'disableFullScreen' : 'enableFullScreen';
+      return this.uiData.getLabel(name, this.lang);
+    },    
   },
   methods: {
     ...mapMutations([

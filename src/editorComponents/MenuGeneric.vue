@@ -7,13 +7,13 @@
         <DropDownGenericBS
           :options="myRegionIds"
           :selected="activeRegionId"
-          :labelName="'Select a region'"
+          :labelName="getLabelText('selectRegion')"
           :dropKey="myDropKey"
           @valueChanged="setNewRegion"
         />
         <ButtonGenericBS
           class="mt-1"
-          :buttonName="'Add a region'"
+          :buttonName="getLabelText('addRegion')"
           @click.native="addNewRegion"
         />
       </b-card>
@@ -128,9 +128,11 @@ export default {
       "currentSubtitleData",
       "helper",
       "menuStyle",
+      "lang",
       "menuStyleConfig",
       "showRegionSelect",
-      "styleData"
+      "styleData",
+      "uiData"
     ]),
     ...mapGetters(["activeDiv", "activeRegionId", "body", "regionStyles"])
   },
@@ -192,6 +194,9 @@ export default {
         return this.defaultSettings.inputTypes[attr];
       }
     },
+    getLabelText(name) {
+      return this.uiData.getLabel(name, this.lang);
+    },    
     getSetter(attr) {
       var helper;
       if (this.configStyles.setters && this.configStyles.setters[attr]) {

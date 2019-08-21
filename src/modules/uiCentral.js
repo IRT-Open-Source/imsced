@@ -6,6 +6,14 @@ function UiCentral() {}
 
 var proto = {
   elements: {
+    addRegion: {
+      label: {
+        lang: {
+          en: "Add a region",
+          de: "Region hinzufügen"
+        }
+      }
+    },
     backgroundColor: {
       label: {
         lang: {
@@ -38,6 +46,30 @@ var proto = {
         }
       }
     },
+    disableDragging: {
+      label: {
+        lang: {
+          en: "Disable dragging",
+          de: "Disable dragging"
+        }
+      }
+    },
+    disableFullScreen: {
+      label: {
+        lang: {
+          en: "Disable full-screen",
+          de: "Vollbildmodus beenden"
+        }
+      }
+    },
+    disableResizing: {
+      label: {
+        lang: {
+          en: "Disable resizing",
+          de: "Disable resizing"
+        }
+      }
+    },
     display: {
       label: {
         lang: {
@@ -54,6 +86,38 @@ var proto = {
         }
       }
     },
+    elementMenu: {
+      label: {
+        lang: {
+          en: "Menu for",
+          de: "Menü für"
+        }
+      }
+    },
+    enableDragging: {
+      label: {
+        lang: {
+          en: "Enable dragging",
+          de: "Enable dragging"
+        }
+      }
+    },    
+    enableFullScreen: {
+      label: {
+        lang: {
+          en: "Enable full-screen",
+          de: "Vollbildmodus starten"
+        }
+      }
+    },    
+    enableResizing: {
+      label: {
+        lang: {
+          en: "Enable resizing",
+          de: "Enable resizing"
+        }
+      }
+    },    
     end: {
       label: {
         lang: {
@@ -126,6 +190,46 @@ var proto = {
         }
       }
     },
+    genericMenu: {
+      label: {
+        lang: {
+          en: "Generic menu",
+          de: "Generisches Menü"
+        }
+      }
+    },    
+    genericMenuType: {
+      label: {
+        lang: {
+          en: "Menu style",
+          de: "Menü Style"
+        }
+      }
+    },    
+    hide: {
+      label: {
+        lang: {
+          en: "hide",
+          de: "aus"
+        }
+      }
+    },    
+    hideConfigUi: {
+      label: {
+        lang: {
+          en: "Hide Configuration",
+          de: "Konfiguration ausblenden"
+        }
+      }
+    },    
+    Language: {
+      label: {
+        lang: {
+          en: "Language",
+          de: "Sprache"
+        }
+      }
+    },    
     lineHeight: {
       label: {
         lang: {
@@ -142,6 +246,22 @@ var proto = {
         }
       }
     },
+    off: {
+      label: {
+        lang: {
+          en: "off",
+          de: "aus"
+        }
+      }
+    },    
+    on: {
+      label: {
+        lang: {
+          en: "on",
+          de: "ein"
+        }
+      }
+    },    
     opacity: {
       label: {
         lang: {
@@ -166,11 +286,51 @@ var proto = {
         }
       }
     },
+    saveFile: {
+      label: {
+        lang: {
+          en: "Save File",
+          de: "Datei speichern"
+        }
+      }
+    },
+    selectRegion: {
+      label: {
+        lang: {
+          en: "Select a region",
+          de: "Region auswählen"
+        }
+      }
+    },
+    show: {
+      label: {
+        lang: {
+          en: "show",
+          de: "ein"
+        }
+      }
+    },
     showBackground: {
       label: {
         lang: {
           en: "show Background",
           de: "Hintergrund Region"
+        }
+      }
+    },
+    showConfigUi: {
+      label: {
+        lang: {
+          en: "Show Configuration",
+          de: "Konfiguration einblenden"
+        }
+      }
+    },
+    subtitles: {
+      label: {
+        lang: {
+          en: "Subtitles",
+          de: "Untertitel"
         }
       }
     },
@@ -210,7 +370,7 @@ var proto = {
       label: {
         lang: {
           en: "Text Shadow - Color of shadow",
-          de: "Text Shadow - Farbe des Schattens"
+          de: "Text Schatten - Farbe des Schattens"
         }
       }
     },
@@ -219,6 +379,14 @@ var proto = {
         lang: {
           en: "Unicode Bidi",
           de: "Unicode Bidi"
+        }
+      }
+    },
+    video: {
+      label: {
+        lang: {
+          en: "Video",
+          de: "Video"
         }
       }
     },
@@ -248,6 +416,10 @@ var proto = {
     }
   },
   getLabel(name, lang) {
+    if (!this.elements[name]) {
+      console.error(`get label: unknown name '${name}'`);
+      return name;
+    }
     var data = this.elements[name].label;
     if (data.lang[lang]) {
       return data.lang[lang];
