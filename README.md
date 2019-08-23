@@ -30,3 +30,11 @@ npm run build
 # * dist (build JS files)
 
 ```
+
+## Authors
+Development: Michaela Finger, Yury Lunganstov, Andreas Tai
+
+## Acknowledgement
+Parts of imscED were developed in the project dwerft - linked metadata for media. dwerft - linked metadata for media is a research and development project for innovative media tech solutions by different media and IT companies located at the renowned area of Babelsberg.
+
+The project is funded by Bundesministerium für Bildung und Forschung and Innovative regionale Wachstumskerne PLUS.
