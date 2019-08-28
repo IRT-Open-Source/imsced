@@ -359,11 +359,11 @@ export const store = new Vuex.Store({
       is present either on div or p. It will not work
       if a default region applies
     */
-    setNewRegion({ getters, dispatch }, val) {
+    setNewRegion({ state, getters, dispatch }, val) {
       let regionId = val;      
       if (getters.activeDiv && getters.activeDiv.regionID) {
         dispatch("setNewRegionActiveDiv", {regId: regionId});
-      } else if (getters.activeP && getters.activeP.regionID) {
+      } else if (state.activeP && state.activeP.regionID) {
         dispatch("setNewRegionActiveP", {regId: regionId});
       }
     },
