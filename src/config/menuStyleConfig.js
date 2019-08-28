@@ -21,7 +21,7 @@ var proto = {
             * getters
             * setters
             Settings defined on a menu type will override the default settings.
-  */ 
+  */
 
   // TODO split into multiple files -> load custom style file e.g. as environment variable
 
@@ -36,6 +36,7 @@ var proto = {
         displayAlign: "radio",
         extent$h: "simple",
         extent$w: "simple",
+        forcedDisplay: "radio",
         fillLineGap: "radio",
         fontFamily: "simple",
         fontSize: "simple",
@@ -48,26 +49,38 @@ var proto = {
         origin$w: "simple",
         showBackground: "radio",
         textAlign: "radio",
+        textShadow$0: "simple",
+        textShadow$1: "simple",
+        textShadow$2: "simple",
+        textShadow$3: "simple",
         unicodeBidi: "radio",
+        visibility: "radio",
+        wrapOption: "radio",
         writingMode: "radio"
       },
       regionStyles: [
-        "origin$w",
-        "origin$h",
-        "extent$w",
-        "extent$h",
         "displayAlign",
-        "writingMode",
+        "extent$h",
+        "extent$w",
+        "forcedDisplay",
+        "fillLineGap",
+        "multiRowAlign",
+        "opacity",
+        "origin$h",
+        "origin$w",
         "showBackground",
-        "opacity"
+        "visibility",
+        "writingMode"
       ],
       getters: {
         backgroundColor: "colorArrayToHexRgba",
-        color: "colorArrayToHexRgba"
+        color: "colorArrayToHexRgba",
+        textShadow$3: "colorArrayToHexRgba"
       },
       setters: {
         backgroundColor: "hexRgbaToColorArray",
-        color: "hexRgbaToColorArray"
+        color: "hexRgbaToColorArray",
+        textShadow$3: "hexRgbaToColorArray"
       }
     }
   },
@@ -76,22 +89,28 @@ var proto = {
     default: {
       tabs: {
         position: ["origin$h", "origin$w", "multiRowAlign", "textAlign"],
-        size: ["extent$h", "extent$w", "fontSize"],
-        colour: ["color", "backgroundColor", "showBackground"],
-        style: [
+        size: ["extent$h", "extent$w", "lineHeight"],
+        background: ["backgroundColor", "showBackground"],
+        text: [
+          "color",
           "fontFamily",
+          "fontSize",
           "fontStyle",
-          "fillLineGap",
           "fontWeight",
+          "textShadow$0",
+          "textShadow$1",
+          "textShadow$2",
+          "textShadow$3"
+        ],
+        style: [
           "direction",
           "display",
           "displayAlign",
-          "lineHeight",
-          "multiRowAlign",
+          "fillLineGap",
           "opacity",
-          "unicodeBidi",
-          "writingMode"
-        ]
+          "visibility"
+        ],
+        various: ["forcedDisplay", "unicodeBidi", "wrapOption", "writingMode"]
       }
     },
     simple: {
