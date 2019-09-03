@@ -6,6 +6,15 @@ const uuidVersion4 = require("uuid/v4");
 function helperGeneric() {}
 
 var proto = {
+  /* capitalize first letter of a string,
+     e.g. body => Body
+  */
+  capitalize(name) {
+    if (typeof name !== 'string') {
+      return ''
+    }
+    return name.charAt(0).toUpperCase() + name.slice(1); 
+  },
   /* e.g. [255,255,255] => ffffff */
   colorArrayToHexRgb(colorArray) {
     return colorArray

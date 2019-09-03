@@ -99,7 +99,7 @@ export default {
       for (var contentKind of this.contentKinds) {
         //get data of active tabs per content kind
         var activeTabs = this.tabsWithContent(contentKind);
-        if (activeTabs) {
+        if (activeTabs && this.toBeDisplayed(contentKind)) {
           activeContent[contentKind] = activeTabs;
         }
       }
@@ -263,6 +263,10 @@ export default {
       }
       return tabsWithContent;
     },
+    toBeDisplayed(contentKind) {
+      var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
+      return (this.$store.state[storeProperty] == 'show');
+    },    
     ...mapMutations(["addRegion"]),
     ...mapActions(["setNewRegion"])
   }

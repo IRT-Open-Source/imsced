@@ -48,7 +48,6 @@
       <transition name="fade">
         <div v-if="showConfigUi">
           <RadioGeneric
-            v-if="uiLayout == 'plain'"
             :options="['show', 'hide']"
             :selected="showBodyMenu"
             :labelName="'Menu for <Body>'"
@@ -56,7 +55,6 @@
           />
 
           <RadioGeneric
-            v-if="uiLayout == 'plain'"
             :options="['show', 'hide']"
             :selected="showDivMenu"
             :labelName="'Menu for <div>'"
@@ -64,7 +62,6 @@
           />
 
           <RadioGeneric
-            v-if="uiLayout == 'plain'"
             :options="['show', 'hide']"
             :selected="showPMenu"
             :labelName="'Menu for <p>'"
@@ -72,7 +69,6 @@
           />
 
           <RadioGeneric
-            v-if="uiLayout == 'plain'"
             :options="['show', 'hide']"
             :selected="showSpanMenu"
             :labelName="'Menu for <span>'"
