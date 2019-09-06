@@ -10,10 +10,10 @@ var proto = {
      e.g. body => Body
   */
   capitalize(name) {
-    if (typeof name !== 'string') {
-      return ''
+    if (typeof name !== "string") {
+      return "";
     }
-    return name.charAt(0).toUpperCase() + name.slice(1); 
+    return name.charAt(0).toUpperCase() + name.slice(1);
   },
   /* e.g. [255,255,255] => ffffff */
   colorArrayToHexRgb(colorArray) {
@@ -42,8 +42,16 @@ var proto = {
   },
   /* e.g. '0000ff' => [0, 0, 170, 250] */
   hexRgbToColorArray(hexRgb) {
+    if (hexRgb.length !== 6) {
+      return;
+    }
+    var hexChar = "ABCDEFabcdef0123456789";
     var colorArray = hexRgb.match(/.{2}/g).map(function(hexValue) {
-      return parseInt(hexValue, 16);
+      if (hexChar.includes(hexValue[0], hexValue[1])) {
+        return parseInt(hexValue, 16);
+      } else {
+        throw new Error("Invalid color hexadecimal value");
+      }
     });
     //alpha channel is always set to full opacity
     colorArray.push(255);
@@ -51,9 +59,18 @@ var proto = {
   },
   /* e.g. '0000ffaa' => [ 0, 0, 255, 170 ]  */
   hexRgbaToColorArray(hexRgba) {
-    return hexRgba.match(/.{2}/g).map(function(x) {
-      return parseInt(x, 16);
+    if (hexRgba.length !== 8) {
+      return;
+    }
+    var hexChar = "ABCDEFabcdef0123456789";
+    var colorArray = hexRgba.match(/.{2}/g).map(function(x) {
+      if (hexChar.includes(x[0], x[1])) {
+        return parseInt(x, 16);
+      } else {
+        throw new Error("Invalid color hexadecimal value");
+      }
     });
+    return colorArray;
   },
   /* 
 		e.g. { } => true or {a: 1} => false

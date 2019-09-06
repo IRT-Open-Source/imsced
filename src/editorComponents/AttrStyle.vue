@@ -85,7 +85,11 @@ export default {
           value = this.helper[this.getter](value);
         }
       }
-      if (typeof value !== "string" && typeof value !== "number" && typeof value !== "boolean") {
+      if (
+        typeof value !== "string" &&
+        typeof value !== "number" &&
+        typeof value !== "boolean"
+      ) {
         value = value[0];
       }
       return value;
@@ -120,15 +124,21 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     setNewValue(newValue) {
-      if (this.setter) {
-        if (typeof this.getter === "function") {
-          newValue = this.setter(newValue);
-        } else if (typeof this.getter === "string") {
-          newValue = this.helper[this.setter](newValue);
+      try {
+        if (this.setter) {
+          if (typeof this.getter === "function") {
+            newValue = this.setter(newValue);
+          } else if (typeof this.getter === "string") {
+            newValue = this.helper[this.setter](newValue);
+          }
         }
+        if (newValue) {
+          this.styleData.setAttr(this.name, this.styles, newValue);
+          this.updateSubtitlePlane({ time: this.playTime });
+        }
+      } catch (e) {
+        // TODO: highlight inputs with invalid values
       }
-      this.styleData.setAttr(this.name, this.styles, newValue);
-      this.updateSubtitlePlane({ time: this.playTime });
     },
     ...mapActions(["updateSubtitlePlane"])
   }
