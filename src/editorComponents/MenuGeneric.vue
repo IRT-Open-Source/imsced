@@ -21,7 +21,7 @@
 
     <!-- tabs for level (body, div, span, p) -->
     <b-card class="mt-2" no-body>
-      <b-tabs class="tab-style" pills card vertical end>
+      <b-tabs class="tab-style" pills card vertical>
         <!-- 
           Vertical list of content kinds, 
           kinds can be displayed differently (e.g. greyed out). 
@@ -196,7 +196,7 @@ export default {
     },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
-    },    
+    },
     getSetter(attr) {
       var helper;
       if (this.configStyles.setters && this.configStyles.setters[attr]) {
@@ -210,7 +210,7 @@ export default {
     getStyles(contentKind, attr) {
       switch (contentKind) {
         case "region":
-          if(this.activeRegionId){
+          if (this.activeRegionId) {
             return this.regionStyles;
           }
           break;
@@ -252,7 +252,7 @@ export default {
       }
       return false;
     },
-     /* 
+    /* 
       Check which tabs (e.g. position or style) have any "editable
       property/attribute" (e.g. color or textAlign). This is checked
       for a specific content kind (e.g. body or p).
@@ -270,8 +270,8 @@ export default {
     },
     toBeDisplayed(contentKind) {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
-      return (this.$store.state[storeProperty] == 'show');
-    },    
+      return this.$store.state[storeProperty] == "show";
+    },
     ...mapMutations(["addRegion"]),
     ...mapActions(["setNewRegion"])
   }
