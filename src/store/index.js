@@ -32,9 +32,9 @@ export const store = new Vuex.Store({
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     showRegionMenu: "show", //whether to show the style menu for a region
-    showBodyMenu: "hide",
+    showBodyMenu: "show",
     showConfigUi: false,
-    showDivMenu: "hide",
+    showDivMenu: "show",
     showPMenu: "show",
     showRegionSelect: "show",
     showSpanMenu: "show",
