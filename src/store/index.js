@@ -42,7 +42,7 @@ export const store = new Vuex.Store({
     subActive: false, // if subtitle data is rendered on video
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
     uiData: new UiCentral(), // language specific labels for ui
-    uiLayout: "plain" // choose UI layout for editor (e.g. bootstrap), plain is default
+    uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
   },
   getters: {
     activeDiv(state) {
@@ -187,7 +187,7 @@ export const store = new Vuex.Store({
       state.subActive = true;
     },
     addRegion(state) {
-      let newRegionId = state.helper.uuidv4();
+      let newRegionId = "r-" + state.helper.uuidv4();
       let newRegion = new MyRegion(newRegionId);
       state.currentSubtitleData.regionHash[newRegionId] = newRegion;
     },
