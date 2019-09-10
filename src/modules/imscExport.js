@@ -14,7 +14,8 @@ function ImscExport(obj) {
     "<tt xmlns='http://www.w3.org/ns/ttml' \
 		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter' \
 		 xmlns:tts='http://www.w3.org/ns/ttml#styling' \
-		 xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'/>";
+     xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling' \
+     xml:lang=''/> ";
   this.parser = new DOMParser();
   this.help = new helperGeneric();
   this.xmlDoc = this.parser.parseFromString(this.ttText, "text/xml");
