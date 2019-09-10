@@ -5,23 +5,22 @@
     <!-- Choose menu style  -->
 
     <DropDownGeneric
-        class="floatRightBox"
-        :options="['bootstrap', 'plain']"
-        :selected="uiLayout"
-        :labelName="'UI Layout:'"
-        @valueChanged="setUiLayout"
-      />
+      class="floatRightBox"
+      :options="['bootstrap', 'plain']"
+      :selected="uiLayout"
+      :labelName="'UI Layout:'"
+      @valueChanged="setUiLayout"
+    />
 
     <DropDownGeneric
-        v-if="uiLayout == 'bootstrap'"
-        class="floatRightBox"
-        :options="menuStyleOptions"
-        :selected="menuStyle"
-       :labelName="`${getLabelText('genericMenuType')}:`"
-        @valueChanged="setMenuStyle"
-      />
+      v-if="uiLayout == 'bootstrap'"
+      class="floatRightBox"
+      :options="menuStyleOptions"
+      :selected="menuStyle"
+      :labelName="`${getLabelText('genericMenuType')}:`"
+      @valueChanged="setMenuStyle"
+    />
 
-      
     <!-- Select language for User Interface  -->
     <DropDownGeneric
       id="selectLang"
@@ -31,79 +30,72 @@
       @valueChanged="setLang"
     />
 
+    <div id="saveConfig">
+      <!-- Export IMSC as XML  -->
+      <ButtonGeneric :buttonName="getLabelText('saveFile')" @click.native="saveXml" />
 
- <div id="saveConfig">
-    <!-- Export IMSC as XML  -->
-    <ButtonGeneric 
-      :buttonName="getLabelText('saveFile')" 
-      @click.native="saveXml" 
-    />
+      <!-- UI to customize display-->
+      <ButtonGeneric :buttonName="configUiButtonName" @click.native="toggleShowConfigUi" />
+      <br />&nbsp;
+      <transition name="fade">
+        <div v-if="showConfigUi" id="config">
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showBodyMenu"
+            :labelName="`${getLabelText('elementMenu')} <Body>`"
+            @valueChanged="setShowBodyMenu"
+          />
 
-    <!-- UI to customize display-->
-    <ButtonGeneric
-      :buttonName="configUiButtonName"
-      @click.native="toggleShowConfigUi"
-    />
-    <br />&nbsp;
-    <transition name="fade">
-      <div v-if="showConfigUi" id="config">
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :translateOptions="true"
-          :selected="showBodyMenu"
-          :labelName="`${getLabelText('elementMenu')} <Body>`"
-          @valueChanged="setShowBodyMenu"
-        />
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showDivMenu"
+            :labelName="`${getLabelText('elementMenu')} <div>`"
+            @valueChanged="setShowDivMenu"
+          />
 
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :translateOptions="true"
-          :selected="showDivMenu"
-          :labelName="`${getLabelText('elementMenu')} <div>`"
-          @valueChanged="setShowDivMenu"
-        />
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showPMenu"
+            :labelName="`${getLabelText('elementMenu')} <p>`"
+            @valueChanged="setShowPMenu"
+          />
 
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :translateOptions="true"
-          :selected="showPMenu"
-          :labelName="`${getLabelText('elementMenu')} <p>`"
-          @valueChanged="setShowPMenu"
-        />
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showSpanMenu"
+            :labelName="`${getLabelText('elementMenu')} <span>`"
+            @valueChanged="setShowSpanMenu"
+          />
 
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :translateOptions="true"
-          :selected="showSpanMenu"
-          :labelName="`${getLabelText('elementMenu')} <span>`"
-          @valueChanged="setShowSpanMenu"
-        />
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showRegionSelect"
+            :labelName="'Regions'"
+            @valueChanged="setShowRegionSelect"
+          />
 
-        <RadioGeneric
-          :options="['show', 'hide']"
-          :translateOptions="true"
-          :selected="showRegionSelect"
-          :labelName="'Regions'"
-          @valueChanged="setShowRegionSelect"
-        />
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
+            :selected="debug ? 'on' : 'off'"
+            :labelName="'Debug info'"
+            @valueChanged="setDebug"
+          />
 
-        <RadioGeneric
-          :options="['on', 'off']"
-          :translateOptions="true"
-          :selected="debug ? 'on' : 'off'"
-          :labelName="'Debug info'"
-          @valueChanged="setDebug"
-        />
-
-        <RadioGeneric
-          :options="['on', 'off']"
-          :translateOptions="true"
-          :selected="forcedOnly ? 'on' : 'off'"
-          :labelName="'Display forced only mode'"
-          @valueChanged="setForcedOnlyMode"
-        />        
-      </div>
-    </transition>
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
+            :selected="forcedOnly ? 'on' : 'off'"
+            :labelName="'Display forced only mode'"
+            @valueChanged="setForcedOnlyMode"
+          />
+        </div>
+      </transition>
 
       <!-- UI to customize display-->
       <br />&nbsp;
@@ -182,11 +174,7 @@
       "
     >
       <h3 class="styleMenuHeading">BODY Styles</h3>
-      <MenuStyle
-        :styles="body.styleAttrs"
-        :contentKind="'body'"
-        class="bodyMenu"
-      />
+      <MenuStyle :styles="body.styleAttrs" :contentKind="'body'" class="bodyMenu" />
     </div>
 
     <!-- All Styles that apply to <div> -->
@@ -199,11 +187,7 @@
       "
     >
       <h3 class="styleMenuHeading">DIV Styles</h3>
-      <MenuStyle
-        :styles="activeDiv.styleAttrs"
-        :contentKind="'p'"
-        class="divMenu"
-      />
+      <MenuStyle :styles="activeDiv.styleAttrs" :contentKind="'p'" class="divMenu" />
     </div>
 
     <!-- 
@@ -228,39 +212,24 @@
         @valueChanged="setNewRegion"
         class="regionMenu"
       />
-      <ButtonGeneric
-        :buttonName="getLabelText('addRegion')"
-        @click.native="addNewRegion"
-      />
+      <ButtonGeneric :buttonName="getLabelText('addRegion')" @click.native="addNewRegion" />
       <div
         v-if="
           showRegionMenu === 'show' && helper.objectHasEntries(regionStyles)
         "
       >
-        <MenuStyle
-          :styles="regionStyles"
-          :contentKind="'region'"
-          class="regionMenu"
-        />
+        <MenuStyle :styles="regionStyles" :contentKind="'region'" class="regionMenu" />
       </div>
     </div>
     <!-- Styles for <p>  -->
     <div v-if="uiLayout == 'plain' && activeP && showPMenu === 'show'">
       <h3 class="styleMenuHeading">P Styles</h3>
-      <MenuStyle
-        :styles="activeP.styleAttrs"
-        :contentKind="'p'"
-        class="pMenu"
-      />
+      <MenuStyle :styles="activeP.styleAttrs" :contentKind="'p'" class="pMenu" />
     </div>
     <!-- Styles for <span> -->
     <div v-if="uiLayout == 'plain' && activeSpan && showSpanMenu === 'show'">
       <h3 class="styleMenuHeading">SPAN Styles</h3>
-      <MenuStyle
-        :styles="activeSpan.styleAttrs"
-        :contentKind="'span'"
-        class="spanMenu"
-      />
+      <MenuStyle :styles="activeSpan.styleAttrs" :contentKind="'span'" class="spanMenu" />
     </div>
 
     <!-- Show menu depending on menustyle -->
@@ -355,7 +324,7 @@ export default {
   },
   computed: {
     configUiButtonName() {
-      var name = this.showConfigUi ? 'hideConfigUi' : 'showConfigUi';
+      var name = this.showConfigUi ? "hideConfigUi" : "showConfigUi";
       return this.getLabelText(name);
     },
     uiLayout: {
@@ -734,8 +703,8 @@ input:focus {
 }
 
 #selectLang {
-   margin-bottom: 20px;
-   float: left;
+  margin-bottom: 20px;
+  float: left;
 }
 
 #fullScreenContainer:fullscreen #renderDiv {
