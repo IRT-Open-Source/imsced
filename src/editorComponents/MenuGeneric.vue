@@ -38,7 +38,7 @@
             <b-tab
               v-for="tab of Object.keys(activeContentKinds[contentKind])"
               :key="tab"
-              :title="tab"
+              :title="getTabText(tab)"
             >
               <!-- UI for each editable attribute based on tab and content kind  -->
               <b-row>
@@ -196,6 +196,9 @@ export default {
     },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
+    },
+    getTabText(name) {
+      return this.uiData.getLabel(`tab${this.helper.capitalize(name)}`, this.lang);
     },
     getSetter(attr) {
       var helper;

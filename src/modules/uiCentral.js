@@ -334,6 +334,54 @@ var proto = {
         }
       }
     },
+    tabBackground: {
+      label: {
+        lang: {
+          en: "Background",
+          de: "Hintergrund"
+        }
+      }
+    },
+    tabPosition: {
+      label: {
+        lang: {
+          en: "Position",
+          de: "Ausrichtung"
+        }
+      }
+    },
+    tabSize: {
+      label: {
+        lang: {
+          en: "Size",
+          de: "Größe"
+        }
+      }
+    },
+    tabStyle: {
+      label: {
+        lang: {
+          en: "Style",
+          de: "Style"
+        }
+      }
+    },
+    tabText: {
+      label: {
+        lang: {
+          en: "Text",
+          de: "Text"
+        }
+      }
+    },
+    tabVarious: {
+      label: {
+        lang: {
+          en: "Various",
+          de: "Sonstiges"
+        }
+      }
+    },
     textAlign: {
       label: {
         lang: {
