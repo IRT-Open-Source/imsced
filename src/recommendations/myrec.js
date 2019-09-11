@@ -7,7 +7,7 @@ var proto = {
   style: {
     attrs: {
       textAlign: {
-        excludeValues: ["left", "right"]
+        excludeValues: []
       }
     }
   },
