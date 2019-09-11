@@ -34,7 +34,7 @@ var proto = {
     },
     displayAlign: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      allowedValues: ["before", "after"],
+      allowedValues: ["before", "center", "after"],
       editOn: ["region"]
     },
     extent$h: {
@@ -131,7 +131,7 @@ var proto = {
       editOn: ["span"],
       valueArray: true,
       delimiter: "," //value array, delimter mandatory
-    },    
+    },
     unicodeBidi: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["normal", "embed", "bidiOverride"],
@@ -179,25 +179,22 @@ var proto = {
       var composition = this.getComposition(name);
       if (Array.isArray(styles[styleName])) {
         styles[styleName][0][composition.propertyName] = val;
-      }
-      else {
+      } else {
         styles[styleName][composition.propertyName] = val;
       }
-    }
-    else if (isValueObject) {
+    } else if (isValueObject) {
       var valueEntry = this.getValueEntry(name, styles);
       valueEntry.value = val;
-    }
-    else {
+    } else {
       styles[styleName] = val;
     }
   },
   getComposition(name) {
     var composition = name.split("$");
     return {
-      'wrapperName': composition[0],
-      'propertyName': composition[1]
-    }; 
+      wrapperName: composition[0],
+      propertyName: composition[1]
+    };
   },
   /*
     get style name depends on data structure type
@@ -216,7 +213,7 @@ var proto = {
   getComposedValueEntry(name, styles) {
     var styleName = this.getStyleName(name);
     var composition = this.getComposition(name);
-    var propertyName =composition.propertyName; 
+    var propertyName = composition.propertyName;
     var styleEntry = styles[styleName];
     styleEntry = Array.isArray(styleEntry) ? styleEntry[0] : styleEntry;
     return styleEntry[propertyName];
@@ -227,12 +224,11 @@ var proto = {
   getValueEntry(name, styles) {
     if (name.includes("$")) {
       return this.getComposedValueEntry(name, styles);
-    }
-    else {
+    } else {
       var styleName = this.getStyleName(name);
       return styles[styleName];
     }
-  },  
+  },
   /*
     Checks if a concrete style attribute should have the option
     to be edited. This could be used for example to decide if 
