@@ -12,30 +12,30 @@ var proto = {
   attrs: {
     backgroundColor: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p", "span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueArray: true,
       delimiter: "," //value array, delimter mandatory
     },
     color: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p", "span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueArray: true,
       delimiter: "," //value array, delimter mandatory
     },
     direction: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["ltr", "rtl"],
-      editOn: ["body", "div", "p", "span"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     display: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["auto", "none"],
-      editOn: ["body", "div", "p", "span"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     displayAlign: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["before", "center", "after"],
-      editOn: ["region"]
+      editOn: ["body", "div", "p", "region"]
     },
     extent$h: {
       ns: "http://www.w3.org/ns/ttml#styling",
@@ -59,23 +59,23 @@ var proto = {
     },
     fontFamily: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["p", "span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueArray: true
     },
     fontSize: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["body", "div", "p", "span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueObject: true //value not stored as string
     },
     fontStyle: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["normal", "italic", "oblique"],
-      editOn: ["body", "div", "p", "span"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     fontWeight: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["normal", "bold"],
-      editOn: ["body", "div", "p", "span"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     lineHeight: {
       ns: "http://www.w3.org/ns/ttml#styling",
@@ -89,7 +89,7 @@ var proto = {
     },
     opacity: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["region"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     origin$h: {
       ns: "http://www.w3.org/ns/ttml#styling",
@@ -113,22 +113,22 @@ var proto = {
     },
     textShadow$0: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueObject: true
     },
     textShadow$1: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueObject: true
     },
     textShadow$2: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueObject: true
     },
     textShadow$3: {
       ns: "http://www.w3.org/ns/ttml#styling",
-      editOn: ["span"],
+      editOn: ["body", "div", "p", "region", "span"],
       valueArray: true,
       delimiter: "," //value array, delimter mandatory
     },
@@ -145,7 +145,7 @@ var proto = {
     wrapOption: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["wrap", "noWrap"],
-      editOn: ["body", "div", "p", "span"]
+      editOn: ["body", "div", "p", "region", "span"]
     },
     writingMode: {
       ns: "http://www.w3.org/ns/ttml#styling",
