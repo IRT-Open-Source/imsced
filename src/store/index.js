@@ -245,6 +245,7 @@ export const store = new Vuex.Store({
     },
     setShowRegionSelect(state, val) {
       state.showRegionSelect = val;
+      state.showRegionMenu = val;
     },
     setShowSpanMenu(state, val) {
       state.showSpanMenu = val;
