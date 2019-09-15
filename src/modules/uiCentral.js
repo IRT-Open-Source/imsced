@@ -101,7 +101,7 @@ var proto = {
           de: "Enable dragging"
         }
       }
-    },    
+    },
     enableFullScreen: {
       label: {
         lang: {
@@ -109,7 +109,7 @@ var proto = {
           de: "Vollbildmodus starten"
         }
       }
-    },    
+    },
     enableResizing: {
       label: {
         lang: {
@@ -117,7 +117,7 @@ var proto = {
           de: "Enable resizing"
         }
       }
-    },    
+    },
     end: {
       label: {
         lang: {
@@ -197,7 +197,7 @@ var proto = {
           de: "Generisches Menü"
         }
       }
-    },    
+    },
     genericMenuType: {
       label: {
         lang: {
@@ -205,7 +205,7 @@ var proto = {
           de: "Menü Style"
         }
       }
-    },    
+    },
     hide: {
       label: {
         lang: {
@@ -213,7 +213,7 @@ var proto = {
           de: "aus"
         }
       }
-    },    
+    },
     hideConfigUi: {
       label: {
         lang: {
@@ -221,7 +221,7 @@ var proto = {
           de: "Konfiguration ausblenden"
         }
       }
-    },    
+    },
     Language: {
       label: {
         lang: {
@@ -229,7 +229,7 @@ var proto = {
           de: "Sprache"
         }
       }
-    },    
+    },
     lineHeight: {
       label: {
         lang: {
@@ -253,7 +253,7 @@ var proto = {
           de: "aus"
         }
       }
-    },    
+    },
     on: {
       label: {
         lang: {
@@ -261,7 +261,7 @@ var proto = {
           de: "ein"
         }
       }
-    },    
+    },
     opacity: {
       label: {
         lang: {
@@ -334,51 +334,75 @@ var proto = {
         }
       }
     },
+    tabAlignment: {
+      label: {
+        lang: {
+          en: "Alignment",
+          de: "Ausrichtung"
+        }
+      }
+    },
+    tabDisplay: {
+      label: {
+        lang: {
+          en: "Display",
+          de: "Sichtbarkeit"
+        }
+      }
+    },
+    tabFont: {
+      label: {
+        lang: {
+          en: "Font",
+          de: "Schrift"
+        }
+      }
+    },
+    tabColor: {
+      label: {
+        lang: {
+          en: "Color and Background",
+          de: "Farbe und Hintergrund"
+        }
+      }
+    },
+    tabLine: {
+      label: {
+        lang: {
+          en: "Line",
+          de: "Zeile"
+        }
+      }
+    },
+    tabRegionArea: {
+      label: {
+        lang: {
+          en: "Region Area",
+          de: "Regionsbereich"
+        }
+      }
+    },
+    tabTextShadow: {
+      label: {
+        lang: {
+          en: "Text Shadow",
+          de: "Textschatten"
+        }
+      }
+    },
+    tabWritingDirection: {
+      label: {
+        lang: {
+          en: "Writing Direction",
+          de: "Schreibrichtung"
+        }
+      }
+    },
     tabBackground: {
       label: {
         lang: {
           en: "Background",
           de: "Hintergrund"
-        }
-      }
-    },
-    tabPosition: {
-      label: {
-        lang: {
-          en: "Position",
-          de: "Ausrichtung"
-        }
-      }
-    },
-    tabSize: {
-      label: {
-        lang: {
-          en: "Size",
-          de: "Größe"
-        }
-      }
-    },
-    tabStyle: {
-      label: {
-        lang: {
-          en: "Style",
-          de: "Style"
-        }
-      }
-    },
-    tabText: {
-      label: {
-        lang: {
-          en: "Text",
-          de: "Text"
-        }
-      }
-    },
-    tabVarious: {
-      label: {
-        lang: {
-          en: "Various",
-          de: "Sonstiges"
         }
       }
     },

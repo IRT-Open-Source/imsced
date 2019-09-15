@@ -88,36 +88,27 @@ var proto = {
     // styles with different tabs and attributes
     default: {
       tabs: {
-        position: ["origin$h", "origin$w", "multiRowAlign", "textAlign"],
-        size: ["extent$h", "extent$w", "lineHeight"],
-        background: ["backgroundColor", "showBackground"],
-        text: [
-          "color",
-          "fontFamily",
-          "fontSize",
-          "fontStyle",
-          "fontWeight",
+        RegionArea: ["origin$w", "origin$h", "extent$w", "extent$h"],
+        Alignment: ["textAlign", "multiRowAlign", "displayAlign"],
+        Display: ["display", "forcedDisplay", "visibility", "opacity"],
+        Font: ["fontFamily", "fontSize", "fontStyle", "fontWeight"],
+        TextShadow: [
           "textShadow$0",
           "textShadow$1",
           "textShadow$2",
           "textShadow$3"
         ],
-        style: [
-          "direction",
-          "display",
-          "displayAlign",
-          "fillLineGap",
-          "opacity",
-          "visibility"
-        ],
-        various: ["forcedDisplay", "unicodeBidi", "wrapOption", "writingMode"]
+        Color: ["color", "backgroundColor", "showBackground"],
+        WritingDirection: ["writingMode", "direction", "unicodeBidi"],
+        Line: ["lineHeight", "fillLineGap", "wrapOption"]
       }
     },
     simple: {
       tabs: {
-        position: ["origin$h", "origin$w", "multiRowAlign", "textAlign"],
-        size: ["extent$h", "extent$w", "fontSize"],
-        style: ["backgroundColor", "color", "fillLineGap"]
+        RegionArea: ["origin$w", "origin$h", "extent$w", "extent$h"],
+        Font: ["fontFamily", "fontSize"],
+        Color: ["color", "backgroundColor"],
+        Line: ["lineHeight", "fillLineGap"]
       }
     }
   }
