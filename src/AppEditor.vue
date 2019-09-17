@@ -97,61 +97,6 @@
         </div>
       </transition>
 
-      <!-- UI to customize display-->
-      <br />&nbsp;
-      <!--<transition name="fade">
-        <div v-if="showConfigUi">
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showBodyMenu"
-            :labelName="'Menu for <Body>'"
-            @valueChanged="setShowBodyMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showDivMenu"
-            :labelName="'Menu for <div>'"
-            @valueChanged="setShowDivMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showPMenu"
-            :labelName="'Menu for <p>'"
-            @valueChanged="setShowPMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showSpanMenu"
-            :labelName="'Menu for <span>'"
-            @valueChanged="setShowSpanMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showRegionSelect"
-            :labelName="'Regions'"
-            @valueChanged="setShowRegionSelect"
-          />
-
-          <RadioGeneric
-            :options="['on', 'off']"
-            :selected="forcedOnly ? 'on' : 'off'"
-            :labelName="'Display forced only mode'"
-            @valueChanged="setForcedOnlyMode"
-          />
-
-          <RadioGeneric
-            :options="['on', 'off']"
-            :selected="debug ? 'on' : 'off'"
-            :labelName="'Debug info'"
-            @valueChanged="setDebug"
-          />
-
-        </div>
-      </transition>-->
     </div>
     <!-- Debug button set to test abritary methods  -->
     <MyDebug

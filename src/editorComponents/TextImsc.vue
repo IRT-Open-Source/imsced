@@ -37,7 +37,7 @@ export default {
   methods: {
     changedValue(val) {
       this.element.text = val;
-      console.log("change:" + this.element.text);
+      //console.log("change:" + this.element.text);
       this.updateSubtitlePlane({ time: this.playTime });
     },
     focusBubble() {
