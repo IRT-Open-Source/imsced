@@ -12,6 +12,11 @@ represent a public API.
 
 Therefore it is not ready for production and use it at your own risk.
 
+## Demo
+You can trial the latest build at:
+
+http://subtitling.irt.de/imsced/
+
 ## Restrictions
 See below for some of the important restrictions.
 
