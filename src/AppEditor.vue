@@ -86,6 +86,13 @@
           />
 
           <RadioGeneric
+            :options="['show', 'hide']"
+            :selected="showScfService"
+            :labelName="'SCF Service'"
+            @valueChanged="setShowScfService"
+          />
+
+          <RadioGeneric
             :options="['on', 'off']"
             :translateOptions="true"
             :selected="debug ? 'on' : 'off'"
@@ -216,16 +223,56 @@
       @filechange="changevideofile"
     />
 
-    <!-- Select subtitle file -->
+    <!-- Select subtitle file with imsc format-->
     <FileChooserGeneric
+      v-if="showScfService == 'hide' || scfImportFormat == 'imsc'"
+      :class="[showScfService == 'show' ? 'subtitleLoad' : '']"
+      :loader="true"
       :name="'chooseSubtitle1'"
       :id="'sc1'"
       :labelText="getLabelText('subtitles')"
       :getText="true"
       @textSent="newSubs"
     />
+    <!-- Select subtitle file for conversion (other format) -->
+    <ScfService
+      v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
+      class="subtitleLoad"
+      :name="'importSubtitle1'"
+      :id="'is1'"
+      :labelText="getLabelText('subtitles')"
+      :getText="true"
+      @textSent="newSubs"
+    />
+    <DropDownGeneric
+      v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
+      class="scfSettings"
+      :options="scfData.exportFormats"
+      :selected="scfExportFormat"
+      :labelName="getLabelText('scfExportFormat')"
+      @valueChanged="setScfExportFormat"
+    />
+    <DropDownGeneric
+      v-if="showScfService == 'show'"
+      :class="[scfImportFormat == 'imsc' ? 'scfSettingsBig' : 'scfSettings']"
+      :options="scfData.importFormats"
+      :selected="scfImportFormat"
+      :labelName="getLabelText('scfImportFormat')"
+      @valueChanged="setScfImportFormat"
+    />
+
+    <div class="clear"></div>
+
     <!-- Playtime in 00:00:00.000 format -->
     <p>Playtime: {{ getPlaytimeAsVttTime() }}</p>
+
+    <!-- Loader in case ST take some time to load -->
+    <div v-if="loadingST">
+      <div class="loader"></div>
+      <div class="loaderText">
+        <p>{{ getLabelText("loaderText") }}</p>
+      </div>
+    </div>
 
     <div v-if="debug">
       <p>ID of active p element</p>
@@ -271,6 +318,7 @@ import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
 import RadioGeneric from "./editorComponents/RadioGeneric.vue";
+import ScfService from "./editorComponents/ScfService.vue";
 import { saveAs } from "file-saver";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
 
@@ -287,6 +335,7 @@ export default {
     MenuStyle,
     MyDebug,
     RadioGeneric,
+    ScfService,
     VideoGeneric
   },
   data() {
@@ -339,14 +388,19 @@ export default {
       "menuStyleConfig",
       "menuStyle",
       "lang",
+      "loadingST",
       "movieSrc",
       "playTime",
+      "scfData",
+      "scfExportFormat",
+      "scfImportFormat",
       "showRegionMenu",
       "showBodyMenu",
       "showConfigUi",
       "showDivMenu",
       "showPMenu",
       "showRegionSelect",
+      "showScfService",
       "showSpanMenu",
       "uiData",
       "uiLayout"
@@ -469,6 +523,7 @@ export default {
       dataItem.initRegionHash();
       this.addSubtitleData({ imscData: dataItem }); //add to list
       this.setSubtitleData({ imscData: dataItem }); //set current
+      this.setLoadingST(false);
     },
     newSubs: function(subtitleText) {
       this.initSubs(subtitleText);
@@ -532,10 +587,14 @@ export default {
       "setFullScreenActive",
       "setMenuStyle",
       "setLang",
+      "setLoadingST",
+      "setScfExportFormat",
+      "setScfImportFormat",
       "setShowBodyMenu",
       "setShowDivMenu",
       "setShowPMenu",
       "setShowSpanMenu",
+      "setShowScfService",
       "setShowRegionSelect",
       "setSubtitleData",
       "setVideoCustomWidth",
@@ -654,6 +713,57 @@ input:focus {
   background-color: orange;
 }
 
+.clear {
+  clear: both;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.scfSettings {
+  float: right;
+  position: relative;
+  margin-left: 1%;
+  width: 19%;
+}
+
+.scfSettingsBig {
+  float: right;
+  position: relative;
+  margin-left: 1%;
+  width: 39%;
+}
+
+.subtitleLoad {
+  float: left;
+  width: 60%;
+}
+
+.loaderText {
+  padding-left: 0.5em;
+  color: red;
+  display: inline-block;
+}
+
+.loader {
+  display: inline-block;
+  border: 5px solid whitesmoke;
+  border-top: 5px solid grey;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 .spanMenu {
   background-color: lightcyan;
 }

@@ -238,6 +238,14 @@ var proto = {
         }
       }
     },
+    loaderText: {
+      label: {
+        lang: {
+          en: "Subtitles are loading...",
+          de: "Untertitel werden geladen..."
+        }
+      }
+    },
     multiRowAlign: {
       label: {
         lang: {
@@ -294,6 +302,22 @@ var proto = {
         }
       }
     },
+    scfExportFormat: {
+      label: {
+        lang: {
+          en: "Hand over to imscED as",
+          de: "An imscED übergeben als"
+        }
+      }
+    },
+    scfImportFormat: {
+      label: {
+        lang: {
+          en: "Import format",
+          de: "Import Format"
+        }
+      }
+    },
     selectRegion: {
       label: {
         lang: {
@@ -329,8 +353,8 @@ var proto = {
     subtitles: {
       label: {
         lang: {
-          en: "Subtitles",
-          de: "Untertitel"
+          en: "Load subtitles",
+          de: "Lade Untertitel"
         }
       }
     },

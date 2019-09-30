@@ -5,6 +5,7 @@ import MenuStyleConfig from "../config/menuStyleConfig.js";
 import MyRec from "../recommendations/myRec.js";
 import MyRegion from "../modules/myRegion.js";
 import MyTextTrack from "../modules/texttrack.js";
+import scfData from "../config/scfConfig";
 import StyleCentral from "../modules/styleCentral.js";
 import UiCentral from "../modules/uiCentral.js";
 import Vue from "vue";
@@ -26,17 +27,22 @@ export const store = new Vuex.Store({
     fullScreenActive: false,
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
+    loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
+    scfData: new scfData(), //config for subtitle conversion api
+    scfImportFormat: "imsc",
+    scfExportFormat: "ebu-tt-d-basic-de",
     showRegionMenu: "show", //whether to show the style menu for a region
     showBodyMenu: "show",
     showConfigUi: false,
     showDivMenu: "show",
     showPMenu: "show",
     showRegionSelect: "show",
+    showScfService: "hide",
     showSpanMenu: "show",
     styleData: new StyleCentral(), // setting for and processing of style attributes
     subActive: false, // if subtitle data is rendered on video
@@ -228,11 +234,23 @@ export const store = new Vuex.Store({
     setFullScreenActive(state, val) {
       state.fullScreenActive = val;
     },
+    setLoadingST(state, val) {
+      state.loadingST = val;
+    },
     setMenuStyle(state, val) {
       state.menuStyle = val;
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
+    },
+    setScfExportFormat(state, val) {
+      state.scfExportFormat = val;
+    },
+    setScfImportFormat(state, val) {
+      state.scfImportFormat = val;
+    },
+    setShowScfService(state, val) {
+      state.showScfService = val;
     },
     setShowBodyMenu(state, val) {
       state.showBodyMenu = val;
@@ -276,11 +294,10 @@ export const store = new Vuex.Store({
     toggleFullScreenMode() {
       if (!document.fullscreenElement) {
         document.getElementById("fullScreenContainer").requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
       }
-      else if (document.exitFullscreen) {
-        document.exitFullscreen(); 
-      }
-    },    
+    },
     toggleResizingActive(state) {
       state.resizingActive = !state.resizingActive;
       if (state.resizingActive && state.draggingActive) {
@@ -352,20 +369,20 @@ export const store = new Vuex.Store({
       }
     },
     setForcedOnlyMode({ state, dispatch }, val) {
-      state.forcedOnly = (val === "on");
+      state.forcedOnly = val === "on";
       dispatch("updateSubtitlePlane", { time: state.playTime });
-    },    
+    },
     /*
       For the moment a region can only be set if a region
       is present either on div or p. It will not work
       if a default region applies
     */
     setNewRegion({ state, getters, dispatch }, val) {
-      let regionId = val;      
+      let regionId = val;
       if (getters.activeDiv && getters.activeDiv.regionID) {
-        dispatch("setNewRegionActiveDiv", {regId: regionId});
+        dispatch("setNewRegionActiveDiv", { regId: regionId });
       } else if (state.activeP && state.activeP.regionID) {
-        dispatch("setNewRegionActiveP", {regId: regionId});
+        dispatch("setNewRegionActiveP", { regId: regionId });
       }
     },
     setNewRegionActiveDiv({ state, getters, dispatch }, payload) {
@@ -402,7 +419,14 @@ export const store = new Vuex.Store({
       if (state.subActive) {
         dispatch("removeSub");
       }
-      imsc.renderHTML(isd, getters.renderDivDom, null, null, null, state.forcedOnly);
+      imsc.renderHTML(
+        isd,
+        getters.renderDivDom,
+        null,
+        null,
+        null,
+        state.forcedOnly
+      );
       commit("activateSub");
     },
     updateSubtitlePlanePlayTime({ state, dispatch }) {

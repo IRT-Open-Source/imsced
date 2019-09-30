@@ -1,4 +1,3 @@
-<!-- Select file and pass on fileObj and (if needed) parsed text -->
 <template>
   <div>
     <FileChooserGenericPlain
@@ -41,46 +40,47 @@ export default {
       type: String,
       required: true
     },
-    loader: {
-      type: Boolean,
-      default: false,
-      required: false
-    },
+
     name: {
       type: String,
       required: true
     }
   },
   computed: {
-    ...mapState(["uiLayout"])
+    ...mapState(["scfData", "scfExportFormat", "scfImportFormat", "uiLayout"])
   },
   methods: {
     fileChanged: function(e) {
-      if (this.loader) {
-        this.setLoadingST(true);
-      }
+      this.setLoadingST(true);
       var files = e.target.files;
       var fileObj = files[0];
-      //URL is often need for src attribute
-      var fileURL = URL.createObjectURL(fileObj);
-      var file = {
-        obj: fileObj,
-        URL: fileURL
-      };
-      this.$emit("filechange", file);
-      //Sometimes text of file need to be sent
-      if (this.getText === true) {
-        this.sendText(fileObj);
-      }
-    },
-    sendText: function(fileObj) {
-      //Using standard file reader API
-      var reader = new FileReader();
-      reader.onload = e => {
-        var text = e.target.result;
-        this.$emit("textSent", text);
-      };
-      reader.readAsText(fileObj);
+      var thisContext = this;
+      const formData = new FormData();
+      formData.append("input", fileObj);
+      formData.append("format_source", this.scfImportFormat);
+      formData.append("format_target", this.scfExportFormat);
+      fetch(this.scfData.url, {
+        method: "POST",
+        body: formData
+      })
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error(
+              "Couldn't import file! Please check if 'Original format' is set correctly and you chose a valid file."
+            );
+          }
+          return response.text();
+        })
+        .then(data => {
+          thisContext.$emit("textSent", data);
+        })
+        .catch(error => {
+          this.setLoadingST(false);
+          alert(
+            "Something went wrong while communicating with the conversion service. " +
+              error
+          );
+        });
     },
     ...mapMutations(["setLoadingST"])
   }
