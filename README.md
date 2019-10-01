@@ -13,69 +13,79 @@ represent a public API.
 Therefore it is not ready for production and use it at your own risk.
 
 ## Demo
+
 You can trial the latest build at:
 
 http://subtitling.irt.de/imsced/
 
 ## Restrictions
+
 See below for some of the important restrictions.
 
 ### Adding and removing content elements
-* It is not possible to add content elements (`div`, `p`, `span` etc.).
+
+- It is not possible to add content elements (`div`, `p`, `span` etc.).
 
 ### Timing values
-* Timing values are only displayed for `p` elements.
-* Timing values cannot be changed.
+
+- Timing values are only displayed for `p` elements.
+- Timing values cannot be changed.
 
 ### Parameter
-* TTML parameter (`ttp:timeBase`, `ttp:frameRate` etc.) cannot be changed.
-* TTML parameter are not exported.
+
+- TTML parameter (`ttp:timeBase`, `ttp:frameRate` etc.) cannot be changed.
+- TTML parameter are not exported.
 
 ### Interactive positioning and resizing
-* Dynamic positioning ("dragging") and resizing of regions work only if `tts:origin` and `tts:extent` are specified for a `<region>`.
-* If `tts:position` is used instead of `tts:origin` dynamic positioning and resizing will not work.
+
+- Dynamic positioning ("dragging") and resizing of regions work only if `tts:origin` and `tts:extent` are specified for a `<region>`.
+- If `tts:position` is used instead of `tts:origin` dynamic positioning and resizing will not work.
 
 ### File export
-* Only style attributes that can be edited are also exported.
-* The exported document structure is different from the original document structure. It is normalized based on the parsing by imscJS.
-* TTML metadata, foreign namespace elements and foreign namespace attributes are not exported.
-* TTML parameters are not exported.
+
+- Only style attributes that can be edited are also exported.
+- The exported document structure is different from the original document structure. It is normalized based on the parsing by imscJS.
+- TTML metadata, foreign namespace elements and foreign namespace attributes are not exported.
+- TTML parameters are not exported.
 
 ### Style attribute support
+
 See below for the current style attribute support:
 
-| Style Attribute | Comment |
-| --- | ---|
-| backgroundColor | Hex notation (without leading `#`) |
-| color | Hex notation (without leading `#`) |
-| direction | - | 
-| display | - |
-| displayAlign | - |
-| extent | percentage metric (without trailing `%`) |
-| forcedDisplay | - |
-| fillLineGap | - |
-| fontFamily | - |
-| fontSize | percentage metric (without trailing `%`) |
-| fontStyle | - |
-| fontWeight | - |
-| lineHeight | percentage metric (without trailing `%`) |
-| multiRowAlign | - |
-| opacity | - |
-| origin | percentage metric (without trailing `%`) |
-| showBackground | - |
-| textAlign | - |
-| textShadow | - |
-| unicodeBidi | - |
-| visibility | - |
-| wrapOption | - |
-| writingMode | - |
+| Style Attribute | Comment                                  |
+| --------------- | ---------------------------------------- |
+| backgroundColor | Hex notation (without leading `#`)       |
+| color           | Hex notation (without leading `#`)       |
+| direction       | -                                        |
+| display         | -                                        |
+| displayAlign    | -                                        |
+| extent          | percentage metric (without trailing `%`) |
+| forcedDisplay   | -                                        |
+| fillLineGap     | -                                        |
+| fontFamily      | -                                        |
+| fontSize        | percentage metric (without trailing `%`) |
+| fontStyle       | -                                        |
+| fontWeight      | -                                        |
+| lineHeight      | percentage metric (without trailing `%`) |
+| multiRowAlign   | -                                        |
+| opacity         | -                                        |
+| origin          | percentage metric (without trailing `%`) |
+| showBackground  | -                                        |
+| textAlign       | -                                        |
+| textShadow      | -                                        |
+| unicodeBidi     | -                                        |
+| visibility      | -                                        |
+| wrapOption      | -                                        |
+| writingMode     | -                                        |
 
 ### Player Controls
-* Native player controls for closed captions and fullscreen do not work with timed text rendering.
-* To view the video in full-screen mode, use the "Fullscreen" button on top of the video.
+
+- Native player controls for closed captions and fullscreen do not work with timed text rendering.
+- To view the video in full-screen mode, use the "Fullscreen" button on top of the video.
 
 ### Responsivness
-* When resizing the viewport (i.e. the video) the rendering will not change immediately. It will adopt to the new reference dimensions on the next edit or on the next displayed subtitle.
+
+- When resizing the viewport (i.e. the video) the rendering will not change immediately. It will adopt to the new reference dimensions on the next edit or on the next displayed subtitle.
 
 ## Contributions
 
@@ -89,7 +99,6 @@ If you want to ...
 
 Note that imscEd is in pre-alpha status and not stable. Therefore we do not expect
 any pull requests or code contribution yet.
-
 
 ## Build Setup
 
@@ -111,10 +120,12 @@ npm run build
 ```
 
 ## Authors
+
 Maintainer: Andreas Tai (IRT)
 Development: Michaela Finger (IRT), Yury Lungantsov (IRT), Andreas Tai (IRT)
 
 ## Acknowledgement
+
 Parts of imscED were developed in the project dwerft - linked metadata for media ([www.dwerft.de](https://www.dwerft.de/)).
 
 dwerft - linked metadata for media is a research and development project for innovative media tech solutions by different media and IT companies located at the renowned area of Babelsberg.

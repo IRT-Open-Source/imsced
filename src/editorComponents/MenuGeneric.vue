@@ -198,7 +198,10 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     getTabText(name) {
-      return this.uiData.getLabel(`tab${this.helper.capitalize(name)}`, this.lang);
+      return this.uiData.getLabel(
+        `tab${this.helper.capitalize(name)}`,
+        this.lang
+      );
     },
     getSetter(attr) {
       var helper;

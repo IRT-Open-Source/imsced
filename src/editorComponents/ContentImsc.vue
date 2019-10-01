@@ -158,7 +158,7 @@ export default {
       if (this.content.kind == "p") {
         this.setActiveP({ content: this.content });
       } else if (this.content.kind == "span" && this.content.styleAttrs) {
-      /* We need to ignore span with no styles,
+        /* We need to ignore span with no styles,
          otherwise span parents with styles are
          possibly not set as active span.
       */

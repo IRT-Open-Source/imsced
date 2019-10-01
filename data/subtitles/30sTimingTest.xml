@@ -1,7 +1,5 @@
-<tt 
-  xmlns="http://www.w3.org/ns/ttml"
-  xmlns:tts="http://www.w3.org/ns/ttml#styling" 
-  xml:lang="en">
+<tt xmlns="http://www.w3.org/ns/ttml" 
+  xmlns:tts="http://www.w3.org/ns/ttml#styling" xml:lang="en">
   <body tts:fontSize="800%" tts:color="aqua">
     <div>
       <p begin="0s" end="1s">0-1</p>
@@ -19,7 +17,7 @@
       <p begin="24s" end="25s">24-25</p>
       <p begin="26s" end="27s">26-27</p>
       <p begin="28s" end="29s">28-29</p>
-    </div>  
+    </div>
   </body>
- </tt>
+</tt>
   

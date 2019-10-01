@@ -42,16 +42,17 @@ export default {
 
   computed: {
     ...mapState([
-      "activeP", 
+      "activeP",
       "draggingActive",
-      "lang", 
-      "fullScreenActive", 
+      "lang",
+      "fullScreenActive",
       "resizingActive",
-      "uiData"]),
+      "uiData"
+    ]),
 
     dragButtonName() {
-      var name = this.draggingActive ? 'disableDragging' : 'enableDragging';
-      return this.uiData.getLabel(name, this.lang); 
+      var name = this.draggingActive ? "disableDragging" : "enableDragging";
+      return this.uiData.getLabel(name, this.lang);
     },
 
     dragFeatureActive() {
@@ -59,7 +60,7 @@ export default {
     },
 
     resizeButtonName() {
-      var name = this.resizingActive ? 'disableResizing' : 'enableResizing';
+      var name = this.resizingActive ? "disableResizing" : "enableResizing";
       return this.uiData.getLabel(name, this.lang);
     },
 
@@ -68,15 +69,18 @@ export default {
     },
 
     fullScreenButtonName() {
-      var name = this.fullScreenActive ? 'disableFullScreen' : 'enableFullScreen';
+      var name = this.fullScreenActive
+        ? "disableFullScreen"
+        : "enableFullScreen";
       return this.uiData.getLabel(name, this.lang);
-    },    
+    }
   },
   methods: {
     ...mapMutations([
-      "toggleDraggingActive", 
+      "toggleDraggingActive",
       "toggleFullScreenMode",
-      "toggleResizingActive"])
+      "toggleResizingActive"
+    ])
   }
 };
 </script>
@@ -100,5 +104,4 @@ export default {
   position: absolute;
   z-index: 10;
 }
-
 </style>

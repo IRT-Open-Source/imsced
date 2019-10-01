@@ -50,12 +50,7 @@ export default {
       var helper = new helperGeneric();
       return helper.uuidv4();
     },
-    ...mapState([
-      "genericMenu",
-      "lang",
-      "uiData",
-      "uiLayout"
-    ])
+    ...mapState(["genericMenu", "lang", "uiData", "uiLayout"])
   },
   methods: {
     changedValue: function(val) {
@@ -63,9 +58,11 @@ export default {
     },
     focusBubble() {
       this.$emit("gotFocus");
-    }, 
+    },
     getLabelText(name) {
-      name = this.translateOptions ? this.uiData.getLabel(name, this.lang) : name;
+      name = this.translateOptions
+        ? this.uiData.getLabel(name, this.lang)
+        : name;
       return name;
     }
   }

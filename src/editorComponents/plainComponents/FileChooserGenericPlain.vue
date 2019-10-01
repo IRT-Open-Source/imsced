@@ -1,16 +1,11 @@
 <!-- Select file and pass on fileObj and (if needed) parsed text -->
 <template>
-    <div>
-      <label :for="id">
-        {{ labelText }}
-        <input
-          type="file"
-          :id="id"
-          :name="name"
-          @change="changedValue($event)"
-        />
-      </label>
-    </div>
+  <div>
+    <label :for="id">
+      {{ labelText }}
+      <input type="file" :id="id" :name="name" @change="changedValue($event)" />
+    </label>
+  </div>
 </template>
 
 <script>
@@ -32,7 +27,7 @@ export default {
     }
   },
   methods: {
-    changedValue(e){
+    changedValue(e) {
       this.$emit("valueChanged", e);
     }
   }

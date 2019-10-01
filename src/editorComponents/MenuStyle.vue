@@ -208,7 +208,7 @@
       :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
-    />    
+    />
 
     <AttrStyle
       v-if="editable('textShadow$1')"
@@ -216,7 +216,7 @@
       :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
-    />   
+    />
 
     <AttrStyle
       v-if="editable('textShadow$2')"
@@ -224,7 +224,7 @@
       :styles="styles"
       :type="'simple'"
       @gotFocus="focusBubble"
-    /> 
+    />
 
     <AttrStyle
       v-if="editable('textShadow$3')"
@@ -234,7 +234,7 @@
       :getter="helper.colorArrayToHexRgb"
       :setter="helper.hexRgbToColorArray"
       @gotFocus="focusBubble"
-    />      
+    />
 
     <AttrStyle
       v-if="editable('opacity')"

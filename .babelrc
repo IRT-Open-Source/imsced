@@ -1,9 +1,19 @@
 {
-  "presets": [["env", { "modules": false }]],
+  "presets": [
+    ["env", {
+      "modules": false
+    }]
+  ],
   "plugins": ["transform-object-rest-spread"],
   "env": {
     "test": {
-      "presets": [["env", { "targets": { "node": "current" } }]]
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current"
+          }
+        }]
+      ]
     }
   }
 }

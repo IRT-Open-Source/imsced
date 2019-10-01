@@ -41,8 +41,7 @@ export default {
     },
     value: {
       required: true
-    },
-
+    }
   },
   computed: {
     className: function() {

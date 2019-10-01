@@ -53,16 +53,8 @@ export default {
         var newH = Math.round(
           this.dragItem.offsetHeight / (this.videoHeight / 100)
         );
-        this.styleData.setAttr(
-          "extent$w",
-          this.regionStyles,
-          String(newW)
-        );
-        this.styleData.setAttr(
-          "extent$h",
-          this.regionStyles,
-          String(newH)
-        );
+        this.styleData.setAttr("extent$w", this.regionStyles, String(newW));
+        this.styleData.setAttr("extent$h", this.regionStyles, String(newH));
         this.updateSubtitlePlane({ time: this.playTime });
       }
     }

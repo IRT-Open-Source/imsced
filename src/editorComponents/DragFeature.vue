@@ -89,16 +89,8 @@ export default {
         var newX = Math.round(this.currentX / this.scalingFactorX);
         var newY = Math.round(this.currentY / this.scalingFactorY);
 
-        this.styleData.setAttr(
-          "origin$w",
-          this.regionStyles,
-          String(newX)
-        );
-        this.styleData.setAttr(
-          "origin$h",
-          this.regionStyles,
-          String(newY)
-        );
+        this.styleData.setAttr("origin$w", this.regionStyles, String(newX));
+        this.styleData.setAttr("origin$h", this.regionStyles, String(newY));
         this.updateSubtitlePlane({ time: this.playTime });
       }
     },

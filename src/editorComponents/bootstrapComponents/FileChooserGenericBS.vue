@@ -3,7 +3,7 @@
   <div>
     <b>{{ labelText }}</b>
     <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
-    <b-form-file class="mt-1" size="sm" @change.native="changedValue"/>
+    <b-form-file class="mt-1" size="sm" @change.native="changedValue" />
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
     }
   },
   methods: {
-    changedValue(e){
+    changedValue(e) {
       this.$emit("valueChanged", e);
     }
   }
