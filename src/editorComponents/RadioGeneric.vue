@@ -7,7 +7,7 @@
     :labelName="labelName"
     @valueChanged="changedValue"
   />
-  <radioGenericBS
+  <RadioGenericBS
     v-else
     :options="options"
     :selected="selected"

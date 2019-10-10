@@ -9,6 +9,10 @@ var proto = {
     videoId: "v1",
     videoControls: true,
     autobuffer: false
+  },
+  defaultImageExportSize: {
+    width: 1920,
+    height: 1080
   }
 };
 

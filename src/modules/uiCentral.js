@@ -30,6 +30,22 @@ var proto = {
         }
       }
     },
+    burnInSubmit: {
+      label: {
+        lang: {
+          en: "Burn in subtitles",
+          de: "Untertitel einbrennen"
+        }
+      }
+    },
+    choosePNG: {
+      label: {
+        lang: {
+          en: "Choose subtitles as png (zip)",
+          de: "Untertitel im PNG Format (zip)"
+        }
+      }
+    },
     color: {
       label: {
         lang: {
@@ -123,6 +139,14 @@ var proto = {
         lang: {
           en: "end",
           de: "Ende"
+        }
+      }
+    },
+    exportIsdAsPng: {
+      label: {
+        lang: {
+          en: "Export ISD as PNG",
+          de: "ISD als PNG exportieren"
         }
       }
     },
@@ -222,6 +246,23 @@ var proto = {
         }
       }
     },
+    imageExportHeight: {
+      label: {
+        lang: {
+          en: "height",
+          de: "Höhe"
+        }
+      }
+    },
+    imageExportWidth: {
+      label: {
+        lang: {
+          en: "width",
+          de: "Breite"
+        }
+      }
+    },
+
     Language: {
       label: {
         lang: {
@@ -315,6 +356,14 @@ var proto = {
         lang: {
           en: "Import format",
           de: "Import Format"
+        }
+      }
+    },
+    saveIsdAsPng: {
+      label: {
+        lang: {
+          en: "Save ISD as PNG",
+          de: "Als PNG speichern"
         }
       }
     },
@@ -475,6 +524,14 @@ var proto = {
         lang: {
           en: "Unicode Bidi",
           de: "Unicode Bidi"
+        }
+      }
+    },
+    useCurrentST: {
+      label: {
+        lang: {
+          en: "Use currently selected subtitles",
+          de: "Derzeit ausgewählte Untertitel verwenden"
         }
       }
     },

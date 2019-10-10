@@ -38,6 +38,7 @@ export const store = new Vuex.Store({
     scfExportFormat: "ebu-tt-d-basic-de",
     showRegionMenu: "show", //whether to show the style menu for a region
     showBodyMenu: "show",
+    showBurnInService: false,
     showConfigUi: false,
     showDivMenu: "show",
     showPMenu: "show",
@@ -46,6 +47,7 @@ export const store = new Vuex.Store({
     showSpanMenu: "show",
     styleData: new StyleCentral(), // setting for and processing of style attributes
     subActive: false, // if subtitle data is rendered on video
+    subsFileName: "imscTestFile", // default value if no subtitle file was loaded
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
     uiData: new UiCentral(), // language specific labels for ui
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
@@ -255,6 +257,13 @@ export const store = new Vuex.Store({
     setShowBodyMenu(state, val) {
       state.showBodyMenu = val;
     },
+    setShowBurnInService(state, val) {
+      if (val === "on") {
+        state.showBurnInService = true;
+      } else {
+        state.showBurnInService = false;
+      }
+    },
     setShowDivMenu(state, val) {
       state.showDivMenu = val;
     },
@@ -267,6 +276,9 @@ export const store = new Vuex.Store({
     },
     setShowSpanMenu(state, val) {
       state.showSpanMenu = val;
+    },
+    setSubsFileName(state, val) {
+      state.subsFileName = val;
     },
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
@@ -371,6 +383,12 @@ export const store = new Vuex.Store({
     setForcedOnlyMode({ state, dispatch }, val) {
       state.forcedOnly = val === "on";
       dispatch("updateSubtitlePlane", { time: state.playTime });
+    },
+    setImageExportHeight({ state }, val) {
+      state.config.defaultImageExportSize.height = val;
+    },
+    setImageExportWidth({ state }, val) {
+      state.config.defaultImageExportSize.width = val;
     },
     /*
       For the moment a region can only be set if a region

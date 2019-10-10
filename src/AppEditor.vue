@@ -37,6 +37,12 @@
         @click.native="saveXml"
       />
 
+      <!-- Export ISD as PNG  -->
+      <ButtonGeneric
+        :buttonName="getLabelText('saveIsdAsPng')"
+        @click.native="saveIsdAsPng"
+      />
+
       <!-- UI to customize display-->
       <ButtonGeneric
         :buttonName="configUiButtonName"
@@ -95,6 +101,14 @@
           <RadioGeneric
             :options="['on', 'off']"
             :translateOptions="true"
+            :selected="showBurnInService ? 'on' : 'off'"
+            :labelName="'Activate Burn-In Service'"
+            @valueChanged="setShowBurnInService"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
             :selected="debug ? 'on' : 'off'"
             :labelName="'Debug info'"
             @valueChanged="setDebug"
@@ -107,9 +121,31 @@
             :labelName="'Display forced only mode'"
             @valueChanged="setForcedOnlyMode"
           />
+
+          <div>
+            <fieldset>
+              <legend v-if="uiLayout == 'plain'">
+                {{ getLabelText("exportIsdAsPng") }}
+              </legend>
+              <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
+              <InputGeneric
+                :value="getImageExportWidth()"
+                :labelName="getLabelText('imageExportWidth')"
+                @valueChanged="setImageExportWidth"
+              />
+              <InputGeneric
+                :value="getImageExportHeight()"
+                :labelName="getLabelText('imageExportHeight')"
+                @valueChanged="setImageExportHeight"
+              />
+            </fieldset>
+          </div>
         </div>
       </transition>
     </div>
+
+    <BurnIn v-if="showBurnInService" />
+
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
       v-if="debug"
@@ -232,6 +268,7 @@
       :id="'sc1'"
       :labelText="getLabelText('subtitles')"
       :getText="true"
+      @filechange="changeSubs"
       @textSent="newSubs"
     />
     <!-- Select subtitle file for conversion (other format) -->
@@ -305,6 +342,7 @@
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
+import BurnIn from "./editorComponents/BurnIn.vue";
 import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
@@ -312,6 +350,8 @@ import FileChooserGeneric from "./editorComponents/FileChooserGeneric.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
+import InputGeneric from "./editorComponents/InputGeneric.vue";
+import IsdExport from "./modules/isdExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
@@ -325,11 +365,13 @@ import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
 export default {
   name: "app",
   components: {
+    BurnIn,
     ButtonGeneric,
     ContentImsc,
     DropDownGeneric,
     FileChooserGeneric,
     h1Generic,
+    InputGeneric,
     LiveActionsMenu,
     MenuGeneric,
     MenuStyle,
@@ -395,6 +437,7 @@ export default {
       "scfExportFormat",
       "scfImportFormat",
       "showRegionMenu",
+      "showBurnInService",
       "showBodyMenu",
       "showConfigUi",
       "showDivMenu",
@@ -402,6 +445,7 @@ export default {
       "showRegionSelect",
       "showScfService",
       "showSpanMenu",
+      "subsFileName",
       "uiData",
       "uiLayout"
     ]),
@@ -498,6 +542,9 @@ export default {
       this.myDropKey++; //needed to display gets refresh
       this.addRegion();
     },
+    changeSubs: function(file) {
+      this.setSubsFileName(file.obj.name);
+    },
     changevideofile: function(file) {
       this.changeVideo({ fileUrl: file.URL });
       //equivalent to
@@ -505,6 +552,12 @@ export default {
     },
     getAvailableLanguages() {
       return this.uiData.getAvailableLanguages();
+    },
+    getImageExportHeight() {
+      return this.config.defaultImageExportSize.height;
+    },
+    getImageExportWidth() {
+      return this.config.defaultImageExportSize.width;
     },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
@@ -576,6 +629,21 @@ export default {
       });
       p1.then(v => saveAs(v, "imsc2.xml"));
     },
+    saveIsdAsPng: function() {
+      let isdExport = new IsdExport(this.currentSubtitleData.tt);
+      isdExport
+        .saveAsPng(this.config.defaultImageExportSize)
+        .then(content => {
+          let fname = `${this.subsFileName}.zip`;
+          saveAs(content, fname);
+        })
+        .catch(reason => {
+          console.log(
+            "an error occured while saving subtitles as png:",
+            reason
+          );
+        });
+    },
     testLog() {
       window.subs = this.currentSubtitleData;
     },
@@ -591,11 +659,13 @@ export default {
       "setScfExportFormat",
       "setScfImportFormat",
       "setShowBodyMenu",
+      "setShowBurnInService",
       "setShowDivMenu",
       "setShowPMenu",
       "setShowSpanMenu",
       "setShowScfService",
       "setShowRegionSelect",
+      "setSubsFileName",
       "setSubtitleData",
       "setVideoCustomWidth",
       "setVideoDomHeight",
@@ -608,6 +678,8 @@ export default {
       "removeSub",
       "resetFocusContent",
       "setForcedOnlyMode",
+      "setImageExportHeight",
+      "setImageExportWidth",
       "setNewRegion",
       "triggerTimeUpdate",
       "updateSubtitlePlane",
