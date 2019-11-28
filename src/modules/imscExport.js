@@ -45,6 +45,26 @@ let proto = {
     this.loop(obj);
     this.stackObj.stack.pop();
   },
+  aspectRatio: function(obj) {
+    let el = this.stackObj.getLast();
+    let val = ''; 
+    switch (Math.trunc(obj*10)) {
+      case 17:
+        val = '16 9';
+        break;
+      case 13:
+        val = '4 3';
+        break;
+      default:
+        let maxDecimalPlaces = 4;
+        let denominator = Math.pow(10, maxDecimalPlaces);
+        let numerator = obj.toFixed(maxDecimalPlaces) * denominator;
+        val = `${numerator} ${denominator}`;
+    }
+    if (val !== '') {
+      el.setAttribute("ttp:displayAspectRatio", val);
+    }
+  },
   begin: function(obj) {
     var parent = this.stackObj.getLast();
     if (parent.nodeName == "p") {
