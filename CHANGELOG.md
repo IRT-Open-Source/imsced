@@ -2,13 +2,15 @@
 
 ### Enhancements
 
-#2: Import EBU-STL files
-#3: Export subtitles as PNG
+[#2](https://github.com/IRT-Open-Source/imsced/issues/2): Import EBU-STL files
+
+[#3](https://github.com/IRT-Open-Source/imsced/issues/3): Export subtitles as PNG
 
 ### Fixes
 
-#7: Case error in filename
-#9: Export aspectRatio
+[#7](https://github.com/IRT-Open-Source/imsced/issues/7): Case error in filename
+
+[#9](https://github.com/IRT-Open-Source/imsced/issues/9): Export aspectRatio
 
 ## 0.2.0 (Sep, 17, 2019)
 
