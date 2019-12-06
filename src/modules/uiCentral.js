@@ -422,6 +422,14 @@ var proto = {
         }
       }
     },
+    scfStartOffset: {
+      label: {
+        lang: {
+          en: "Subtitles start from",
+          de: "Untertitel beginnen ab"
+        }
+      }
+    },
     saveIsdAsPng: {
       label: {
         lang: {

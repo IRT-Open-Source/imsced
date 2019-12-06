@@ -7,6 +7,162 @@
 
     <BurnIn v-if="activateBurnIn" v-show="showBurnIn" />
 
+    <!--    <DropDownGeneric
+      class="floatRightBox"
+      :options="['bootstrap', 'plain']"
+      :selected="uiLayout"
+      :labelName="'UI Layout:'"
+      @valueChanged="setUiLayout"
+    />
+
+    <DropDownGeneric
+      v-if="uiLayout == 'bootstrap'"
+      class="floatRightBox"
+      :options="menuStyleOptions"
+      :selected="menuStyle"
+      :labelName="`${getLabelText('genericMenuType')}:`"
+      @valueChanged="setMenuStyle"
+    />
+
+  
+    <DropDownGeneric
+      id="selectLang"
+      :options="getAvailableLanguages()"
+      :selected="lang"
+      :labelName="getLabelText('Language')"
+      @valueChanged="setLang"
+    />
+
+    <div id="saveConfig">
+      
+      <ButtonGeneric
+        :buttonName="getLabelText('saveFile')"
+        @click.native="saveXml"
+      />
+
+   
+      <ButtonGeneric
+        :buttonName="getLabelText('saveIsdAsPng')"
+        @click.native="saveIsdAsPng"
+      />
+
+      
+      <ButtonGeneric
+        :buttonName="configUiButtonName"
+        @click.native="toggleShowConfigUi"
+      />
+      <br />&nbsp;
+      <transition name="fade">
+        <div v-if="showConfigUi" id="config">
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showBodyMenu"
+            :labelName="`${getLabelText('elementMenu')} <Body>`"
+            @valueChanged="setShowBodyMenu"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showDivMenu"
+            :labelName="`${getLabelText('elementMenu')} <div>`"
+            @valueChanged="setShowDivMenu"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showPMenu"
+            :labelName="`${getLabelText('elementMenu')} <p>`"
+            @valueChanged="setShowPMenu"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showSpanMenu"
+            :labelName="`${getLabelText('elementMenu')} <span>`"
+            @valueChanged="setShowSpanMenu"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :translateOptions="true"
+            :selected="showRegionSelect"
+            :labelName="'Regions'"
+            @valueChanged="setShowRegionSelect"
+          />
+
+          <RadioGeneric
+            :options="['show', 'hide']"
+            :selected="showScfService"
+            :labelName="'SCF Service'"
+            @valueChanged="setShowScfService"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
+            :selected="showBurnInService ? 'on' : 'off'"
+            :labelName="'Activate Burn-In Service'"
+            @valueChanged="setShowBurnInService"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
+            :selected="debug ? 'on' : 'off'"
+            :labelName="'Debug info'"
+            @valueChanged="setDebug"
+          />
+
+          <RadioGeneric
+            :options="['on', 'off']"
+            :translateOptions="true"
+            :selected="forcedOnly ? 'on' : 'off'"
+            :labelName="'Display forced only mode'"
+            @valueChanged="setForcedOnlyMode"
+          />
+
+          <div>
+            <fieldset>
+              <legend v-if="uiLayout == 'plain'">
+                {{ getLabelText("exportIsdAsPng") }}
+              </legend>
+              <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
+              <InputGeneric
+                :value="getImageExportWidth()"
+                :labelName="getLabelText('imageExportWidth')"
+                @valueChanged="setImageExportWidth"
+              />
+              <InputGeneric
+                :value="getImageExportHeight()"
+                :labelName="getLabelText('imageExportHeight')"
+                @valueChanged="setImageExportHeight"
+              />
+            </fieldset>
+          </div>
+
+          <div>
+            <fieldset>
+              <legend v-if="uiLayout == 'plain'">
+                {{ getLabelText("scfStartOffset") }}
+              </legend>
+              <b v-else>{{ getLabelText("scfStartOffset") }}</b>
+              <InputGeneric
+                :value="getScfStartOffsetFrames()"
+                :labelName="''"
+                @valueChanged="setOffsetFrames"
+              />
+            </fieldset>
+          </div>
+        </div>
+      </transition>
+    </div>
+
+    <BurnIn v-if="showBurnInService" />-->
+
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
       v-if="debug"
@@ -126,9 +282,7 @@
     </div>
 
     <div id="workview">
-      <div 
-        id="subtitleListView" 
-        ref="subtitleListView">
+      <div id="subtitleListView" ref="subtitleListView">
         <ContentImsc :content="body" v-if="body" />
       </div>
 
@@ -464,6 +618,9 @@ export default {
     getPlaytimeAsVttTime() {
       return this.helper.vttTimestamp(this.playTime);
     },
+    getScfStartOffsetFrames() {
+      return this.config.defaultOffsetFrames;
+    },
     handleFullscreenChange(event) {
       this.setFullScreenActive(!!document.fullscreenElement);
       this.updateSubtitlePlanePlayTime();
@@ -511,7 +668,7 @@ export default {
     resizeHandler: function(e) {
       this.$nextTick(function() {
         this.setMaxHeight();
-      })
+      });
     },
     saveXml: function() {
       let p1 = new Promise(r => {
@@ -554,6 +711,7 @@ export default {
       "removeSub",
       "resetFocusContent",
       "setNewRegion",
+      "setOffsetFrames",
       "triggerTimeUpdate",
       "updateSubtitlePlane",
       "updateSubtitlePlanePlayTime"

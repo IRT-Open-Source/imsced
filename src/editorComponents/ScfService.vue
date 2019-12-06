@@ -34,7 +34,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["scfData", "scfExportFormat", "scfImportFormat", "uiLayout"])
+    ...mapState([
+      "config",
+      "scfData",
+      "scfExportFormat",
+      "scfImportFormat",
+      "uiLayout"
+    ])
   },
   methods: {
     fileChanged: function(e) {
@@ -46,6 +52,10 @@ export default {
       formData.append("input", fileObj);
       formData.append("format_source", this.scfImportFormat);
       formData.append("format_target", this.scfExportFormat);
+      formData.append("offset_frames", this.config.defaultOffsetFrames);
+      if (this.scfImportFormat == "stl") {
+        formData.append("ignore_manual_offset_for_tcp", "1");
+      }
       fetch(this.scfData.url, {
         method: "POST",
         body: formData

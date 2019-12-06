@@ -90,6 +90,7 @@
                   :labelName="''"
                   @valueChanged="setShowScfService"
                 />
+
                 <DropDownGeneric
                   v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
                   :options="scfData.exportFormats"
@@ -97,6 +98,20 @@
                   :labelName="getLabelText('scfExportFormat')"
                   @valueChanged="setScfExportFormat"
                 />
+                <br />
+                <div>
+                  <fieldset>
+                    <legend v-if="uiLayout == 'plain'">
+                      {{ getLabelText("scfStartOffset") }}
+                    </legend>
+                    <b v-else>{{ getLabelText("scfStartOffset") }}</b>
+                    <InputGeneric
+                      :value="getScfStartOffsetFrames()"
+                      :labelName="''"
+                      @valueChanged="setOffsetFrames"
+                    />
+                  </fieldset>
+                </div>
                 <hr class="full-width-hr" />
                 <h5>Burn-In Service</h5>
                 <RadioGeneric
@@ -327,6 +342,9 @@ export default {
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
     },
+    getScfStartOffsetFrames() {
+      return this.config.defaultOffsetFrames;
+    },
     ...mapMutations([
       "setDebug",
       "setActivateBurnIn",
@@ -344,7 +362,8 @@ export default {
     ...mapActions([
       "setImageExportHeight",
       "setImageExportWidth",
-      "setForcedOnlyMode"
+      "setForcedOnlyMode",
+      "setOffsetFrames"
     ])
   }
 };

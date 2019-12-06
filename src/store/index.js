@@ -424,6 +424,18 @@ export const store = new Vuex.Store({
       state.activeP.regionID = payload.regId;
       dispatch("updateSubtitlePlane", { time: state.playTime });
     },
+    setOffsetFrames({ state }, val) {
+      state.config.defaultOffsetFrames = val;
+    },
+    setOffsetSeconds({ state }, val) {
+      if (typeof(val) == "string") {
+        let seconds = state.helper.seconds(val);
+        state.config.defaultOffsetSeconds = seconds;
+      }
+      else {
+        state.config.defaultOffsetSeconds = val;
+      }
+    },  
     setVideoPlayTime({ getters, dispatch }, payload) {
       if (getters.videoDom) {
         var myVideo = getters.videoDom;
