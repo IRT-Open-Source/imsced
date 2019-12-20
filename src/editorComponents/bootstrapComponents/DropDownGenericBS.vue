@@ -2,7 +2,7 @@
 <template>
   <div>
     <div class="attr-label">
-      <b>{{ labelName }}</b>
+      <p :class="[labelClass]">{{ labelName }}</p>
     </div>
     <b-form-select
       class="mt-1"
@@ -23,10 +23,18 @@ export default {
       type: Number,
       required: false
     },
+    displayEmptyLabel: {
+      type: Boolean,
+      default: false
+    },
     labelName: {
       type: String,
       required: true
     },
+    labelWeight: {
+      type: String,
+      default: 'bold'
+    },    
     options: {
       type: Array,
       required: true
@@ -36,13 +44,24 @@ export default {
       required: true
     }
   },
+  computed: {
+    labelClass: function() {
+      var lc = this.labelName == '' && !this.displayEmptyLabel ? 
+        'd-none' :
+        this.labelWeightClass();
+      return lc;
+    }
+  },
   methods: {
     changedValue: function(e) {
       this.$emit("valueChanged", e.target.value);
     },
     focusBubble() {
       this.$emit("gotFocus");
-    }
+    },
+    labelWeightClass: function() {
+      return 'font-weight-' + this.labelWeight
+    }    
   }
 };
 </script>

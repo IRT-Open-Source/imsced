@@ -12,6 +12,7 @@
     <InputGenericBS
       v-else
       :labelName="labelName"
+      :labelWeight="labelWeight"
       :size="size"
       :value="value"
       @valueChanged="changedValue"
@@ -35,6 +36,10 @@ export default {
       type: String | Number,
       required: true
     },
+    labelWeight: {
+      type: String,
+      default: 'bold'
+    },    
     size: {
       type: Number,
       required: false

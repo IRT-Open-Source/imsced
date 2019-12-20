@@ -1,7 +1,7 @@
 <!-- Simple UI component for text values -->
 <template>
   <div :class="[className]">
-    <b>{{ labelName }}</b>
+    <p :class="[labelWeightClass]">{{ labelName }}</p>
     <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
     <b-form-input
       class="mt-1"
@@ -22,6 +22,10 @@ export default {
       type: String | Number,
       required: true
     },
+    labelWeight: {
+      type: String,
+      default: 'bold'
+    },
     size: {
       type: Number,
       required: false
@@ -34,6 +38,9 @@ export default {
     className: function() {
       var name = this.labelName.replace(" ", "");
       return name;
+    },
+    labelWeightClass: function() {
+      return 'font-weight-' + this.labelWeight
     }
   },
   methods: {

@@ -1,28 +1,24 @@
 <!-- menu for additional features directly on the subtitle like dragging and resizing -->
 <template>
-  <div>
-    <div class="live-actions">
-      <ButtonGeneric
-        :class="{ dragButton: dragFeatureActive }"
-        :buttonName="dragButtonName"
-        @click.native="toggleDraggingActive"
-        :disabled="activeP == undefined"
-      />
-      <DragFeature v-if="dragFeatureActive" />
+  <div class="live-actions">
+    <ButtonGeneric
+      :class="{ dragButton: dragFeatureActive }"
+      :buttonName="dragButtonName"
+      @click.native="toggleDraggingActive"
+      :disabled="activeP == undefined"
+    />
 
-      <ButtonGeneric
-        :class="{ resizeButton: resizeFeatureActive }"
-        :buttonName="resizeButtonName"
-        @click.native="toggleResizingActive"
-        :disabled="activeP == undefined"
-      />
+    <ButtonGeneric
+      :class="{ resizeButton: resizeFeatureActive }"
+      :buttonName="resizeButtonName"
+      @click.native="toggleResizingActive"
+      :disabled="activeP == undefined"
+    />
 
-      <ButtonGeneric
-        :buttonName="fullScreenButtonName"
-        @click.native="toggleFullScreenMode"
-      />
-    </div>
-    <ResizeFeature v-if="resizeFeatureActive" />
+    <!-- <ButtonGeneric
+      :buttonName="fullScreenButtonName"
+      @click.native="toggleFullScreenMode"
+    /> -->
   </div>
 </template>
 
@@ -68,17 +64,17 @@ export default {
       return this.activeP && this.resizingActive;
     },
 
-    fullScreenButtonName() {
-      var name = this.fullScreenActive
-        ? "disableFullScreen"
-        : "enableFullScreen";
-      return this.uiData.getLabel(name, this.lang);
-    }
+    // fullScreenButtonName() {
+    //   var name = this.fullScreenActive
+    //     ? "disableFullScreen"
+    //     : "enableFullScreen";
+    //   return this.uiData.getLabel(name, this.lang);
+    // }
   },
   methods: {
     ...mapMutations([
       "toggleDraggingActive",
-      "toggleFullScreenMode",
+      // "toggleFullScreenMode",
       "toggleResizingActive"
     ])
   }
@@ -86,8 +82,8 @@ export default {
 </script>
 
 <style scoped>
-.live-actions {
-  /* margin-bottom: 5px; TODO margin here moves the subtitle feature div! */
+.live-actions button {
+  margin: 0 1px;
 }
 .resizeButton {
   background-color: greenyellow;

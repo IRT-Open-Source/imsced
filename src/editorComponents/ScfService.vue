@@ -1,21 +1,8 @@
 <template>
-  <div>
-    <FileChooserGenericPlain
-      v-if="uiLayout == 'plain'"
-      :name="name"
-      :id="id"
-      :labelText="labelText"
-      @valueChanged="fileChanged"
-    />
-
-    <FileChooserGenericBS
-      v-else
-      :id="id"
-      :name="name"
-      :labelText="labelText"
-      @valueChanged="fileChanged"
-    />
-  </div>
+  <label class="file-select">
+    <span>{{ labelText }}</span>
+    <input type="file" :name="name" :id="id" @change="fileChanged" />
+  </label>
 </template>
 
 <script>
@@ -86,3 +73,15 @@ export default {
   }
 };
 </script>
+<style scoped>
+.file-select {
+  width: 100%;
+  cursor: pointer;
+  margin: 0;
+  padding: 0.25rem 0;
+}
+
+.file-select input[type="file"] {
+  display: none !important;
+}
+</style>

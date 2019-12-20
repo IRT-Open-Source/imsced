@@ -8,6 +8,7 @@
       :options="filteredOptions"
       :selected="currentValue"
       :labelName="getLabelText(name)"
+      :labelWeight="labelWeight"
       @valueChanged="setNewValue"
       @gotFocus="focusBubble"
     />
@@ -17,6 +18,7 @@
       :options="filteredOptions"
       :selected="currentValue"
       :labelName="getLabelText(name)"
+      :labelWeight="labelWeight"
       @valueChanged="setNewValue"
       @gotFocus="focusBubble"
     />
@@ -25,6 +27,7 @@
       v-else-if="type == 'simple'"
       :value="currentValue"
       :labelName="getLabelText(name)"
+      :labelWeight="labelWeight"
       @valueChanged="setNewValue"
       @gotFocus="focusBubble"
     />
@@ -52,6 +55,11 @@ export default {
     name: {
       type: String,
       required: true
+    },
+
+    labelWeight: {
+      type: String,
+      default: 'normal'
     },
 
     setter: {

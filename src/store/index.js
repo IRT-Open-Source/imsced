@@ -15,6 +15,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
+    activateBurnIn: false, //activate or disactivate burn in service to allow usage
     activeP: undefined, // p element with focus in editor
     activeSpan: undefined, // span element with focus in editor
     config: new DefaultConfig(),
@@ -34,16 +35,16 @@ export const store = new Vuex.Store({
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
-    scfImportFormat: "imsc",
+    scfImportFormat: "stl",
     scfExportFormat: "ebu-tt-d-basic-de",
     showRegionMenu: "show", //whether to show the style menu for a region
     showBodyMenu: "show",
-    showBurnInService: false,
+    showBurnIn: false, // toggle the burn in user interface(requires activateBurnIn to be true)
     showConfigUi: false,
     showDivMenu: "show",
     showPMenu: "show",
     showRegionSelect: "show",
-    showScfService: "hide",
+    showScfService: "show",
     showSpanMenu: "show",
     styleData: new StyleCentral(), // setting for and processing of style attributes
     subActive: false, // if subtitle data is rendered on video
@@ -160,6 +161,10 @@ export const store = new Vuex.Store({
     renderDivDom() {
       return document.getElementById("renderDiv");
     },
+    //DOM Obj for the container where subtitles can be edited
+    subsDivDom() {
+      return document.getElementById("subtitleListView");
+    },
     videoDom(state) {
       return document.getElementById(state.config.defaultVideo.videoId);
     },
@@ -211,6 +216,13 @@ export const store = new Vuex.Store({
     incrementTrackIdCounter(state) {
       state.trackIdCounter++;
     },
+    setActivateBurnIn(state, val) {
+      if (val === "on") {
+        state.activateBurnIn = true;
+      } else {
+        state.activateBurnIn = false;
+      }
+    },
     setActiveP(state, payload) {
       state.activeP = payload.content;
     },
@@ -251,18 +263,14 @@ export const store = new Vuex.Store({
     setScfImportFormat(state, val) {
       state.scfImportFormat = val;
     },
+    setShowConfigUi(state, val) {
+      state.showConfigUi = val;
+    },
     setShowScfService(state, val) {
       state.showScfService = val;
     },
     setShowBodyMenu(state, val) {
       state.showBodyMenu = val;
-    },
-    setShowBurnInService(state, val) {
-      if (val === "on") {
-        state.showBurnInService = true;
-      } else {
-        state.showBurnInService = false;
-      }
     },
     setShowDivMenu(state, val) {
       state.showDivMenu = val;
@@ -293,6 +301,9 @@ export const store = new Vuex.Store({
     setVideoDomWidth(state, payload) {
       document.getElementById(state.config.defaultVideo.videoId).style.width =
         payload.width;
+    },
+    toggleShowBurnIn(state) {
+      state.showBurnIn = !state.showBurnIn;
     },
     toggleShowConfigUi(state) {
       state.showConfigUi = state.showConfigUi ? false : true;

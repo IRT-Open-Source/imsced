@@ -12,6 +12,7 @@
     :options="options"
     :selected="selected"
     :labelName="labelName"
+    :labelWeight="labelWeight"
     @valueChanged="changedValue"
   />
 </template>
@@ -28,6 +29,11 @@ export default {
     labelName: {
       type: String,
       required: true
+    },
+
+    labelWeight: {
+      type: String,
+      default: 'bold'
     },
 
     options: {

@@ -1,7 +1,7 @@
 <!-- Simple UI component for radio buttons  -->
 <template>
   <b-form-group>
-    <b>{{ labelName }}</b>
+    <p :class="[labelWeightClass]">{{ labelName }}</p>
     <b-form-radio-group
       class="mt-1"
       :checked="selected"
@@ -25,6 +25,11 @@ export default {
       required: true
     },
 
+    labelWeight: {
+      type: String,
+      default: 'bold'
+    },    
+
     options: {
       type: Array,
       required: true
@@ -35,6 +40,9 @@ export default {
     }
   },
   computed: {
+    labelWeightClass: function() {
+      return 'font-weight-' + this.labelWeight
+    },    
     //unique name for group of radio buttons
     nameOfSet: function() {
       var helper = new helperGeneric();

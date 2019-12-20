@@ -1,74 +1,105 @@
 <!-- Component to burn in subtitles -->
 <template>
   <div id="burnIn" class="burnIn">
-    <div class="subHeader">Burn-In Service</div>
-    <!-- video source file -->
-    <DropDownGeneric
-      class="floatBox"
-      :options="videoOptions"
-      :selected="selectedVideo"
-      :labelName="'Video source'"
-      @valueChanged="setSelectedVideo"
-    />
-    <!-- video resolution -->
-    <DropDownGeneric
-      class="floatBox"
-      :options="getResolutionOpts()"
-      :selected="selectedResolution"
-      :labelName="'Output Resolution'"
-      @valueChanged="setResolution"
-    />
-    <!-- video quality -->
-    <DropDownGeneric
-      class="floatBox"
-      :options="getQualityOptions()"
-      :selected="selectedQuality"
-      :labelName="'Output quality (lower number = higher bitrate)'"
-      @valueChanged="setQuality"
-    />
-    <!-- subtitles, pngs -->
-    <RadioGeneric
-      :class="[{ radio: uiLayout != 'plain' }, 'clear', 'floatBox']"
-      :options="['yes', 'no']"
-      :selected="selectedUseCurrentST"
-      :labelName="getLabelText('useCurrentST')"
-      @valueChanged="setUseCurrentST"
-    />
-    <FileChooserGeneric
-      class="clear floatBox"
-      v-if="selectedUseCurrentST == 'no'"
-      :name="'choosePNG'"
-      :id="'choosePNG'"
-      :labelText="getLabelText('choosePNG')"
-      @filechange="setSubtitlePngs"
-    />
-    <ButtonGeneric
-      class="clear floatBox"
-      :buttonName="getLabelText('burnInSubmit')"
-      :disabled="burnInJobRunning"
-      @click.native="burnInSubmit"
-    />
-    <div v-if="burnInJobRunning" class="clear burnInProgress floatBox">
-      <div>
-        <b>Job progress:</b>
-        <progress :value="progressPercentage" :max="100" />
-        {{ Math.round(progressPercentage) }}%
+    <div class="options">
+      <ButtonGeneric
+        :buttonName="minimizeButtonName"
+        @click.native="toggleSize"
+      />
+      <ButtonGeneric buttonName="Close" @click.native="toggleShowBurnIn" />
+    </div>
+    <div v-if="minimized">
+      <div v-if="burnInJobRunning" class="clear burnInProgress floatBox">
+        <div>
+          <b>Job progress:</b>
+          <progress :value="progressPercentage" :max="100" />
+          {{ Math.round(progressPercentage) }}%
+        </div>
+        <div>
+          <b>Job status:</b>
+          {{ progressText }}
+        </div>
       </div>
-      <div>
-        <b>Job status:</b>
-        {{ progressText }}
+      <div v-if="jobFinished" class="clear burnInProgress floatBox">
+        <div>
+          <b class="jobFinished">Job finished successfully!</b>
+        </div>
+        <div>
+          <b>Job status:</b>
+          {{ progressText }}
+        </div>
       </div>
     </div>
-    <div v-if="jobFinished" class="clear burnInProgress floatBox">
-      <div>
-        <b class="jobFinished">Job finished successfully!</b>
+    <div v-else>
+      <div class="subHeader">Burn-In Service</div>
+      <!-- video source file -->
+      <DropDownGeneric
+        class="floatBox"
+        :options="videoOptions"
+        :selected="selectedVideo"
+        :labelName="'Video source'"
+        @valueChanged="setSelectedVideo"
+      />
+      <!-- video resolution -->
+      <DropDownGeneric
+        class="floatBox"
+        :options="getResolutionOpts()"
+        :selected="selectedResolution"
+        :labelName="'Output Resolution'"
+        @valueChanged="setResolution"
+      />
+      <!-- video quality -->
+      <DropDownGeneric
+        class="floatBox"
+        :options="getQualityOptions()"
+        :selected="selectedQuality"
+        :labelName="'Output quality (lower number = higher bitrate)'"
+        @valueChanged="setQuality"
+      />
+      <!-- subtitles, pngs -->
+      <RadioGeneric
+        :class="[{ radio: uiLayout != 'plain' }, 'clear', 'floatBox']"
+        :options="['yes', 'no']"
+        :selected="selectedUseCurrentST"
+        :labelName="getLabelText('useCurrentST')"
+        @valueChanged="setUseCurrentST"
+      />
+      <FileChooserGeneric
+        class="clear floatBox"
+        v-if="selectedUseCurrentST == 'no'"
+        :name="'choosePNG'"
+        :id="'choosePNG'"
+        :labelText="getLabelText('choosePNG')"
+        @filechange="setSubtitlePngs"
+      />
+      <ButtonGeneric
+        class="clear floatBox"
+        :buttonName="getLabelText('burnInSubmit')"
+        :disabled="burnInJobRunning"
+        @click.native="burnInSubmit"
+      />
+      <div v-if="burnInJobRunning" class="clear burnInProgress floatBox">
+        <div>
+          <b>Job progress:</b>
+          <progress :value="progressPercentage" :max="100" />
+          {{ Math.round(progressPercentage) }}%
+        </div>
+        <div>
+          <b>Job status:</b>
+          {{ progressText }}
+        </div>
       </div>
-      <div>
-        <b>Job status:</b>
-        {{ progressText }}
+      <div v-if="jobFinished" class="clear burnInProgress floatBox">
+        <div>
+          <b class="jobFinished">Job finished successfully!</b>
+        </div>
+        <div>
+          <b>Job status:</b>
+          {{ progressText }}
+        </div>
       </div>
+      <br class="clear" />
     </div>
-    <br class="clear" />
   </div>
 </template>
 
@@ -97,6 +128,7 @@ export default {
       intervalId: "",
       jobFinished: false,
       jobId: "",
+      minimized: false,
       progressPercentage: 0,
       progressText: "",
       selectedPngs: "",
@@ -108,6 +140,9 @@ export default {
     };
   },
   computed: {
+    minimizeButtonName() {
+      return this.minimized ? "Maximize" : "Minimize";
+    },
     ...mapState([
       "config",
       "currentSubtitleData",
@@ -293,10 +328,14 @@ export default {
     setUseCurrentST(val) {
       this.selectedUseCurrentST = val;
     },
+    toggleSize() {
+      this.minimized = !this.minimized;
+    },
     transformResToObj(val) {
       let splitted = val.split("x");
       return { width: splitted[0], height: splitted[1] };
-    }
+    },
+    ...mapMutations(["toggleShowBurnIn"])
   },
   beforeDestroy: function() {
     // TODO if job running -> cancel job in imsc-burner
@@ -336,6 +375,10 @@ export default {
 
 .jobFinished {
   color: green;
+}
+
+.options {
+  float: right;
 }
 
 .radio {

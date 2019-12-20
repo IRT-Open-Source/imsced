@@ -1,7 +1,7 @@
 <!-- Very simple button component -->
 <template>
   <buttonGenericPlain v-if="uiLayout == 'plain'" :buttonName="buttonName" />
-  <buttonGenericBS v-else class="mt-1" :buttonName="buttonName" />
+  <buttonGenericBS v-else class="mt-1" :buttonName="buttonName" :variant="variant" />
 </template>
 
 <script>
@@ -14,6 +14,10 @@ export default {
     buttonName: {
       type: String,
       required: true
+    },
+    variant: {
+      type: String,
+      required: false
     }
   },
   computed: {

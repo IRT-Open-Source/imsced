@@ -30,6 +30,14 @@ var proto = {
         }
       }
     },
+    burnInService: {
+      label: {
+        lang: {
+          en: "Burn in subtitles",
+          de: "Untertitel einbrennen"
+        }
+      }
+    },
     burnInSubmit: {
       label: {
         lang: {
@@ -262,7 +270,14 @@ var proto = {
         }
       }
     },
-
+    importStl: {
+      label: {
+        lang: {
+          en: "Import (STL)",
+          de: "Importieren (STL)"
+        }
+      }
+    },
     Language: {
       label: {
         lang: {
@@ -279,6 +294,14 @@ var proto = {
         }
       }
     },
+    load: {
+      label: {
+        lang: {
+          en: "Load",
+          de: "Laden"
+        }
+      }
+    },
     loaderText: {
       label: {
         lang: {
@@ -292,6 +315,14 @@ var proto = {
         lang: {
           en: "Alignment of multiple lines",
           de: "Mehrere Zeilen aurichten"
+        }
+      }
+    },
+    position: {
+      label: {
+        lang: {
+          en: "Position",
+          de: "Ausrichtung"
         }
       }
     },
@@ -335,6 +366,22 @@ var proto = {
         }
       }
     },
+    savePng: {
+      label: {
+        lang: {
+          en: "Save as PNG",
+          de: "Speichern als PNG"
+        }
+      }
+    },
+    saveXml: {
+      label: {
+        lang: {
+          en: "Save as XML",
+          de: "Speichern als XML"
+        }
+      }
+    },
     saveFile: {
       label: {
         lang: {
@@ -346,16 +393,8 @@ var proto = {
     scfExportFormat: {
       label: {
         lang: {
-          en: "Hand over to imscED as",
-          de: "An imscED übergeben als"
-        }
-      }
-    },
-    scfImportFormat: {
-      label: {
-        lang: {
-          en: "Import format",
-          de: "Import Format"
+          en: "Convert to",
+          de: "Konvertieren nach"
         }
       }
     },
@@ -399,11 +438,19 @@ var proto = {
         }
       }
     },
+    style: {
+      label: {
+        lang: {
+          en: "Style",
+          de: "Style"
+        }
+      }
+    },
     subtitles: {
       label: {
         lang: {
-          en: "Load subtitles",
-          de: "Lade Untertitel"
+          en: "Subtitles",
+          de: "Untertitel"
         }
       }
     },
