@@ -246,7 +246,7 @@ let proto = {
   },
   loop: function(obj) {
     for (var key in obj) {
-      if (this[key]) {
+      if (this[key] && obj[key]) {
         this[key](obj[key]);
       }
     }
