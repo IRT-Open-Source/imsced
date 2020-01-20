@@ -326,6 +326,14 @@ var proto = {
         }
       }
     },
+    noFileLoaded: {
+      label: {
+        lang: {
+          en: "No file loaded",
+          de: "Kein File geladen"
+        }
+      }
+    },
     position: {
       label: {
         lang: {

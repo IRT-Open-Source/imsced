@@ -153,7 +153,7 @@
             size="lg"
           >
           </font-awesome-icon>
-          title.subs
+          {{ getLabelText("noFileLoaded") }}
         </div>
         <div>
           <ButtonGeneric
