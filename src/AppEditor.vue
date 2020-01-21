@@ -723,7 +723,7 @@ div.captionWithButtons > * {
 video::-webkit-media-controls-fullscreen-button {
   display: none;
 }
-.hidden-col {
+.hidden {
   display: none !important;
 }
 </style>

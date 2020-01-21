@@ -34,7 +34,7 @@
 
     <!-- tabs for level (body, div, span, p) -->
     <b-card no-body>
-      <b-tabs :nav-wrapper-class="getNavWrapperClass()" pills card vertical>
+      <b-tabs :nav-wrapper-class="getContentKindClass()" pills card vertical>
         <!-- 
           Vertical list of content kinds, 
           kinds can be displayed differently (e.g. greyed out). 
@@ -48,7 +48,7 @@
           active
         >
           <!-- tab menu with editable attributes -->
-          <b-tabs card>
+          <b-tabs :nav-wrapper-class="getTabsClass()" card>
             <b-tab
               v-for="tab of Object.keys(activeContentKinds[contentKind])"
               :key="tab"
@@ -107,11 +107,12 @@ export default {
   },
   data() {
     return {
-      contentKinds: function() {
+      /*contentKinds: function() {
         var ck =
           this.state == "style" ? ["body", "div", "p", "span"] : ["region"];
         return ck;
-      },
+      },*/
+      contentKinds: ["region", "body", "div", "p", "span"],
       myDropKey: 0
     };
   },
@@ -123,7 +124,7 @@ export default {
     activeContentKinds() {
       var activeContent = {};
       //loop through confifured content kind (e.g. br is not configured)
-      for (var contentKind of this.contentKinds()) {
+      for (var contentKind of this.contentKinds) {
         //get data of active tabs per content kind
         var activeTabs = this.tabsWithContent(contentKind);
         if (activeTabs && this.toBeDisplayed(contentKind)) {
@@ -133,7 +134,12 @@ export default {
       return activeContent;
     },
     configStyles() {
-      return this.menuStyleConfig.styles[this.menuStyle];
+      switch (this.state) {
+        case "position":
+          return this.menuStyleConfig.position;
+        default:
+          return this.menuStyleConfig.styles[this.menuStyle];
+      }
     },
     defaultSettings() {
       return this.menuStyleConfig.settings.defaults;
@@ -190,6 +196,10 @@ export default {
     focusBubble() {
       this.$emit("gotFocus");
     },
+    getContentKindClass() {
+      var ckc = this.state == "style" ? "border-right" : "hidden";
+      return ckc;
+    },
     /* 
       Returns only the attributes of a tab like position that
       can be edited (e.g. ["textAlign", "multiRowAlign"] for content
@@ -233,6 +243,10 @@ export default {
         `tab${this.helper.capitalize(name)}`,
         this.lang
       );
+    },
+    getTabsClass() {
+      var tc = this.state == "style" ? "" : "hidden";
+      return tc;
     },
     getSetter(attr) {
       var helper;

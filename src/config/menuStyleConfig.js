@@ -84,11 +84,15 @@ var proto = {
       }
     }
   },
+  position: {
+    tabs: {
+      RegionArea: ["origin$w", "origin$h", "extent$w", "extent$h"]
+    }
+  },
   styles: {
     // styles with different tabs and attributes
     default: {
       tabs: {
-        RegionArea: ["origin$w", "origin$h", "extent$w", "extent$h"],
         Alignment: ["textAlign", "multiRowAlign", "displayAlign"],
         Display: ["display", "forcedDisplay", "visibility", "opacity"],
         Font: ["fontFamily", "fontSize", "fontStyle", "fontWeight"],
@@ -105,7 +109,6 @@ var proto = {
     },
     simple: {
       tabs: {
-        RegionArea: ["origin$w", "origin$h", "extent$w", "extent$h"],
         Font: ["fontFamily", "fontSize"],
         Color: ["color", "backgroundColor"],
         Line: ["lineHeight", "fillLineGap"]
