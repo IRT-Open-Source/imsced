@@ -1,8 +1,8 @@
 <template>
   <div class="top-bar">
     <b-navbar type="dark" variant="faded" class="custom-navbar">
-      <b-navbar-brand>imscED</b-navbar-brand>
-      <b-navbar-nav class="mr-4 ml-4">
+      <b-navbar-brand class="custom-brand">imscED</b-navbar-brand>
+      <b-navbar-nav class="mr-2 ml-4 first-element">
         <b-nav-form class="custom-form">
           <!-- Select video file  -->
           <CustomFileChooser
@@ -249,12 +249,23 @@ export default {
   margin: 0 5vw;
   padding: 0.5rem 0;
 }
+.custom-brand {
+  background-color: rgb(130, 147, 165);
+  position: absolute;
+  padding-top: 0.6em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  top: 0;
+  bottom: 0;
+}
+.first-element {
+  margin-left: 6.5em !important;
+}
 .top-bar {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 0.25rem 0;
   background-color: lightslategray;
   //background-color: #00519e;
 }
