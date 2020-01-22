@@ -1,47 +1,40 @@
 <!-- Style Attributes for simple menu -->
 <template>
   <div class="bs-wrapper">
-    <b-card
-      v-if="state == 'style'" 
-      :header="getLabelText('style')"
-      no-body
-    >
+    <b-card v-if="state == 'style'" :header="getLabelText('style')" no-body>
     </b-card>
-    <b-card 
-      v-else 
-      :header="getLabelText('position')"
-    >    
+    <b-card v-else :header="getLabelText('position')">
       <!-- region styles -->
       <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
         <div class="d-flex flex-row align-items-stretch">
-        <!-- <b-card sub-title="Position" class="region-style"> -->
+          <!-- <b-card sub-title="Position" class="region-style"> -->
           <div class="pr-1 d-flex flex-row flex-grow-1">
-          <DropDownGenericBS
-            :options="myRegionIds"
-            :selected="activeRegionId"
-            :labelName="''"
-            :labelWeight="'light'"
-            :dropKey="myDropKey"
-            @valueChanged="setNewRegion"
-            class="flex-grow-1"
-          />
-          <ButtonGenericBS
-            class="mt-1"
-            :buttonName="getLabelText('addRegion')"
-            @click.native="addNewRegion"
-          />
+            <DropDownGenericBS
+              :options="myRegionIds"
+              :selected="activeRegionId"
+              :labelName="''"
+              :labelWeight="'light'"
+              :dropKey="myDropKey"
+              @valueChanged="setNewRegion"
+              class="flex-grow-1"
+            />
+            <ButtonGeneric
+              class="mt-2 ml-1 p-1"
+              icon="plus-circle"
+              :iconStyle="{ color: 'grey' }"
+              :buttonName="getLabelText('addRegion')"
+              @click.native="addNewRegion"
+            />
           </div>
-          <LiveActionsMenu class="d-flex flex-row align-items-stretch"/>
-        <!-- </b-card> -->
+          <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
+          <!-- </b-card> -->
         </div>
       </div>
     </b-card>
 
     <!-- tabs for level (body, div, span, p) -->
     <b-card no-body>
-      <b-tabs
-        :nav-wrapper-class="getNavWrapperClass()" 
-        pills card vertical>
+      <b-tabs :nav-wrapper-class="getNavWrapperClass()" pills card vertical>
         <!-- 
           Vertical list of content kinds, 
           kinds can be displayed differently (e.g. greyed out). 
@@ -95,14 +88,14 @@
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
 import AttrStyle from "./AttrStyle.vue";
-import ButtonGenericBS from "./bootstrapComponents/ButtonGenericBS.vue";
+import ButtonGeneric from "./ButtonGeneric.vue";
 import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
 import LiveActionsMenu from "./LiveActionsMenu.vue";
 
 export default {
   components: {
     AttrStyle,
-    ButtonGenericBS,
+    ButtonGeneric,
     DropDownGenericBS,
     LiveActionsMenu
   },
@@ -115,9 +108,8 @@ export default {
   data() {
     return {
       contentKinds: function() {
-        var ck = this.state == 'style' ?
-          ["body", "div", "p", "span"] :
-          ["region"]
+        var ck =
+          this.state == "style" ? ["body", "div", "p", "span"] : ["region"];
         return ck;
       },
       myDropKey: 0
@@ -233,7 +225,7 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     getNavWrapperClass() {
-      var nwc = this.state == 'style' ? 'border-right' : 'hidden-col';
+      var nwc = this.state == "style" ? "border-right" : "hidden-col";
       return nwc;
     },
     getTabText(name) {
@@ -341,5 +333,4 @@ export default {
 .tab-style {
   background-color: rgba(240, 243, 250, 0.5) !important;
 }
-
 </style>

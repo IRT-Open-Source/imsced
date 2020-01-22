@@ -2,24 +2,36 @@
   <div class="top-bar">
     <b-navbar type="dark" variant="faded" class="custom-navbar">
       <b-navbar-brand>imscED</b-navbar-brand>
-      <b-navbar-nav class="mr-2 ml-4">
+      <b-navbar-nav class="mr-4 ml-4">
         <b-nav-form class="custom-form">
           <!-- Select video file  -->
           <CustomFileChooser
-            :name="'choosevideo1'"
-            :id="'vc1'"
-            :labelText="getLabelText('video')"
+            name="choosevideo1"
+            id="vc1"
+            :labelText="getLabelText('loadVideo')"
+            :icon="'photo-video'"
             @filechange="changevideofile"
           />
         </b-nav-form>
       </b-navbar-nav>
 
-      <b-navbar-nav>
+      <b-navbar-nav class="mr-2">
         <b-nav-item-dropdown
           class="custom-item"
           :text="getLabelText('subtitles')"
+          :title="getLabelText('subtitles')"
           left
         >
+          <template slot="button-content">
+            <font-awesome-icon
+              v-b-tooltip.hover
+              icon="closed-captioning"
+              size="lg"
+              :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+            >
+            </font-awesome-icon
+          ></template>
+
           <b-dropdown-item-button>
             <!-- Select subtitle file with imsc format-->
             <CustomFileChooser
@@ -44,17 +56,39 @@
           </b-dropdown-item-button>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-
       <b-navbar-nav v-if="activateBurnIn">
-        <b-nav-item-dropdown text="Services" left class="custom-item">
+        <b-nav-item-dropdown
+          left
+          class="custom-item"
+          text="serives"
+          title="Services"
+        >
+          <template slot="button-content">
+            <font-awesome-icon
+              v-b-tooltip.hover
+              icon="toolbox"
+              size="lg"
+              :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+            >
+            </font-awesome-icon
+          ></template>
           <b-dropdown-item-button @click="toggleShowBurnIn">
             {{ getLabelText("burnInService") }}</b-dropdown-item-button
           >
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item-dropdown text="Save" left class="custom-item">
+      <b-navbar-nav class="ml-auto mr-2">
+        <b-nav-item-dropdown text="Save" title="Save" right class="custom-item">
+          <template slot="button-content">
+            <font-awesome-icon
+              v-b-tooltip.hover
+              icon="save"
+              size="lg"
+              :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+            >
+            </font-awesome-icon
+          ></template>
           <!-- Export IMSC as XML  -->
           <b-dropdown-item-button @click.native="saveXml">
             {{ getLabelText("saveXml") }}
@@ -66,12 +100,14 @@
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
-      <b-navbar-nav class="">
-        <b-nav-form>
+      <b-navbar-nav>
+        <b-nav-form class="custom-form">
           <ButtonGeneric
             :buttonName="configUiButtonName"
+            :icon="'cog'"
             @click.native="toggleShowConfigUi"
-          />
+          >
+          </ButtonGeneric>
         </b-nav-form>
       </b-navbar-nav>
     </b-navbar>
@@ -197,13 +233,16 @@ export default {
 * /deep/.custom-item .nav-link {
   color: rgba(255, 255, 255, 0.75) !important;
 }
-* /deep/.custom-item .nav-link:hover {
+* /deep/.custom-item .nav-link:hover,
+*/deep/.custom-item .nav-link:hover > * {
   color: rgba(255, 255, 255, 1) !important;
 }
 .custom-form label {
   color: rgba(255, 255, 255, 0.75) !important;
 }
-.custom-form label:hover {
+.custom-form label:hover,
+*/deep/.custom-form label:hover span > *,
+*/deep/.custom-form span:hover > * {
   color: rgba(255, 255, 255, 1) !important;
 }
 .custom-navbar {

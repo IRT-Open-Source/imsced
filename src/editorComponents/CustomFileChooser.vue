@@ -1,7 +1,16 @@
 <!-- Select file and pass on fileObj and (if needed) parsed text -->
 <template>
   <label class="file-select">
-    <span>{{ labelText }}</span>
+    <span v-if="icon" :title="labelText"
+      ><font-awesome-icon
+        v-b-tooltip.hover
+        :icon="icon"
+        size="lg"
+        :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+      >
+      </font-awesome-icon
+    ></span>
+    <span v-else>{{ labelText }}</span>
     <input type="file" :name="name" :id="id" @change="fileChanged" />
   </label>
 </template>
@@ -34,6 +43,10 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    icon: {
+      type: String,
+      required: false
     }
   },
   computed: {

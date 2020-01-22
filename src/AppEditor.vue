@@ -131,16 +131,30 @@
       </div>
 
       <div class="captionWithButtons videoCol">
-        <div>{{ getMovieName }}</div>
+        <div>
+          <font-awesome-icon icon="photo-video" :style="{ color: 'grey' }">
+          </font-awesome-icon>
+          {{ getMovieName }}
+        </div>
         <div>
           <ButtonGeneric
             :buttonName="fullScreenButtonName"
+            icon="expand"
+            :iconStyle="{ color: 'grey' }"
             @click.native="toggleFullScreenMode"
           />
         </div>
       </div>
       <div class="captionWithButtons">
-        <div>title.subs</div>
+        <div>
+          <font-awesome-icon
+            icon="closed-captioning"
+            :style="{ color: 'grey' }"
+            size="lg"
+          >
+          </font-awesome-icon>
+          title.subs
+        </div>
         <div>
           <ButtonGeneric
             :buttonName="getLabelText('style')"

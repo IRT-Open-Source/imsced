@@ -310,6 +310,14 @@ var proto = {
         }
       }
     },
+    loadVideo: {
+      label: {
+        lang: {
+          en: "Load video",
+          de: "Video laden"
+        }
+      }
+    },
     multiRowAlign: {
       label: {
         lang: {

@@ -2,15 +2,19 @@
 <template>
   <div class="live-actions">
     <ButtonGeneric
-      :class="{ dragButton: dragFeatureActive }"
+      :class="{ activeButton: dragFeatureActive }"
       :buttonName="dragButtonName"
+      icon="arrows-alt"
+      :iconStyle="{ color: 'grey' }"
       @click.native="toggleDraggingActive"
       :disabled="activeP == undefined"
     />
 
     <ButtonGeneric
-      :class="{ resizeButton: resizeFeatureActive }"
+      :class="{ activeButton: resizeFeatureActive }"
       :buttonName="resizeButtonName"
+      icon="expand-alt"
+      :iconStyle="{ color: 'grey' }"
       @click.native="toggleResizingActive"
       :disabled="activeP == undefined"
     />
@@ -62,7 +66,7 @@ export default {
 
     resizeFeatureActive() {
       return this.activeP && this.resizingActive;
-    },
+    }
 
     // fullScreenButtonName() {
     //   var name = this.fullScreenActive
@@ -85,12 +89,16 @@ export default {
 .live-actions button {
   margin: 0 1px;
 }
-.resizeButton {
-  background-color: greenyellow;
+.activeButton {
+  background-color: lightgrey;
+  padding: 0.25em;
+  margin: 0.25em;
 }
 
-.dragButton {
-  background-color: salmon;
+.live-actions > * {
+  margin: 0.25em;
+  padding: 0.25em;
+  margin-top: 0.5em;
 }
 
 #fullScreenContainer:fullscreen .live-actions input[disabled] {
