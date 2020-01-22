@@ -417,8 +417,8 @@ var proto = {
     saveIsdAsPng: {
       label: {
         lang: {
-          en: "Save ISD as PNG",
-          de: "Als PNG speichern"
+          en: "Export as PNG",
+          de: "Als PNG exportieren"
         }
       }
     },
