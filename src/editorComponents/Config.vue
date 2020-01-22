@@ -3,135 +3,221 @@
   <div>
     <b-modal
       class="customized-model"
-      hide-backdrop
       no-enforce-focus
       hide-footer
       static
       lazy
       scrollable
+      header-text-variant="secondary"
       v-model="showConfigUi"
       title="Settings"
     >
-      <DropDownGeneric
-        :options="['bootstrap', 'plain']"
-        :selected="uiLayout"
-        :labelName="'UI Layout:'"
-        @valueChanged="setUiLayout"
-      />
+      <div role="tablist">
+        <b-card no-body>
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-1 variant="secondary">
+              {{ getLabelText("userInterface") }}
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-1"
+            visible
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <!-- user interface configs -->
 
-      <!-- Choose menu style  -->
-      <DropDownGeneric
-        v-if="uiLayout == 'bootstrap'"
-        :options="menuStyleOptions"
-        :selected="menuStyle"
-        :labelName="`${getLabelText('genericMenuType')}:`"
-        @valueChanged="setMenuStyle"
-      />
+                <!-- Select language for User Interface  -->
+                <DropDownGeneric
+                  :options="getAvailableLanguages()"
+                  :selected="lang"
+                  :labelName="getLabelText('Language')"
+                  @valueChanged="setLang"
+                />
+                <hr class="full-width-hr" />
+                <!-- Choose menu style  -->
+                <DropDownGeneric
+                  v-if="uiLayout == 'bootstrap'"
+                  :options="menuStyleOptions"
+                  :selected="menuStyle"
+                  :labelName="`${getLabelText('genericMenuType')}:`"
+                  @valueChanged="setMenuStyle"
+                />
+                <hr class="full-width-hr" />
+                <DropDownGeneric
+                  :options="['bootstrap', 'plain']"
+                  :selected="uiLayout"
+                  :labelName="'UI Layout:'"
+                  @valueChanged="setUiLayout"
+                />
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
 
-      <!-- Select language for User Interface  -->
-      <DropDownGeneric
-        :options="getAvailableLanguages()"
-        :selected="lang"
-        :labelName="getLabelText('Language')"
-        @valueChanged="setLang"
-      />
+        <b-card no-body>
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-2 variant="secondary">
+              {{ getLabelText("services") }}
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-2"
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <!-- services config -->
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :selected="showScfService"
+                  :labelName="'SCF Service'"
+                  @valueChanged="setShowScfService"
+                />
+                <hr class="full-width-hr" />
+                <DropDownGeneric
+                  v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
+                  :options="scfData.exportFormats"
+                  :selected="scfExportFormat"
+                  :labelName="getLabelText('scfExportFormat')"
+                  @valueChanged="setScfExportFormat"
+                />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="['on', 'off']"
+                  :translateOptions="true"
+                  :selected="activateBurnIn ? 'on' : 'off'"
+                  :labelName="'Activate Burn-In Service'"
+                  @valueChanged="setActivateBurnIn"
+                />
+                <hr class="full-width-hr" />
+                <div>
+                  <fieldset>
+                    <legend v-if="uiLayout == 'plain'">
+                      {{ getLabelText("exportIsdAsPng") }}
+                    </legend>
+                    <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
+                    <InputGeneric
+                      :value="getImageExportWidth()"
+                      :labelName="getLabelText('imageExportWidth')"
+                      @valueChanged="setImageExportWidth"
+                    />
+                    <InputGeneric
+                      :value="getImageExportHeight()"
+                      :labelName="getLabelText('imageExportHeight')"
+                      @valueChanged="setImageExportHeight"
+                    />
+                  </fieldset>
+                </div>
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
 
-      <DropDownGeneric
-        v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
-        :options="scfData.exportFormats"
-        :selected="scfExportFormat"
-        :labelName="getLabelText('scfExportFormat')"
-        @valueChanged="setScfExportFormat"
-      />
+        <b-card no-body>
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-3 variant="secondary">
+              {{ getLabelText("styleMenus") }}
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-3"
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <!-- style menu config -->
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showBodyMenu"
+                  :labelName="`${getLabelText('elementMenu')} <Body>`"
+                  @valueChanged="setShowBodyMenu"
+                />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showDivMenu"
+                  :labelName="`${getLabelText('elementMenu')} <div>`"
+                  @valueChanged="setShowDivMenu"
+                />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showPMenu"
+                  :labelName="`${getLabelText('elementMenu')} <p>`"
+                  @valueChanged="setShowPMenu"
+                />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showSpanMenu"
+                  :labelName="`${getLabelText('elementMenu')} <span>`"
+                  @valueChanged="setShowSpanMenu"
+                />
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
 
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :translateOptions="true"
-        :selected="showBodyMenu"
-        :labelName="`${getLabelText('elementMenu')} <Body>`"
-        @valueChanged="setShowBodyMenu"
-      />
+        <b-card no-body>
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-4 variant="secondary">
+              {{ getLabelText("advanced") }}
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-4"
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <!-- advanced stuff config -->
+                <RadioGeneric
+                  :options="['on', 'off']"
+                  :translateOptions="true"
+                  :selected="forcedOnly ? 'on' : 'off'"
+                  :labelName="'Display forced only mode'"
+                  @valueChanged="setForcedOnlyMode"
+                />
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
 
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :translateOptions="true"
-        :selected="showDivMenu"
-        :labelName="`${getLabelText('elementMenu')} <div>`"
-        @valueChanged="setShowDivMenu"
-      />
-
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :translateOptions="true"
-        :selected="showPMenu"
-        :labelName="`${getLabelText('elementMenu')} <p>`"
-        @valueChanged="setShowPMenu"
-      />
-
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :translateOptions="true"
-        :selected="showSpanMenu"
-        :labelName="`${getLabelText('elementMenu')} <span>`"
-        @valueChanged="setShowSpanMenu"
-      />
-
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :translateOptions="true"
-        :selected="showRegionSelect"
-        :labelName="'Regions'"
-        @valueChanged="setShowRegionSelect"
-      />
-
-      <RadioGeneric
-        :options="['show', 'hide']"
-        :selected="showScfService"
-        :labelName="'SCF Service'"
-        @valueChanged="setShowScfService"
-      />
-
-      <RadioGeneric
-        :options="['on', 'off']"
-        :translateOptions="true"
-        :selected="activateBurnIn ? 'on' : 'off'"
-        :labelName="'Activate Burn-In Service'"
-        @valueChanged="setActivateBurnIn"
-      />
-
-      <RadioGeneric
-        :options="['on', 'off']"
-        :translateOptions="true"
-        :selected="debug ? 'on' : 'off'"
-        :labelName="'Debug info'"
-        @valueChanged="setDebug"
-      />
-
-      <RadioGeneric
-        :options="['on', 'off']"
-        :translateOptions="true"
-        :selected="forcedOnly ? 'on' : 'off'"
-        :labelName="'Display forced only mode'"
-        @valueChanged="setForcedOnlyMode"
-      />
-
-      <div>
-        <fieldset>
-          <legend v-if="uiLayout == 'plain'">
-            {{ getLabelText("exportIsdAsPng") }}
-          </legend>
-          <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
-          <InputGeneric
-            :value="getImageExportWidth()"
-            :labelName="getLabelText('imageExportWidth')"
-            @valueChanged="setImageExportWidth"
-          />
-          <InputGeneric
-            :value="getImageExportHeight()"
-            :labelName="getLabelText('imageExportHeight')"
-            @valueChanged="setImageExportHeight"
-          />
-        </fieldset>
+        <b-card no-body>
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button block href="#" v-b-toggle.accordion-5 variant="secondary">
+              Debug
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-5"
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <!-- debug config -->
+                <RadioGeneric
+                  :options="['on', 'off']"
+                  :translateOptions="true"
+                  :selected="debug ? 'on' : 'off'"
+                  :labelName="'Debug info'"
+                  @valueChanged="setDebug"
+                />
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
       </div>
     </b-modal>
   </div>
@@ -240,6 +326,9 @@ export default {
 /deep/ .customized-model .modal-dialog {
   margin-right: 0;
   margin-top: 4em;
+}
+.full-width-hr {
+  margin: 10px -20px 10px;
 }
 
 #saveConfig {

@@ -6,6 +6,14 @@ function UiCentral() {}
 
 var proto = {
   elements: {
+    advanced: {
+      label: {
+        lang: {
+          en: "Advanced",
+          de: "Erweitert"
+        }
+      }
+    },
     addRegion: {
       label: {
         lang: {
@@ -430,6 +438,14 @@ var proto = {
         }
       }
     },
+    services: {
+      label: {
+        lang: {
+          en: "Services",
+          de: "Dienste"
+        }
+      }
+    },
     show: {
       label: {
         lang: {
@@ -459,6 +475,14 @@ var proto = {
         lang: {
           en: "Style",
           de: "Style"
+        }
+      }
+    },
+    styleMenus: {
+      label: {
+        lang: {
+          en: "Style menus",
+          de: "Style Menüs"
         }
       }
     },
@@ -595,6 +619,14 @@ var proto = {
         lang: {
           en: "Use currently selected subtitles",
           de: "Derzeit ausgewählte Untertitel verwenden"
+        }
+      }
+    },
+    userInterface: {
+      label: {
+        lang: {
+          en: "User interface",
+          de: "Benutzeroberfläche"
         }
       }
     },
