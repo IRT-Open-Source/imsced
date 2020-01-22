@@ -155,7 +155,7 @@
           </font-awesome-icon>
           {{ getLabelText("noFileLoaded") }}
         </div>
-        <div>
+        <div v-if="showMenu">
           <ButtonGeneric
             :buttonName="getLabelText('style')"
             :variant="getEditorToggleStyle('style')"
