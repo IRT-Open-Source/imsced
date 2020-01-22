@@ -5,7 +5,7 @@
 
     <Config v-if="showConfigUi" />
 
-    <BurnIn v-if="showBurnIn" />
+    <BurnIn v-if="activateBurnIn" v-show="showBurnIn" />
 
     <!-- Debug button set to test abritary methods  -->
     <MyDebug

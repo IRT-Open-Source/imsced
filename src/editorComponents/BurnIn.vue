@@ -3,13 +3,14 @@
   <div id="burnIn" class="burnIn">
     <div class="options">
       <ButtonGeneric
+        v-if="burnInJobRunning || jobFinished"
         :buttonName="minimizeButtonName"
         @click.native="toggleSize"
       />
-      <ButtonGeneric buttonName="Close" @click.native="toggleShowBurnIn" />
+      <ButtonGeneric buttonName="Hide" @click.native="toggleShowBurnIn" />
     </div>
     <div v-if="minimized">
-      <div v-if="burnInJobRunning" class="clear burnInProgress floatBox">
+      <div v-if="burnInJobRunning">
         <div>
           <b>Job progress:</b>
           <progress :value="progressPercentage" :max="100" />
@@ -20,7 +21,7 @@
           {{ progressText }}
         </div>
       </div>
-      <div v-if="jobFinished" class="clear burnInProgress floatBox">
+      <div v-if="jobFinished">
         <div>
           <b class="jobFinished">Job finished successfully!</b>
         </div>
