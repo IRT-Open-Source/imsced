@@ -31,6 +31,7 @@ export const store = new Vuex.Store({
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
+    movieName: "", // video file name 
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
@@ -208,7 +209,8 @@ export const store = new Vuex.Store({
       state.subtitleDataList.unshift(payload.imscData);
     },
     changeVideo(state, payload) {
-      state.movieSrc = payload.fileUrl;
+      state.movieName = payload.obj.name;
+      state.movieSrc = payload.URL;
     },
     deactivateSub(state) {
       state.subActive = false;

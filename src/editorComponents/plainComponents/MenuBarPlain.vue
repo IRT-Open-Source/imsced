@@ -88,7 +88,7 @@ export default {
       this.setSubsFileName(file.obj.name);
     },
     changevideofile: function(file) {
-      this.changeVideo({ fileUrl: file.URL });
+      this.changeVideo(file);
       //equivalent to
       //this.$store.commit('changeVideo', file.URL);
     },

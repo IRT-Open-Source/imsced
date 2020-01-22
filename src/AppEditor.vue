@@ -254,7 +254,6 @@ export default {
   data() {
     return {
       maxHeight: 0,
-      movieName: "",
       editorState: "style",
       myDropKey: 0,
       videoIsLoaded: false
@@ -335,6 +334,7 @@ export default {
       "menuStyle",
       "lang",
       "loadingST",
+      "movieName",
       "movieSrc",
       "playTime",
       "resizingActive",
