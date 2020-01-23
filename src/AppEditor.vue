@@ -126,7 +126,9 @@
     </div>
 
     <div id="workview">
-      <div id="subtitleListView" :style="subtitleListViewStyle">
+      <div 
+        id="subtitleListView" 
+        ref="subtitleListView">
         <ContentImsc :content="body" v-if="body" />
       </div>
 
@@ -253,18 +255,10 @@ export default {
   },
   data() {
     return {
-      maxHeight: 0,
       editorState: "style",
       myDropKey: 0,
       videoIsLoaded: false
     };
-  },
-  updated: function() {
-    this.$nextTick(function() {
-      if (this.$refs.editArea.clientHeight > this.maxHeight) {
-        this.maxHeight = this.$refs.editArea.clientHeight;
-      }
-    });
   },
   computed: {
     configUiButtonName() {
@@ -309,9 +303,6 @@ export default {
     },
     resizeFeatureActive() {
       return this.activeP && this.resizingActive;
-    },
-    subtitleListViewStyle() {
-      return { maxHeight: this.maxHeight + "px" };
     },
     showMenu() {
       return (
@@ -362,6 +353,7 @@ export default {
   },
   //Init Dummy subs on first load
   created: function() {
+    window.addEventListener("resize", this.resizeHandler);
     this.initSubs(
       "<tt\
         xmlns='http://www.w3.org/ns/ttml' \
@@ -436,8 +428,14 @@ export default {
         </tt>"
     );
   },
+  destroyed: function() {
+    window.removeEventListener("resize", this.resizeHandler);
+  },
   mounted: function() {
     this.addVideoTextTrack();
+    this.$nextTick(function() {
+      this.setMaxHeight();
+    });
   },
   methods: {
     addNewRegion() {
@@ -504,6 +502,11 @@ export default {
       if (this.debug) console.log("videoplays");
       this.resetFocusContent();
     },
+    resizeHandler: function(e) {
+      this.$nextTick(function() {
+        this.setMaxHeight();
+      })
+    },
     saveXml: function() {
       let p1 = new Promise(r => {
         let imscXml = new ImscExport(this.currentSubtitleData.tt);
@@ -520,6 +523,11 @@ export default {
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
+    },
+    setMaxHeight: function() {
+      var box = this.$refs.subtitleListView.getBoundingClientRect();
+      var newValue = document.documentElement.clientHeight - box.top - 30; // TODO try to get this value from CSS
+      this.$refs.subtitleListView.style.maxHeight = `${newValue}px`;
     },
     testLog() {
       window.subs = this.currentSubtitleData;
