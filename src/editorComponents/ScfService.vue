@@ -79,6 +79,7 @@ export default {
   cursor: pointer;
   margin: 0;
   padding: 0.25rem 0;
+  color: inherit;
 }
 
 .file-select input[type="file"] {

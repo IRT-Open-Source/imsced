@@ -2,7 +2,7 @@
   <div class="top-bar">
     <b-navbar type="dark" variant="faded" class="custom-navbar">
       <b-navbar-brand class="custom-brand">imscED</b-navbar-brand>
-      <b-navbar-nav class="mr-2 ml-4 first-element">
+      <b-navbar-nav class="mr-3 ml-4 first-element">
         <b-nav-form class="custom-form">
           <!-- Select video file  -->
           <CustomFileChooser
@@ -44,7 +44,7 @@
               @textSent="newSubs"
             />
           </b-dropdown-item-button>
-          <b-dropdown-item-button v-if="showScfService == 'show'">
+          <b-dropdown-item-button :disabled="showScfService == 'hide'">
             <!-- Select subtitle file with imsc format-->
             <ScfService
               :name="'importSubtitle1'"
@@ -56,7 +56,7 @@
           </b-dropdown-item-button>
         </b-nav-item-dropdown>
       </b-navbar-nav>
-      <b-navbar-nav v-if="activateBurnIn">
+      <b-navbar-nav>
         <b-nav-item-dropdown
           left
           class="custom-item"
@@ -72,7 +72,10 @@
             >
             </font-awesome-icon
           ></template>
-          <b-dropdown-item-button @click="toggleShowBurnIn">
+          <b-dropdown-item-button
+            :disabled="!activateBurnIn"
+            @click="toggleShowBurnIn"
+          >
             {{ getLabelText("burnInService") }}</b-dropdown-item-button
           >
         </b-nav-item-dropdown>
