@@ -29,8 +29,8 @@ var proto = {
     // default settings -> will be used if no specification in styles
     defaults: {
       inputTypes: {
-        backgroundColor: "simple",
-        color: "simple",
+        backgroundColor: "simple-color",
+        color: "simple-color",
         direction: "radio",
         display: "radio",
         displayAlign: "radio",
@@ -52,7 +52,7 @@ var proto = {
         textShadow$0: "simple",
         textShadow$1: "simple",
         textShadow$2: "simple",
-        textShadow$3: "simple",
+        textShadow$3: "simple-color",
         unicodeBidi: "radio",
         visibility: "radio",
         wrapOption: "radio",

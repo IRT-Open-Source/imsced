@@ -24,10 +24,11 @@
     />
 
     <InputGeneric
-      v-else-if="type == 'simple'"
+      v-else-if="isInput()"
       :value="currentValue"
       :labelName="getLabelText(name)"
       :labelWeight="labelWeight"
+      :type="getInputType()"
       @valueChanged="setNewValue"
       @gotFocus="focusBubble"
     />
@@ -128,8 +129,21 @@ export default {
     focusBubble() {
       this.$emit("gotFocus");
     },
+    // expected values of this.type: 'simple' or 'simple-type'
+    // where 'type' is html input type (e.g. color, button, date etc.)
+    // e.g. 'simple-color' for color picker 
+    getInputType() {
+      let type = this.type.split("-").pop();
+      if (type == "simple") {
+        type = "text";
+      }
+      return type;
+    },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
+    },
+    isInput() {
+      return (this.type.substring(0, 6) == "simple");
     },
     setNewValue(newValue) {
       try {

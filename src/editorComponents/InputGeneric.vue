@@ -15,6 +15,7 @@
       :labelWeight="labelWeight"
       :size="size"
       :value="value"
+      :type="type"
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
     />
@@ -43,6 +44,10 @@ export default {
     size: {
       type: Number,
       required: false
+    },
+    type: {
+      type: String,
+      default: 'text'
     },
     value: {
       required: true
