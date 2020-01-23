@@ -4,6 +4,7 @@ import Vue from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faArrowsAlt,
+  faArrowsAltH,
   faClosedCaptioning,
   faCog,
   faExpand,
@@ -19,6 +20,7 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 library.add(
   faArrowsAlt,
+  faArrowsAltH,
   faClosedCaptioning,
   faCog,
   faExpand,

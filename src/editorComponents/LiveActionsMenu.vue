@@ -13,7 +13,7 @@
     <ButtonGeneric
       :class="{ activeButton: resizeFeatureActive }"
       :buttonName="resizeButtonName"
-      icon="expand-alt"
+      icon="arrows-alt-h"
       :iconStyle="{ color: 'grey' }"
       @click.native="toggleResizingActive"
       :disabled="activeP == undefined"
