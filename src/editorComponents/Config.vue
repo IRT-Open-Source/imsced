@@ -15,7 +15,13 @@
       <div role="tablist">
         <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
-            <b-button block href="#" v-b-toggle.accordion-1 variant="secondary">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-1
+              variant="secondary"
+              class="align-acc-left"
+            >
               {{ getLabelText("userInterface") }}
             </b-button>
           </b-card-header>
@@ -59,7 +65,13 @@
 
         <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
-            <b-button block href="#" v-b-toggle.accordion-2 variant="secondary">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-2
+              variant="secondary"
+              class="align-acc-left"
+            >
               {{ getLabelText("services") }}
             </b-button>
           </b-card-header>
@@ -119,7 +131,13 @@
 
         <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
-            <b-button block href="#" v-b-toggle.accordion-3 variant="secondary">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-3
+              variant="secondary"
+              class="align-acc-left"
+            >
               {{ getLabelText("styleMenus") }}
             </b-button>
           </b-card-header>
@@ -169,7 +187,13 @@
 
         <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
-            <b-button block href="#" v-b-toggle.accordion-4 variant="secondary">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-4
+              variant="secondary"
+              class="align-acc-left"
+            >
               {{ getLabelText("advanced") }}
             </b-button>
           </b-card-header>
@@ -195,7 +219,13 @@
 
         <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
-            <b-button block href="#" v-b-toggle.accordion-5 variant="secondary">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-5
+              variant="secondary"
+              class="align-acc-left"
+            >
               Debug
             </b-button>
           </b-card-header>
@@ -326,6 +356,9 @@ export default {
 /deep/ .customized-model .modal-dialog {
   margin-right: 0;
   margin-top: 4em;
+}
+.align-acc-left {
+  display: flex;
 }
 .full-width-hr {
   margin: 10px -20px 10px;
