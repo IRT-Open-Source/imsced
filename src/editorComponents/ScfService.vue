@@ -60,6 +60,7 @@ export default {
         })
         .then(data => {
           thisContext.$emit("textSent", data);
+          this.setSubsFileName(fileObj.name);
         })
         .catch(error => {
           this.setLoadingST(false);
@@ -69,7 +70,7 @@ export default {
           );
         });
     },
-    ...mapMutations(["setLoadingST"])
+    ...mapMutations(["setLoadingST", "setSubsFileName"])
   }
 };
 </script>

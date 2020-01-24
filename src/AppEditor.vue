@@ -155,7 +155,7 @@
             size="lg"
           >
           </font-awesome-icon>
-          {{ getLabelText("noFileLoaded") }}
+          {{ getSubsFileName }}
         </div>
         <div v-if="showMenu">
           <ButtonGeneric
@@ -282,6 +282,12 @@ export default {
       if (name == "") {
         name = this.movieSrc.split("/").pop();
       }
+      return name;
+    },
+    getSubsFileName() {
+      var name = this.subsFileName == "imscTestFile" ?
+        this.getLabelText("noFileLoaded") :
+        this.subsFileName;
       return name;
     },
     uiLayout: {
