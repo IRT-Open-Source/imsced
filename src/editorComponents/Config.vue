@@ -83,13 +83,13 @@
             <b-card-body>
               <b-card-text>
                 <!-- services config -->
+                <h5>SCF Service</h5>
                 <RadioGeneric
                   :options="['show', 'hide']"
                   :selected="showScfService"
-                  :labelName="'SCF Service'"
+                  :labelName="''"
                   @valueChanged="setShowScfService"
                 />
-                <hr class="full-width-hr" />
                 <DropDownGeneric
                   v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
                   :options="scfData.exportFormats"
@@ -98,11 +98,12 @@
                   @valueChanged="setScfExportFormat"
                 />
                 <hr class="full-width-hr" />
+                <h5>Burn-In Service</h5>
                 <RadioGeneric
                   :options="['on', 'off']"
                   :translateOptions="true"
                   :selected="activateBurnIn ? 'on' : 'off'"
-                  :labelName="'Activate Burn-In Service'"
+                  :labelName="''"
                   @valueChanged="setActivateBurnIn"
                 />
                 <hr class="full-width-hr" />
@@ -111,7 +112,7 @@
                     <legend v-if="uiLayout == 'plain'">
                       {{ getLabelText("exportIsdAsPng") }}
                     </legend>
-                    <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
+                    <h5 v-else>{{ getLabelText("exportIsdAsPng") }}</h5>
                     <InputGeneric
                       :value="getImageExportWidth()"
                       :labelName="getLabelText('imageExportWidth')"
