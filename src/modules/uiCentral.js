@@ -169,16 +169,16 @@ var proto = {
     extent$h: {
       label: {
         lang: {
-          en: "height",
-          de: "Höhe"
+          en: "height (%)",
+          de: "Höhe (%)"
         }
       }
     },
     extent$w: {
       label: {
         lang: {
-          en: "width",
-          de: "Breite"
+          en: "width (%)",
+          de: "Breite (%)"
         }
       }
     },
@@ -201,8 +201,8 @@ var proto = {
     fontSize: {
       label: {
         lang: {
-          en: "Font Size",
-          de: "Schriftgröße"
+          en: "Font Size (%)",
+          de: "Schriftgröße (%)"
         }
       }
     },
@@ -377,16 +377,16 @@ var proto = {
     origin$h: {
       label: {
         lang: {
-          en: "y-coordinate",
-          de: "y-Koordinate"
+          en: "y-coordinate (%)",
+          de: "y-Koordinate (%)"
         }
       }
     },
     origin$w: {
       label: {
         lang: {
-          en: "x-coordinate",
-          de: "x-Koordinate"
+          en: "x-coordinate (%)",
+          de: "x-Koordinate (%)"
         }
       }
     },
