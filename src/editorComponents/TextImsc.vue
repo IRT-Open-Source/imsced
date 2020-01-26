@@ -2,7 +2,7 @@
   <div>
     <!-- Add on change event and trigger update in parent component? -->
     <InputGeneric
-      :value="element.text"
+      :value="getValue()"
       :labelName="''"
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
@@ -43,6 +43,9 @@ export default {
     focusBubble() {
       if (this.debug) console.log("got focus");
       this.$emit("gotFocus");
+    },
+    getValue() {
+      return this.element.text.trim();
     },
     ...mapActions(["updateSubtitlePlane", "changeText"])
   }

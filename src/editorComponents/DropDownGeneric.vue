@@ -13,6 +13,7 @@
     v-else
     :dropKey="dropKey"
     :labelName="labelName"
+    :labelWeight="labelWeight"
     :options="options"
     :selected="selected"
     @gotFocus="focusBubble"
@@ -54,6 +55,10 @@ export default {
       type: String,
       required: true
     },
+    labelWeight: {
+      type: String,
+      default: 'bold'
+    },    
     options: {
       type: Array,
       required: true

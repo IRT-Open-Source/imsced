@@ -1,21 +1,8 @@
 <template>
-  <div>
-    <FileChooserGenericPlain
-      v-if="uiLayout == 'plain'"
-      :name="name"
-      :id="id"
-      :labelText="labelText"
-      @valueChanged="fileChanged"
-    />
-
-    <FileChooserGenericBS
-      v-else
-      :id="id"
-      :name="name"
-      :labelText="labelText"
-      @valueChanged="fileChanged"
-    />
-  </div>
+  <label class="file-select">
+    <span>{{ labelText }}</span>
+    <input type="file" :name="name" :id="id" @change="fileChanged" />
+  </label>
 </template>
 
 <script>
@@ -47,7 +34,13 @@ export default {
     }
   },
   computed: {
-    ...mapState(["scfData", "scfExportFormat", "scfImportFormat", "uiLayout"])
+    ...mapState([
+      "config",
+      "scfData",
+      "scfExportFormat",
+      "scfImportFormat",
+      "uiLayout"
+    ])
   },
   methods: {
     fileChanged: function(e) {
@@ -59,6 +52,10 @@ export default {
       formData.append("input", fileObj);
       formData.append("format_source", this.scfImportFormat);
       formData.append("format_target", this.scfExportFormat);
+      formData.append("offset_frames", this.config.defaultOffsetFrames);
+      if (this.scfImportFormat == "stl") {
+        formData.append("ignore_manual_offset_for_tcp", "1");
+      }
       fetch(this.scfData.url, {
         method: "POST",
         body: formData
@@ -73,6 +70,7 @@ export default {
         })
         .then(data => {
           thisContext.$emit("textSent", data);
+          this.setSubsFileName(fileObj.name);
         })
         .catch(error => {
           this.setLoadingST(false);
@@ -82,7 +80,20 @@ export default {
           );
         });
     },
-    ...mapMutations(["setLoadingST"])
+    ...mapMutations(["setLoadingST", "setSubsFileName"])
   }
 };
 </script>
+<style scoped>
+.file-select {
+  width: 100%;
+  cursor: pointer;
+  margin: 0;
+  padding: 0.25rem 0;
+  color: inherit;
+}
+
+.file-select input[type="file"] {
+  display: none !important;
+}
+</style>

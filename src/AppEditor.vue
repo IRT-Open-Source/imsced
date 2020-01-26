@@ -1,10 +1,13 @@
 <template>
   <div id="app">
-    <h1Generic :text="'imscEd'" />
+    <!-- Navbar/Header -->
+    <MenuBar />
 
-    <!-- Choose menu style  -->
+    <Config v-if="showConfigUi" />
 
-    <DropDownGeneric
+    <BurnIn v-if="activateBurnIn" v-show="showBurnIn" />
+
+    <!--    <DropDownGeneric
       class="floatRightBox"
       :options="['bootstrap', 'plain']"
       :selected="uiLayout"
@@ -21,7 +24,7 @@
       @valueChanged="setMenuStyle"
     />
 
-    <!-- Select language for User Interface  -->
+  
     <DropDownGeneric
       id="selectLang"
       :options="getAvailableLanguages()"
@@ -31,19 +34,19 @@
     />
 
     <div id="saveConfig">
-      <!-- Export IMSC as XML  -->
+      
       <ButtonGeneric
         :buttonName="getLabelText('saveFile')"
         @click.native="saveXml"
       />
 
-      <!-- Export ISD as PNG  -->
+   
       <ButtonGeneric
         :buttonName="getLabelText('saveIsdAsPng')"
         @click.native="saveIsdAsPng"
       />
 
-      <!-- UI to customize display-->
+      
       <ButtonGeneric
         :buttonName="configUiButtonName"
         @click.native="toggleShowConfigUi"
@@ -140,11 +143,25 @@
               />
             </fieldset>
           </div>
+
+          <div>
+            <fieldset>
+              <legend v-if="uiLayout == 'plain'">
+                {{ getLabelText("scfStartOffset") }}
+              </legend>
+              <b v-else>{{ getLabelText("scfStartOffset") }}</b>
+              <InputGeneric
+                :value="getScfStartOffsetFrames()"
+                :labelName="''"
+                @valueChanged="setOffsetFrames"
+              />
+            </fieldset>
+          </div>
         </div>
       </transition>
     </div>
 
-    <BurnIn v-if="showBurnInService" />
+    <BurnIn v-if="showBurnInService" />-->
 
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
@@ -249,59 +266,7 @@
     </div>
 
     <!-- Show menu depending on menustyle -->
-    <MenuGeneric v-if="uiLayout == 'bootstrap' && showMenu" class="mt-2" />
-    <br />&nbsp;
-    <!-- Select video file  -->
-    <FileChooserGeneric
-      :name="'choosevideo1'"
-      :id="'vc1'"
-      :labelText="getLabelText('video')"
-      @filechange="changevideofile"
-    />
-
-    <!-- Select subtitle file with imsc format-->
-    <FileChooserGeneric
-      v-if="showScfService == 'hide' || scfImportFormat == 'imsc'"
-      :class="[showScfService == 'show' ? 'subtitleLoad' : '']"
-      :loader="true"
-      :name="'chooseSubtitle1'"
-      :id="'sc1'"
-      :labelText="getLabelText('subtitles')"
-      :getText="true"
-      @filechange="changeSubs"
-      @textSent="newSubs"
-    />
-    <!-- Select subtitle file for conversion (other format) -->
-    <ScfService
-      v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
-      class="subtitleLoad"
-      :name="'importSubtitle1'"
-      :id="'is1'"
-      :labelText="getLabelText('subtitles')"
-      :getText="true"
-      @textSent="newSubs"
-    />
-    <DropDownGeneric
-      v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
-      class="scfSettings"
-      :options="scfData.exportFormats"
-      :selected="scfExportFormat"
-      :labelName="getLabelText('scfExportFormat')"
-      @valueChanged="setScfExportFormat"
-    />
-    <DropDownGeneric
-      v-if="showScfService == 'show'"
-      :class="[scfImportFormat == 'imsc' ? 'scfSettingsBig' : 'scfSettings']"
-      :options="scfData.importFormats"
-      :selected="scfImportFormat"
-      :labelName="getLabelText('scfImportFormat')"
-      @valueChanged="setScfImportFormat"
-    />
-
-    <div class="clear"></div>
-
-    <!-- Playtime in 00:00:00.000 format -->
-    <p>Playtime: {{ getPlaytimeAsVttTime() }}</p>
+    <!-- <MenuGeneric v-if="uiLayout == 'bootstrap' && showMenu" class="mt-2" /> -->
 
     <!-- Loader in case ST take some time to load -->
     <div v-if="loadingST">
@@ -317,26 +282,87 @@
     </div>
 
     <div id="workview">
-      <!-- List of subtitles to edit -->
-      <div id="subtitleListView">
+      <div id="subtitleListView" ref="subtitleListView">
         <ContentImsc :content="body" v-if="body" />
       </div>
-      <!-- Video to be displayed -->
-      <div id="fullScreenContainer" @fullscreenchange="handleFullscreenChange">
-        <LiveActionsMenu />
-        <VideoGeneric
-          :containerid="config.defaultVideo.containerId"
-          :id="config.defaultVideo.videoId"
-          :src="movieSrc"
-          :autobuffer="config.defaultVideo.autobuffer"
-          :controls="config.defaultVideo.videoControls"
-          @videoLoaded="processAfterVideoLoaded"
-          @videoPlays="processWhenVideoPlays"
-        />
-        <!-- Container where imscjs render subtitles -->
-        <div id="renderDiv"></div>
+
+      <div class="captionWithButtons videoCol">
+        <div>
+          <font-awesome-icon icon="photo-video" :style="{ color: 'grey' }">
+          </font-awesome-icon>
+          {{ getMovieName }}
+        </div>
+        <div>
+          <ButtonGeneric
+            :buttonName="fullScreenButtonName"
+            icon="expand"
+            :iconStyle="{ color: 'grey' }"
+            @click.native="toggleFullScreenMode"
+          />
+        </div>
+      </div>
+      <div class="captionWithButtons">
+        <div>
+          <font-awesome-icon
+            icon="closed-captioning"
+            :style="{ color: 'grey' }"
+            size="lg"
+          >
+          </font-awesome-icon>
+          {{ getSubsFileName }}
+        </div>
+        <div v-if="showMenu">
+          <ButtonGeneric
+            :buttonName="getLabelText('style')"
+            :variant="getEditorToggleStyle('style')"
+            @click.native="setEditorState('style')"
+          >
+          </ButtonGeneric>
+          <ButtonGeneric
+            :buttonName="getLabelText('position')"
+            :variant="getEditorToggleStyle('position')"
+            @click.native="setEditorState('position')"
+          >
+          </ButtonGeneric>
+        </div>
+      </div>
+      <div id="editArea" ref="editArea">
+        <!-- Video to be displayed -->
+        <div
+          id="fullScreenContainer"
+          @fullscreenchange="handleFullscreenChange"
+        >
+          <!-- <LiveActionsMenu /> -->
+          <VideoGeneric
+            :containerid="config.defaultVideo.containerId"
+            :id="config.defaultVideo.videoId"
+            :src="movieSrc"
+            :autobuffer="config.defaultVideo.autobuffer"
+            :controls="config.defaultVideo.videoControls"
+            @videoLoaded="processAfterVideoLoaded"
+            @videoPlays="processWhenVideoPlays"
+          />
+          <!-- Container where imscjs render subtitles -->
+          <div id="renderDiv"></div>
+          <DragFeature v-if="dragFeatureActive" />
+          <ResizeFeature v-if="resizeFeatureActive" />
+        </div>
+        <div>
+          <!-- Playtime in 00:00:00.000 format -->
+          <p>Playtime: {{ getPlaytimeAsVttTime() }}</p>
+        </div>
+        <div>
+          <!-- Show menu depending on menustyle -->
+          <MenuGeneric
+            v-if="uiLayout == 'bootstrap' && showMenu"
+            class="mt-2"
+            :state="editorState"
+          />
+        </div>
       </div>
     </div>
+
+    <br />
   </div>
 </template>
 
@@ -344,44 +370,46 @@
 import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import BurnIn from "./editorComponents/BurnIn.vue";
 import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
-import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
+import Config from "./editorComponents/Config.vue";
+import DragFeature from "./editorComponents/DragFeature.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
-import FileChooserGeneric from "./editorComponents/FileChooserGeneric.vue";
+import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
-import InputGeneric from "./editorComponents/InputGeneric.vue";
-import IsdExport from "./modules/isdExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
+import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
 import RadioGeneric from "./editorComponents/RadioGeneric.vue";
-import ScfService from "./editorComponents/ScfService.vue";
-import { saveAs } from "file-saver";
+import ResizeFeature from "./editorComponents/ResizeFeature.vue";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
+import { saveAs } from "file-saver";
 
 export default {
   name: "app",
   components: {
     BurnIn,
     ButtonGeneric,
+    Config,
     ContentImsc,
+    DragFeature,
     DropDownGeneric,
-    FileChooserGeneric,
     h1Generic,
-    InputGeneric,
     LiveActionsMenu,
     MenuGeneric,
     MenuStyle,
     MyDebug,
+    MenuBar,
     RadioGeneric,
-    ScfService,
+    ResizeFeature,
     VideoGeneric
   },
   data() {
     return {
+      editorState: "style",
       myDropKey: 0,
       videoIsLoaded: false
     };
@@ -391,6 +419,31 @@ export default {
       var name = this.showConfigUi ? "hideConfigUi" : "showConfigUi";
       return this.getLabelText(name);
     },
+    editorToggle() {
+      return [
+        { caption: this.getLabelText("style") },
+        { caption: this.getLabelText("position") }
+      ];
+    },
+    fullScreenButtonName() {
+      var name = this.fullScreenActive
+        ? "disableFullScreen"
+        : "enableFullScreen";
+      return this.uiData.getLabel(name, this.lang);
+    },
+    getMovieName() {
+      var name = this.movieName;
+      if (name == "") {
+        name = this.movieSrc.split("/").pop();
+      }
+      return name;
+    },
+    getSubsFileName() {
+      var name = this.subsFileName == "imscTestFile" ?
+        this.getLabelText("noFileLoaded") :
+        this.subsFileName;
+      return name;
+    },
     uiLayout: {
       get() {
         return this.$store.state.uiLayout;
@@ -399,18 +452,17 @@ export default {
         this.$store.commit("setuiLayout", val);
       }
     },
-    menuStyleOptions() {
-      var styles = [];
-      for (var style in this.menuStyleConfig.styles) {
-        styles.push(style);
-      }
-      return styles;
-    },
     myRegionIds: {
       cache: false,
       get: function() {
         return Object.keys(this.currentSubtitleData.regionHash);
       }
+    },
+    dragFeatureActive() {
+      return this.activeP && this.draggingActive;
+    },
+    resizeFeatureActive() {
+      return this.activeP && this.resizingActive;
     },
     showMenu() {
       return (
@@ -419,31 +471,31 @@ export default {
       );
     },
     ...mapState([
+      "activateBurnIn",
       "activeP",
       "activeSpan",
       "config",
       "custom",
       "currentSubtitleData",
       "debug",
+      "draggingActive",
       "forcedOnly",
       "helper",
       "menuStyleConfig",
       "menuStyle",
       "lang",
       "loadingST",
+      "movieName",
       "movieSrc",
       "playTime",
-      "scfData",
-      "scfExportFormat",
-      "scfImportFormat",
+      "resizingActive",
       "showRegionMenu",
-      "showBurnInService",
+      "showBurnIn",
       "showBodyMenu",
       "showConfigUi",
       "showDivMenu",
       "showPMenu",
       "showRegionSelect",
-      "showScfService",
       "showSpanMenu",
       "subsFileName",
       "uiData",
@@ -455,11 +507,13 @@ export default {
       "body",
       "regionStyles",
       "renderDivDom",
+      "subsDivDom",
       "videoDom"
     ])
   },
   //Init Dummy subs on first load
   created: function() {
+    window.addEventListener("resize", this.resizeHandler);
     this.initSubs(
       "<tt\
         xmlns='http://www.w3.org/ns/ttml' \
@@ -534,36 +588,38 @@ export default {
         </tt>"
     );
   },
+  destroyed: function() {
+    window.removeEventListener("resize", this.resizeHandler);
+  },
   mounted: function() {
     this.addVideoTextTrack();
+    this.$nextTick(function() {
+      this.setMaxHeight();
+    });
   },
   methods: {
     addNewRegion() {
       this.myDropKey++; //needed to display gets refresh
       this.addRegion();
     },
-    changeSubs: function(file) {
-      this.setSubsFileName(file.obj.name);
+    editAreaDivDom() {
+      return document.getElementById("editArea");
     },
-    changevideofile: function(file) {
-      this.changeVideo({ fileUrl: file.URL });
-      //equivalent to
-      //this.$store.commit('changeVideo', file.URL);
+    fullScreenDivDom() {
+      return document.getElementById("fullScreenContainer");
     },
-    getAvailableLanguages() {
-      return this.uiData.getAvailableLanguages();
-    },
-    getImageExportHeight() {
-      return this.config.defaultImageExportSize.height;
-    },
-    getImageExportWidth() {
-      return this.config.defaultImageExportSize.width;
+    getEditorToggleStyle(buttonName) {
+      var style = buttonName == this.editorState ? "secondary" : "light";
+      return style;
     },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
     },
     getPlaytimeAsVttTime() {
       return this.helper.vttTimestamp(this.playTime);
+    },
+    getScfStartOffsetFrames() {
+      return this.config.defaultOffsetFrames;
     },
     handleFullscreenChange(event) {
       this.setFullScreenActive(!!document.fullscreenElement);
@@ -577,15 +633,6 @@ export default {
       this.addSubtitleData({ imscData: dataItem }); //add to list
       this.setSubtitleData({ imscData: dataItem }); //set current
       this.setLoadingST(false);
-    },
-    newSubs: function(subtitleText) {
-      this.initSubs(subtitleText);
-      this.addVideoTextTrack(); //generatate track
-      this.updateSubtitlePlanePlayTime();
-      this.resetFocusContent();
-      if (this.debug) {
-        window.imscdata = this.currentSubtitleData;
-      }
     },
     processAfterVideoLoaded() {
       this.videoIsLoaded = true;
@@ -609,11 +656,19 @@ export default {
       }
       this.renderDivDom.style.width = this.videoDom.style.width;
       this.renderDivDom.style.height = this.videoDom.style.height;
+      // this.subsDivDom.style.height = this.videoDom.style.height;
+      this.fullScreenDivDom().style.height = this.renderDivDom.style.height;
+      this.editAreaDivDom().style.width = this.renderDivDom.style.width;
       this.triggerTimeUpdate();
     },
     processWhenVideoPlays() {
       if (this.debug) console.log("videoplays");
       this.resetFocusContent();
+    },
+    resizeHandler: function(e) {
+      this.$nextTick(function() {
+        this.setMaxHeight();
+      });
     },
     saveXml: function() {
       let p1 = new Promise(r => {
@@ -629,20 +684,13 @@ export default {
       });
       p1.then(v => saveAs(v, "imsc2.xml"));
     },
-    saveIsdAsPng: function() {
-      let isdExport = new IsdExport(this.currentSubtitleData.tt);
-      isdExport
-        .saveAsPng(this.config.defaultImageExportSize)
-        .then(content => {
-          let fname = `${this.subsFileName}.zip`;
-          saveAs(content, fname);
-        })
-        .catch(reason => {
-          console.log(
-            "an error occured while saving subtitles as png:",
-            reason
-          );
-        });
+    setEditorState: function(buttonName) {
+      this.editorState = buttonName;
+    },
+    setMaxHeight: function() {
+      var box = this.$refs.subtitleListView.getBoundingClientRect();
+      var newValue = document.documentElement.clientHeight - box.top - 30; // TODO try to get this value from CSS
+      this.$refs.subtitleListView.style.maxHeight = `${newValue}px`;
     },
     testLog() {
       window.subs = this.currentSubtitleData;
@@ -650,37 +698,20 @@ export default {
     ...mapMutations([
       "addRegion",
       "addSubtitleData",
-      "changeVideo",
-      "setDebug",
       "setFullScreenActive",
-      "setMenuStyle",
-      "setLang",
       "setLoadingST",
-      "setScfExportFormat",
-      "setScfImportFormat",
-      "setShowBodyMenu",
-      "setShowBurnInService",
-      "setShowDivMenu",
-      "setShowPMenu",
-      "setShowSpanMenu",
-      "setShowScfService",
-      "setShowRegionSelect",
-      "setSubsFileName",
       "setSubtitleData",
-      "setVideoCustomWidth",
       "setVideoDomHeight",
       "setVideoDomWidth",
-      "toggleShowConfigUi",
+      "toggleFullScreenMode",
       "setUiLayout"
     ]),
     ...mapActions([
       "addVideoTextTrack",
       "removeSub",
       "resetFocusContent",
-      "setForcedOnlyMode",
-      "setImageExportHeight",
-      "setImageExportWidth",
       "setNewRegion",
+      "setOffsetFrames",
       "triggerTimeUpdate",
       "updateSubtitlePlane",
       "updateSubtitlePlanePlayTime"
@@ -693,6 +724,7 @@ export default {
 body {
   margin-left: 5vw;
   margin-right: 5vw;
+  margin-top: 5rem;
   font-size: 100%;
 }
 
@@ -733,6 +765,14 @@ input:focus {
   grid-template-columns: 1fr 1fr;
 }
 
+#editArea {
+  display: grid;
+}
+
+.videoCol {
+  width: 42vw;
+}
+
 #config {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -758,9 +798,26 @@ input:focus {
 }
 
 #subtitleListView {
-  height: 75vh;
+  /* height: 75vh; */
+  grid-row: 2 / 5;
+  grid-column: 2 / 3;
   overflow-y: auto;
-  margin-right: 5%;
+  /* margin-right: 5%; */
+}
+
+.captionWithButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 3px 0;
+  padding: 1px 0px;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+div.captionWithButtons button,
+div.captionWithButtons > * {
+  margin: 1px 2px !important;
 }
 
 .regionMenu {
@@ -783,33 +840,6 @@ input:focus {
 
 .pMenu {
   background-color: orange;
-}
-
-.clear {
-  clear: both;
-}
-
-.floatLeft {
-  float: left;
-}
-
-.scfSettings {
-  float: right;
-  position: relative;
-  margin-left: 1%;
-  width: 19%;
-}
-
-.scfSettingsBig {
-  float: right;
-  position: relative;
-  margin-left: 1%;
-  width: 39%;
-}
-
-.subtitleLoad {
-  float: left;
-  width: 60%;
 }
 
 .loaderText {
@@ -847,21 +877,6 @@ input:focus {
   text-align: center;
 }
 
-.floatRightBox {
-  position: relative;
-  float: right;
-  margin-right: 1em;
-}
-
-#saveConfig {
-  margin-top: 7rem;
-}
-
-#selectLang {
-  margin-bottom: 20px;
-  float: left;
-}
-
 #fullScreenContainer:fullscreen #renderDiv {
   width: 100% !important;
   height: 100% !important;
@@ -879,5 +894,8 @@ input:focus {
 }
 video::-webkit-media-controls-fullscreen-button {
   display: none;
+}
+.hidden {
+  display: none !important;
 }
 </style>

@@ -6,6 +6,14 @@ function UiCentral() {}
 
 var proto = {
   elements: {
+    advanced: {
+      label: {
+        lang: {
+          en: "Advanced",
+          de: "Erweitert"
+        }
+      }
+    },
     addRegion: {
       label: {
         lang: {
@@ -27,6 +35,14 @@ var proto = {
         lang: {
           en: "begin",
           de: "Start"
+        }
+      }
+    },
+    burnInService: {
+      label: {
+        lang: {
+          en: "Burn in subtitles",
+          de: "Untertitel einbrennen"
         }
       }
     },
@@ -153,16 +169,16 @@ var proto = {
     extent$h: {
       label: {
         lang: {
-          en: "height",
-          de: "Höhe"
+          en: "height (%)",
+          de: "Höhe (%)"
         }
       }
     },
     extent$w: {
       label: {
         lang: {
-          en: "width",
-          de: "Breite"
+          en: "width (%)",
+          de: "Breite (%)"
         }
       }
     },
@@ -185,8 +201,8 @@ var proto = {
     fontSize: {
       label: {
         lang: {
-          en: "Font Size",
-          de: "Schriftgröße"
+          en: "Font Size (%)",
+          de: "Schriftgröße (%)"
         }
       }
     },
@@ -262,7 +278,14 @@ var proto = {
         }
       }
     },
-
+    importStl: {
+      label: {
+        lang: {
+          en: "Import (STL)",
+          de: "Importieren (STL)"
+        }
+      }
+    },
     Language: {
       label: {
         lang: {
@@ -279,6 +302,14 @@ var proto = {
         }
       }
     },
+    load: {
+      label: {
+        lang: {
+          en: "Load",
+          de: "Laden"
+        }
+      }
+    },
     loaderText: {
       label: {
         lang: {
@@ -287,11 +318,35 @@ var proto = {
         }
       }
     },
+    loadVideo: {
+      label: {
+        lang: {
+          en: "Load video",
+          de: "Video laden"
+        }
+      }
+    },
     multiRowAlign: {
       label: {
         lang: {
           en: "Alignment of multiple lines",
           de: "Mehrere Zeilen aurichten"
+        }
+      }
+    },
+    noFileLoaded: {
+      label: {
+        lang: {
+          en: "No file loaded",
+          de: "Kein File geladen"
+        }
+      }
+    },
+    position: {
+      label: {
+        lang: {
+          en: "Position",
+          de: "Ausrichtung"
         }
       }
     },
@@ -322,16 +377,32 @@ var proto = {
     origin$h: {
       label: {
         lang: {
-          en: "y-coordinate",
-          de: "y-Koordinate"
+          en: "y-coordinate (%)",
+          de: "y-Koordinate (%)"
         }
       }
     },
     origin$w: {
       label: {
         lang: {
-          en: "x-coordinate",
-          de: "x-Koordinate"
+          en: "x-coordinate (%)",
+          de: "x-Koordinate (%)"
+        }
+      }
+    },
+    savePng: {
+      label: {
+        lang: {
+          en: "Save as PNG",
+          de: "Speichern als PNG"
+        }
+      }
+    },
+    saveXml: {
+      label: {
+        lang: {
+          en: "Save as XML",
+          de: "Speichern als XML"
         }
       }
     },
@@ -346,24 +417,24 @@ var proto = {
     scfExportFormat: {
       label: {
         lang: {
-          en: "Hand over to imscED as",
-          de: "An imscED übergeben als"
+          en: "Convert to",
+          de: "Konvertieren nach"
         }
       }
     },
-    scfImportFormat: {
+    scfStartOffset: {
       label: {
         lang: {
-          en: "Import format",
-          de: "Import Format"
+          en: "Subtitles start from",
+          de: "Untertitel beginnen ab"
         }
       }
     },
     saveIsdAsPng: {
       label: {
         lang: {
-          en: "Save ISD as PNG",
-          de: "Als PNG speichern"
+          en: "Export as PNG",
+          de: "Als PNG exportieren"
         }
       }
     },
@@ -372,6 +443,14 @@ var proto = {
         lang: {
           en: "Select a region",
           de: "Region auswählen"
+        }
+      }
+    },
+    services: {
+      label: {
+        lang: {
+          en: "Services",
+          de: "Dienste"
         }
       }
     },
@@ -399,11 +478,27 @@ var proto = {
         }
       }
     },
+    style: {
+      label: {
+        lang: {
+          en: "Style",
+          de: "Style"
+        }
+      }
+    },
+    styleMenus: {
+      label: {
+        lang: {
+          en: "Style menus",
+          de: "Style Menüs"
+        }
+      }
+    },
     subtitles: {
       label: {
         lang: {
-          en: "Load subtitles",
-          de: "Lade Untertitel"
+          en: "Subtitles",
+          de: "Untertitel"
         }
       }
     },
@@ -532,6 +627,14 @@ var proto = {
         lang: {
           en: "Use currently selected subtitles",
           de: "Derzeit ausgewählte Untertitel verwenden"
+        }
+      }
+    },
+    userInterface: {
+      label: {
+        lang: {
+          en: "User interface",
+          de: "Benutzeroberfläche"
         }
       }
     },

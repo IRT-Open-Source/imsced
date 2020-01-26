@@ -9,6 +9,9 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "1.2.26",
+    "@fortawesome/free-solid-svg-icons": "5.12.0",
+    "@fortawesome/vue-fontawesome": "0.1.9",
     "bootstrap": "4.3.1",
     "bootstrap-vue": "2.0.0-rc.20",
     "file-saver": "^2.0.2",

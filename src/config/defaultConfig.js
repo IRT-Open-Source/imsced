@@ -13,7 +13,9 @@ var proto = {
   defaultImageExportSize: {
     width: 1920,
     height: 1080
-  }
+  },
+  defaultOffsetSeconds: 0,
+  defaultOffsetFrames: "00:00:00:00"
 };
 
 DefaultConfig.prototype = proto;

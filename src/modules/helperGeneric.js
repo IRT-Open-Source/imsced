@@ -108,7 +108,14 @@ var proto = {
       "." +
       ms
     );
-  }
+  },
+  /*
+    e.g. "00:01:01.000" => 61
+  */
+ seconds(vttTimestamp) {
+  var seconds = new Date(`1970-01-01T${vttTimestamp}Z`).getTime() / 1000;
+  return seconds;
+ }
 };
 
 helperGeneric.prototype = proto;

@@ -190,7 +190,7 @@ export default {
 }
 
 .pBlock {
-  border-bottom: 1px solid lightseagreen;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   padding: 5px;
   display: flex;
   justify-content: start;

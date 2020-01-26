@@ -12,7 +12,7 @@ var proto = {
     }
   },
   video: {
-    width: 40,
+    width: 42,
     widthMetric: "vw"
   }
 };

@@ -52,40 +52,48 @@ See below for some of the important restrictions.
 
 See below for the current style attribute support:
 
-| Style Attribute | Comment                                  |
-| --------------- | ---------------------------------------- |
-| backgroundColor | Hex notation (without leading `#`)       |
-| color           | Hex notation (without leading `#`)       |
-| direction       | -                                        |
-| display         | -                                        |
-| displayAlign    | -                                        |
-| extent          | percentage metric (without trailing `%`) |
-| forcedDisplay   | -                                        |
-| fillLineGap     | -                                        |
-| fontFamily      | -                                        |
-| fontSize        | percentage metric (without trailing `%`) |
-| fontStyle       | -                                        |
-| fontWeight      | -                                        |
-| lineHeight      | percentage metric (without trailing `%`) |
-| multiRowAlign   | -                                        |
-| opacity         | -                                        |
-| origin          | percentage metric (without trailing `%`) |
-| showBackground  | -                                        |
-| textAlign       | -                                        |
-| textShadow      | -                                        |
-| unicodeBidi     | -                                        |
-| visibility      | -                                        |
-| wrapOption      | -                                        |
-| writingMode     | -                                        |
+| Style Attribute |
+| --------------- |
+| backgroundColor |
+| color           |
+| direction       |
+| display         |
+| displayAlign    |
+| extent          |
+| forcedDisplay   |
+| fillLineGap     |
+| fontFamily      |
+| fontSize        |
+| fontStyle       |
+| fontWeight      |
+| lineHeight      |
+| multiRowAlign   |
+| opacity         |
+| origin          |
+| showBackground  |
+| textAlign       |
+| textShadow      |
+| unicodeBidi     |
+| visibility      |
+| wrapOption      |
+| writingMode     |
 
 ### Player Controls
 
 - Native player controls for closed captions and fullscreen do not work with timed text rendering.
-- To view the video in full-screen mode, use the "Fullscreen" button on top of the video.
+- To view the video in full-screen mode, use the "Fullscreen" icon on top of the video.
 
-### Responsivness
+### Integrated REST services
 
-- When resizing the viewport (i.e. the video) the rendering will not change immediately. It will adopt to the new reference dimensions on the next edit or on the next displayed subtitle.
+#### SCF Service
+
+The Subtitling Conversion Framework [(SCF)](https://github.com/IRT-Open-Source/scf) is used as a REST service to import EBU STL files. At the moment a public URL for this REST service is configured. See the [Service README](https://github.com/IRT-Open-Source/scf/blob/master/README-SCF-SERVICE.md) of the SCF project how to setup your own SCF service.
+
+#### Burnin-Service
+
+The Video Image Burner [(VIB)](https://github.com/IRT-Open-Source/vib/blob/master/README.md) is used as a REST service to "burn in" IMSC subtitles. This option is deactivated by default. You need to setup your own VIB service, before activating this option in the configuration menu of the editor. See the [README](https://github.com/IRT-Open-Source/vib/blob/master/README.md) of the VIB project for more information.
+
+To be used by imscED, the service needs to available at http://localhost:9010.
 
 ## Contributions
 
@@ -123,6 +131,7 @@ npm run build
 
 Maintainer: Andreas Tai (IRT)
 Development: Michaela Finger (IRT), Yury Lungantsov (IRT), Andreas Tai (IRT)
+UI Concept: Laura Ehlis (IRT), Michaela Finger (IRT)
 
 ## Acknowledgement
 
