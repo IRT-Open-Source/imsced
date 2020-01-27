@@ -36,8 +36,11 @@ export default {
   },
   methods: {
     changedValue(val) {
-      this.element.text = val;
-      //console.log("change:" + this.element.text);
+      if (val == "") {
+        this.element.text = "Placeholder";
+      } else {
+        this.element.text = val;
+      } //console.log("change:" + this.element.text);
       this.updateSubtitlePlane({ time: this.playTime });
     },
     focusBubble() {
@@ -45,7 +48,11 @@ export default {
       this.$emit("gotFocus");
     },
     getValue() {
-      return this.element.text.trim();
+      if (this.element.text != "") {
+        return this.element.text.trim();
+      } else {
+        return this.element.text;
+      }
     },
     ...mapActions(["updateSubtitlePlane", "changeText"])
   }
