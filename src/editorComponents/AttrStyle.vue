@@ -82,7 +82,7 @@ export default {
     currentValue() {
       var value;
       var valueEntry = this.styleData.getValueEntry(this.name, this.styles);
-      if (!valueEntry.value) {
+      if (!valueEntry.hasOwnProperty("value")) {
         value = valueEntry;
       } else {
         value = valueEntry.value;

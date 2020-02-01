@@ -187,7 +187,7 @@ export const store = new Vuex.Store({
           return;
         }
 
-        if (!valueEntry.value) {
+        if (!valueEntry.hasOwnProperty("value")) {
           value = valueEntry; // better to check on string type?
         } else {
           value = valueEntry.value;
