@@ -1,3 +1,10 @@
+## 0.4.1 (Feb, 1, 2020)
+
+[#22](https://github.com/IRT-Open-Source/imsced/issues/22):
+Input fields with value "0"
+
+## Fixes
+
 ## 0.4.0 (Jan, 26, 2020)
 
 ## Enhancements
