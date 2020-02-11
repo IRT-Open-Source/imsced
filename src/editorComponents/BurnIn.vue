@@ -58,7 +58,7 @@
         @valueChanged="setQuality"
       />
       <!-- subtitles, pngs -->
-      <RadioGeneric
+      <!-- <RadioGeneric
         :class="[{ radio: uiLayout != 'plain' }, 'clear', 'floatBox']"
         :options="['yes', 'no']"
         :selected="selectedUseCurrentST"
@@ -72,7 +72,7 @@
         :id="'choosePNG'"
         :labelText="getLabelText('choosePNG')"
         @filechange="setSubtitlePngs"
-      />
+      /> -->
       <ButtonGeneric
         class="clear floatBox"
         :buttonName="getLabelText('burnInSubmit')"
