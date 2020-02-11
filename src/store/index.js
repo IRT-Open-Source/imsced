@@ -203,7 +203,7 @@ export const store = new Vuex.Store({
     addRegion(state) {
       let newRegionId = "r-" + state.helper.uuidv4();
       let newRegion = new MyRegion(newRegionId);
-      state.currentSubtitleData.regionHash[newRegionId] = newRegion;
+      Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
     },
     addSubtitleData(state, payload) {
       state.subtitleDataList.unshift(payload.imscData);

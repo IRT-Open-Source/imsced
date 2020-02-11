@@ -616,7 +616,7 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     getPlaytimeAsVttTime() {
-      return this.helper.vttTimestamp(this.playTime);
+      return (this.playTime == "-" ? this.playTime : this.helper.vttTimestamp(this.playTime));
     },
     getScfStartOffsetFrames() {
       return this.config.defaultOffsetFrames;
