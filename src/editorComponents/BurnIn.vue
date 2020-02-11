@@ -38,7 +38,7 @@
         class="floatBox"
         :options="videoOptions"
         :selected="selectedVideo"
-        :labelName="'Video source'"
+        :labelName="getLabelText('videoSource')"
         @valueChanged="setSelectedVideo"
       />
       <!-- video resolution -->
@@ -46,7 +46,7 @@
         class="floatBox"
         :options="getResolutionOpts()"
         :selected="selectedResolution"
-        :labelName="'Output Resolution'"
+        :labelName="getLabelText('outputResolution')"
         @valueChanged="setResolution"
       />
       <!-- video quality -->
@@ -54,7 +54,7 @@
         class="floatBox"
         :options="getQualityOptions()"
         :selected="selectedQuality"
-        :labelName="'Output quality (lower number = higher bitrate)'"
+        :labelName="getLabelText('outputQuality')"
         @valueChanged="setQuality"
       />
       <!-- subtitles, pngs -->
@@ -133,7 +133,7 @@ export default {
       progressPercentage: 0,
       progressText: "",
       selectedPngs: "",
-      selectedQuality: `${burnerConfig.defaultExportQuality}`,
+      selectedQuality: burnerConfig.defaultExportQuality,
       selectedResolution: "source",
       selectedUseCurrentST: "yes",
       selectedVideo: "",
@@ -212,7 +212,10 @@ export default {
       let selectedResCopy = this.selectedResolution;
       if (this.selectedResolution === "source") selectedResCopy = "";
       formData.append("resolution", selectedResCopy);
-      formData.append("quality", this.selectedQuality);
+      formData.append(
+        "quality",
+        this.burnerConfig.qualityOptions[this.selectedQuality]
+      );
       fetch(`${this.burnerConfig.url}/jobs`, {
         method: "POST",
         body: formData
@@ -291,7 +294,7 @@ export default {
     },
 
     getQualityOptions() {
-      return this.burnerConfig.qualityOptions.map(opt => `${opt}`);
+      return Object.keys(this.burnerConfig.qualityOptions);
     },
     getResolutionOpts() {
       let choices = ["source"];
@@ -311,7 +314,7 @@ export default {
       this.selectedVideo = "";
       this.selectedResolution = "source";
       this.selectedPngs = "";
-      this.selectedQuality = `${burnerConfig.defaultExportQuality}`;
+      this.selectedQuality = burnerConfig.defaultExportQuality;
       this.selectedUseCurrentST = "yes";
     },
     setQuality(val) {
