@@ -1,6 +1,6 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div :class="[className]">
+  <div>
     <p :class="[labelWeightClass]">{{ labelName }}</p>
     <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
     <b-form-input
@@ -18,9 +18,9 @@
 export default {
   data() {
     return {
-      opacity: 'ff'
-    }
-  },  
+      opacity: "ff"
+    };
+  },
   props: {
     labelName: {
       type: String | Number,
@@ -28,7 +28,7 @@ export default {
     },
     labelWeight: {
       type: String,
-      default: 'bold'
+      default: "bold"
     },
     size: {
       type: Number,
@@ -36,8 +36,8 @@ export default {
     },
     type: {
       type: String,
-      default: 'text'
-    },    
+      default: "text"
+    },
     value: {
       required: true
     }
@@ -48,14 +48,15 @@ export default {
       return name;
     },
     labelWeightClass: function() {
-      return 'font-weight-' + this.labelWeight
+      return "font-weight-" + this.labelWeight;
     }
   },
   methods: {
     changedValue: function(e) {
-      var newValue = this.type == 'color' ?
-        this.getRgbaColorValue(e.target.value) :
-        e.target.value;
+      var newValue =
+        this.type == "color"
+          ? this.getRgbaColorValue(e.target.value)
+          : e.target.value;
       this.$emit("valueChanged", newValue);
     },
     focusBubble() {
@@ -65,11 +66,11 @@ export default {
     // and remove #-character at begin.
     // hex color value, e.g. #00ff00
     getRgbaColorValue(value) {
-      return value.substring(1, 7) + this.opacity; 
+      return value.substring(1, 7) + this.opacity;
     },
     getValue() {
       switch (this.type) {
-        case "color": 
+        case "color":
           return this.getHexRGBValue();
         default:
           return this.value;
@@ -77,7 +78,7 @@ export default {
     },
     getHexRGBValue() {
       this.opacity = this.value.length == 8 ? this.value.substring(6) : "ff";
-      return '#' + this.value.substring(0, 6);
+      return "#" + this.value.substring(0, 6);
     }
   }
 };

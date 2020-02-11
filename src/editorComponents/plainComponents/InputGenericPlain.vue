@@ -1,6 +1,6 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div :class="[className]">
+  <div>
     <label>
       {{ labelName }}
       <input
