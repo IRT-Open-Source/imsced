@@ -1,9 +1,22 @@
+## 0.4.2 (Feb, 11, 2020)
+
+## Fixes
+
+[#24](https://github.com/IRT-Open-Source/imsced/issues/24):
+Text field disappears when complete text is deleted
+
+[#23](https://github.com/IRT-Open-Source/imsced/issues/23):
+Resizing video initial loading
+
+[#21](https://github.com/IRT-Open-Source/imsced/issues/21):
+Location rectangle does not move with motion for new region
+
 ## 0.4.1 (Feb, 1, 2020)
+
+## Fixes
 
 [#22](https://github.com/IRT-Open-Source/imsced/issues/22):
 Input fields with value "0"
-
-## Fixes
 
 ## 0.4.0 (Jan, 26, 2020)
 
