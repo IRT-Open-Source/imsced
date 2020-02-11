@@ -225,8 +225,8 @@ var proto = {
     fontWeight: {
       label: {
         lang: {
-          en: "Bold/Normal",
-          de: "Fett/Normal"
+          en: "Font Weight",
+          de: "Schriftstärke"
         }
       }
     },
