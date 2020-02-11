@@ -46,3 +46,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+div video {
+  width: 0px;
+  height: 0px;
+}
+</style>
