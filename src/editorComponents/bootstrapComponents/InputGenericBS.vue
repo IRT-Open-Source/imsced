@@ -8,8 +8,7 @@
       size="300"
       :value="getValue()"
       :type="type"
-      @keyup.native="changedValue"
-      @change.native="changedValue"
+      @input.native="changedValue"
       @focus.native="focusBubble"
     ></b-form-input>
   </div>
