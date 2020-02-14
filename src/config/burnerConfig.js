@@ -27,8 +27,8 @@ var proto = {
       height: 180
     }
   ],
-  defaultExportQuality: 23,
-  qualityOptions: [15, 20, 23, 26],
+  defaultExportQuality: "medium",
+  qualityOptions: { low: 26, medium: 21, high: 15 },
   url: "http://localhost:9010" // TODO
 };
 

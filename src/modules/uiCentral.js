@@ -390,6 +390,22 @@ var proto = {
         }
       }
     },
+    outputQuality: {
+      label: {
+        lang: {
+          en: "Output quality",
+          de: "Ausgabequalität"
+        }
+      }
+    },
+    outputResolution: {
+      label: {
+        lang: {
+          en: "Output Resolution",
+          de: "Ausgabeauflösung"
+        }
+      }
+    },
     savePng: {
       label: {
         lang: {
@@ -643,6 +659,14 @@ var proto = {
         lang: {
           en: "Video",
           de: "Video"
+        }
+      }
+    },
+    videoSource: {
+      label: {
+        lang: {
+          en: "Video source",
+          de: "Video (Quelldatei)"
         }
       }
     },
