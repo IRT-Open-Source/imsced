@@ -31,9 +31,9 @@
       <button @click="saveXml" class="menu-element">
         {{ getLabelText("saveXml") }}
       </button>
-      <button @click="saveIsdAsPng" class="menu-element">
+      <!--      <button @click="saveIsdAsPng" class="menu-element">
         {{ getLabelText("saveIsdAsPng") }}
-      </button>
+      </button> -->
       <button
         v-if="activateBurnIn"
         @click="toggleShowBurnIn"

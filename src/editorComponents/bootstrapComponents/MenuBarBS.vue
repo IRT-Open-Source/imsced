@@ -97,9 +97,9 @@
             {{ getLabelText("saveXml") }}
           </b-dropdown-item-button>
           <!-- Export ISD as PNG  -->
-          <b-dropdown-item-button @click.native="saveIsdAsPng">
+          <!--    <b-dropdown-item-button @click.native="saveIsdAsPng">
             {{ getLabelText("saveIsdAsPng") }}
-          </b-dropdown-item-button>
+          </b-dropdown-item-button> -->
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
