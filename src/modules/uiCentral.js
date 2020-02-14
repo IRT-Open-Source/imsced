@@ -601,32 +601,32 @@ var proto = {
     textShadow$0: {
       label: {
         lang: {
-          en: "Text Shadow - Horizontal Offset",
-          de: "Text Schatten - Horizontaler Offset"
+          en: "Horizontal Offset",
+          de: "Horizontaler Offset"
         }
       }
     },
     textShadow$1: {
       label: {
         lang: {
-          en: "Text Shadow - Vertical Offset",
-          de: "Text Schatten - Vertikaler Offset"
+          en: "Vertical Offset",
+          de: "Vertikaler Offset"
         }
       }
     },
     textShadow$2: {
       label: {
         lang: {
-          en: "Text Shadow - Blur Radius",
-          de: "Text Schatten - Weichzeichnenradius"
+          en: "Blur Radius",
+          de: "Weichzeichnenradius"
         }
       }
     },
     textShadow$3: {
       label: {
         lang: {
-          en: "Text Shadow - Color of shadow",
-          de: "Text Schatten - Farbe des Schattens"
+          en: "Color of shadow",
+          de: "Farbe des Schattens"
         }
       }
     },
