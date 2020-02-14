@@ -2,17 +2,33 @@
   <div class="top-bar">
     <b-navbar type="dark" variant="faded" class="custom-navbar">
       <b-navbar-brand class="custom-brand">imscED</b-navbar-brand>
-      <b-navbar-nav class="mr-3 ml-4 first-element">
-        <b-nav-form class="custom-form">
-          <!-- Select video file  -->
-          <CustomFileChooser
-            name="choosevideo1"
-            id="vc1"
-            :labelText="getLabelText('loadVideo')"
-            :icon="'photo-video'"
-            @filechange="changevideofile"
-          />
-        </b-nav-form>
+      <b-navbar-nav class="mr-2 ml-4 first-element">
+        <b-nav-item-dropdown
+          class="custom-item"
+          :text="getLabelText('video')"
+          :title="getLabelText('video')"
+          left
+        >
+          <template slot="button-content">
+            <font-awesome-icon
+              v-b-tooltip.hover
+              icon="photo-video"
+              size="lg"
+              :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+            >
+            </font-awesome-icon
+          ></template>
+
+          <b-dropdown-item-button>
+            <!-- Select video file  -->
+            <CustomFileChooser
+              name="choosevideo1"
+              id="vc1"
+              :labelText="getLabelText('loadVideo')"
+              @filechange="changevideofile"
+            />
+          </b-dropdown-item-button>
+        </b-nav-item-dropdown>
       </b-navbar-nav>
 
       <b-navbar-nav class="mr-2">
