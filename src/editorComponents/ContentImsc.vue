@@ -32,6 +32,7 @@
       <!-- Temporary Timing display -->
       <div id="tempTimingBox" v-if="type == 'p'">
         <div class="timingValues">{{ convertToVttTime(content.begin) }}</div>
+        <div class="hyphen">-</div>
         <div class="timingValues">{{ convertToVttTime(content.end) }}</div>
       </div>
 
@@ -202,6 +203,11 @@ export default {
   justify-content: space-evenly;
   padding-right: 10px;
   padding-left: 5px;
+}
+
+.hyphen {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
 }
 
 .timingValues {
