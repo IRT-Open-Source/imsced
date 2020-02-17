@@ -7,8 +7,7 @@
         type="text"
         :value="value"
         :size="size"
-        @keyup="changedValue"
-        @change="changedValue"
+        @input="changedValue"
         @focus="focusBubble"
       />
     </label>

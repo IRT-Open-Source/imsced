@@ -292,14 +292,6 @@
           </font-awesome-icon>
           {{ getMovieName }}
         </div>
-        <div>
-          <ButtonGeneric
-            :buttonName="fullScreenButtonName"
-            icon="expand"
-            :iconStyle="{ color: 'grey' }"
-            @click.native="toggleFullScreenMode"
-          />
-        </div>
       </div>
       <div class="captionWithButtons">
         <div>
@@ -347,9 +339,19 @@
           <DragFeature v-if="dragFeatureActive" />
           <ResizeFeature v-if="resizeFeatureActive" />
         </div>
-        <div>
-          <!-- Playtime in 00:00:00.000 format -->
-          <p>Playtime: {{ getPlaytimeAsVttTime() }}</p>
+        <div class="captionWithButtons">
+          <div>
+            <!-- Playtime in 00:00:00.000 format -->
+            Playtime: {{ getPlaytimeAsVttTime() }}
+          </div>
+          <div>
+            <ButtonGeneric
+              :buttonName="fullScreenButtonName"
+              icon="expand"
+              :iconStyle="{ color: 'grey' }"
+              @click.native="toggleFullScreenMode"
+            />
+          </div>
         </div>
         <div>
           <!-- Show menu depending on menustyle -->
@@ -439,9 +441,10 @@ export default {
       return name;
     },
     getSubsFileName() {
-      var name = this.subsFileName == "imscTestFile" ?
-        this.getLabelText("noFileLoaded") :
-        this.subsFileName;
+      var name =
+        this.subsFileName == "imscTestFile"
+          ? this.getLabelText("noFileLoaded")
+          : this.subsFileName;
       return name;
     },
     uiLayout: {

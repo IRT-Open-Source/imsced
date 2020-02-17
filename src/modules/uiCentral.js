@@ -225,8 +225,8 @@ var proto = {
     fontWeight: {
       label: {
         lang: {
-          en: "Bold/Normal",
-          de: "Fett/Normal"
+          en: "Font Weight",
+          de: "Schriftstärke"
         }
       }
     },
@@ -387,6 +387,22 @@ var proto = {
         lang: {
           en: "x-coordinate (%)",
           de: "x-Koordinate (%)"
+        }
+      }
+    },
+    outputQuality: {
+      label: {
+        lang: {
+          en: "Output quality",
+          de: "Ausgabequalität"
+        }
+      }
+    },
+    outputResolution: {
+      label: {
+        lang: {
+          en: "Output Resolution",
+          de: "Ausgabeauflösung"
         }
       }
     },
@@ -585,32 +601,32 @@ var proto = {
     textShadow$0: {
       label: {
         lang: {
-          en: "Text Shadow - Horizontal Offset",
-          de: "Text Schatten - Horizontaler Offset"
+          en: "Horizontal Offset",
+          de: "Horizontaler Offset"
         }
       }
     },
     textShadow$1: {
       label: {
         lang: {
-          en: "Text Shadow - Vertical Offset",
-          de: "Text Schatten - Vertikaler Offset"
+          en: "Vertical Offset",
+          de: "Vertikaler Offset"
         }
       }
     },
     textShadow$2: {
       label: {
         lang: {
-          en: "Text Shadow - Blur Radius",
-          de: "Text Schatten - Weichzeichnenradius"
+          en: "Blur Radius",
+          de: "Weichzeichnenradius"
         }
       }
     },
     textShadow$3: {
       label: {
         lang: {
-          en: "Text Shadow - Color of shadow",
-          de: "Text Schatten - Farbe des Schattens"
+          en: "Color of shadow",
+          de: "Farbe des Schattens"
         }
       }
     },
@@ -643,6 +659,14 @@ var proto = {
         lang: {
           en: "Video",
           de: "Video"
+        }
+      }
+    },
+    videoSource: {
+      label: {
+        lang: {
+          en: "Video source",
+          de: "Video (Quelldatei)"
         }
       }
     },
