@@ -60,7 +60,7 @@ export default {
 
     labelWeight: {
       type: String,
-      default: 'normal'
+      default: "normal"
     },
 
     setter: {
@@ -82,6 +82,10 @@ export default {
     currentValue() {
       var value;
       var valueEntry = this.styleData.getValueEntry(this.name, this.styles);
+      if (!valueEntry) {
+        console.log("no value for " + this.name);
+        return;
+      }
       if (!valueEntry.hasOwnProperty("value")) {
         value = valueEntry;
       } else {
@@ -131,7 +135,7 @@ export default {
     },
     // expected values of this.type: 'simple' or 'simple-type'
     // where 'type' is html input type (e.g. color, button, date etc.)
-    // e.g. 'simple-color' for color picker 
+    // e.g. 'simple-color' for color picker
     getInputType() {
       let type = this.type.split("-").pop();
       if (type == "simple") {
@@ -143,7 +147,7 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     isInput() {
-      return (this.type.substring(0, 6) == "simple");
+      return this.type.substring(0, 6) == "simple";
     },
     setNewValue(newValue) {
       try {

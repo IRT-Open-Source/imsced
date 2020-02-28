@@ -283,7 +283,7 @@
 
     <div id="workview">
       <div id="subtitleListView" ref="subtitleListView">
-        <ContentImsc :content="body" v-if="body" />
+        <ContentImsc :content="body" :level="0" v-if="body" />
       </div>
 
       <div class="captionWithButtons videoCol">
@@ -619,7 +619,9 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     getPlaytimeAsVttTime() {
-      return (this.playTime == "-" ? this.playTime : this.helper.vttTimestamp(this.playTime));
+      return this.playTime == "-"
+        ? this.playTime
+        : this.helper.vttTimestamp(this.playTime);
     },
     getScfStartOffsetFrames() {
       return this.config.defaultOffsetFrames;

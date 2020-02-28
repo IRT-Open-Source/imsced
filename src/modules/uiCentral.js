@@ -68,6 +68,12 @@ var proto = {
           en: "Font Color",
           de: "Schriftfarbe"
         }
+      },
+      info: {
+        lang: {
+          en: "Foreground color/font color",
+          de: "Farbe/Schriftfarbe"
+        }
       }
     },
     direction: {
@@ -75,6 +81,12 @@ var proto = {
         lang: {
           en: "direction",
           de: "direction"
+        }
+      },
+      info: {
+        lang: {
+          en: "Bidirectional paragraph level", // todo?
+          de: "Bidirektionale Absatz-Ebene"
         }
       }
     },
@@ -108,12 +120,26 @@ var proto = {
           en: "display",
           de: "Sichtbarkeit"
         }
+      },
+      info: {
+        lang: {
+          en:
+            "Defines whether an element is included in the layout and composition of a region",
+          de:
+            "Definiert, ob ein Element in das Layout der Region mit eingebunden wird" 
+        }
       }
     },
     displayAlign: {
       label: {
         lang: {
           en: "Vertical position",
+          de: "Vertikale Ausrichtung"
+        }
+      },
+      info: {
+        lang: {
+          en: "Alignment of block areas - vertical position",
           de: "Vertikale Ausrichtung"
         }
       }
@@ -406,6 +432,30 @@ var proto = {
         }
       }
     },
+    ruby: {
+      label: {
+        lang: {
+          en: "Ruby",
+          de: "Ruby"
+        }
+      }
+    },
+    rubyAlign: {
+      label: {
+        lang: {
+          en: "Ruby alignment",
+          de: "Ruby Ausrichtung"
+        }
+      }
+    },
+    rubyPosition: {
+      label: {
+        lang: {
+          en: "Ruby - position",
+          de: "Ruby - Position"
+        }
+      }
+    },
     savePng: {
       label: {
         lang: {
@@ -467,6 +517,14 @@ var proto = {
         lang: {
           en: "Services",
           de: "Dienste"
+        }
+      }
+    },
+    shear: {
+      label: {
+        lang: {
+          en: "Shear (transvection)",
+          de: "Shear (Transvektion)"
         }
       }
     },
@@ -563,6 +621,14 @@ var proto = {
         lang: {
           en: "Region Area",
           de: "Regionsbereich"
+        }
+      }
+    },
+    tabRuby: {
+      label: {
+        lang: {
+          en: "Ruby",
+          de: "Ruby"
         }
       }
     },
@@ -720,6 +786,23 @@ var proto = {
       }
     }
     return availableLanguages;
+  },
+  getInfo(name, lang) {
+    if (!this.elements[name]) {
+      console.error(`get label: unknown name '${name}'`);
+      return name;
+    }
+    if (!this.elements[name].info) {
+      return this.getLabel(name, lang);
+    }
+    var data = this.elements[name].info;
+    if (data.lang[lang]) {
+      return data.lang[lang];
+    } else if (data.lang["en"]) {
+      return data.lang["en"];
+    } else {
+      return "";
+    }
   }
 };
 

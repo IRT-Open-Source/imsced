@@ -60,7 +60,7 @@
                   v-for="attr of getEditableAttrs(contentKind, tab)"
                   class="p-1"
                   :key="attr"
-                  :title="attr"
+                  :title="getInfoText(attr)"
                 >
                   <!-- 
                     UI type of the AttrStyle component is selected based on value
@@ -247,6 +247,9 @@ export default {
     getTabsClass() {
       var tc = this.state == "style" ? "" : "hidden";
       return tc;
+    },
+    getInfoText(attr) {
+      return this.uiData.getInfo(attr, this.lang);
     },
     getSetter(attr) {
       var helper;
