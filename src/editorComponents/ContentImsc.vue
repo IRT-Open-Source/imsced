@@ -152,6 +152,7 @@ export default {
       return this.helper.vttTimestamp(seconds);
     },
     handleFocus() {
+      this.resetFocusContent();
       this.$emit("gotFocus");
       if (this.content.begin !== this.playTime) {
         this.setVideoPlayTime({ time: this.content.begin });
@@ -166,7 +167,7 @@ export default {
         this.setActiveSpan({ content: this.content });
       }
     },
-    ...mapActions(["setVideoPlayTime"]),
+    ...mapActions(["resetFocusContent", "setVideoPlayTime"]),
     ...mapMutations(["setActiveP", "setActiveSpan"])
   }
 };
