@@ -6,6 +6,7 @@
     <b-form-input
       class="mt-1"
       size="300"
+      autocomplete="off"
       :value="getValue()"
       :type="type"
       @input.native="changedValue"

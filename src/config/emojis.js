@@ -1,0 +1,30 @@
+let allowedEmojis = [
+  "grinning",
+  "grin",
+  "joy",
+  "rolling_on_the_floor_laughing",
+  "smiley",
+  "smile",
+  "sweat_smile",
+  "laughing",
+  "wink",
+  "blush",
+  "yum",
+  "sunglasses",
+  "heart_eyes",
+  "kissing_heart",
+  "kissing",
+  "kissing_smiling_eyes",
+  "kissing_closed_eyes",
+  "slightly_smiling_face",
+  "hugging_face",
+  "thinking_face",
+  "point_up",
+  "point_down",
+  "thumbsup",
+  "thumbsdown",
+  "v",
+  "wave"
+];
+
+export { allowedEmojis };

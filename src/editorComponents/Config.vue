@@ -228,6 +228,17 @@
                   :labelName="'Display forced only mode'"
                   @valueChanged="setForcedOnlyMode"
                 />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="[
+                    'allowed only',
+                    'allowed + default',
+                    'default only'
+                  ]"
+                  :selected="showEmojisSetting"
+                  :labelName="'Show Emojis'"
+                  @valueChanged="setShowEmojisSetting"
+                />
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -313,6 +324,7 @@ export default {
       "forcedOnly",
       "debug",
       "activateBurnIn",
+      "showEmojisSetting",
       "showRegionSelect",
       "showSpanMenu",
       "showPMenu",
@@ -348,6 +360,7 @@ export default {
     ...mapMutations([
       "setDebug",
       "setActivateBurnIn",
+      "setShowEmojisSetting",
       "setShowRegionSelect",
       "setShowSpanMenu",
       "setShowPMenu",

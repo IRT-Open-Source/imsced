@@ -31,13 +31,14 @@ export const store = new Vuex.Store({
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
-    movieName: "", // video file name 
+    movieName: "", // video file name
     movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
     scfImportFormat: "stl",
     scfExportFormat: "ebu-tt-d-basic-de",
+    showEmojisSetting: "allowed + default",
     showRegionMenu: "show", //whether to show the style menu for a region
     showBodyMenu: "show",
     showBurnIn: false, // toggle the burn in user interface(requires activateBurnIn to be true)
@@ -171,7 +172,7 @@ export const store = new Vuex.Store({
     },
     // get a specific value from region styles (like "extent$h") (TODO: check if working for every case)
     getRegionValue(state, getters) {
-      return name => {
+      return (name) => {
         let namespace = state.styleData.attrs[name].ns;
         let valueEntry, value;
 
@@ -267,6 +268,9 @@ export const store = new Vuex.Store({
     },
     setShowConfigUi(state, val) {
       state.showConfigUi = val;
+    },
+    setShowEmojisSetting(state, val) {
+      state.showEmojisSetting = val;
     },
     setShowScfService(state, val) {
       state.showScfService = val;
@@ -428,14 +432,13 @@ export const store = new Vuex.Store({
       state.config.defaultOffsetFrames = val;
     },
     setOffsetSeconds({ state }, val) {
-      if (typeof(val) == "string") {
+      if (typeof val == "string") {
         let seconds = state.helper.seconds(val);
         state.config.defaultOffsetSeconds = seconds;
-      }
-      else {
+      } else {
         state.config.defaultOffsetSeconds = val;
       }
-    },  
+    },
     setVideoPlayTime({ getters, dispatch }, payload) {
       if (getters.videoDom) {
         var myVideo = getters.videoDom;

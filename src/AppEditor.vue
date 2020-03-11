@@ -303,7 +303,7 @@
           </font-awesome-icon>
           {{ getSubsFileName }}
         </div>
-        <div v-if="showMenu">
+        <div v-show="showMenu">
           <ButtonGeneric
             :buttonName="getLabelText('style')"
             :variant="getEditorToggleStyle('style')"
@@ -316,6 +316,7 @@
             @click.native="setEditorState('position')"
           >
           </ButtonGeneric>
+          <EmojiPicker />
         </div>
       </div>
       <div id="editArea" ref="editArea">
@@ -376,6 +377,7 @@ import Config from "./editorComponents/Config.vue";
 import DragFeature from "./editorComponents/DragFeature.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
+import EmojiPicker from "./editorComponents/EmojiPicker.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
 import ImscExport from "./modules/imscExport.js";
@@ -399,6 +401,7 @@ export default {
     ContentImsc,
     DragFeature,
     DropDownGeneric,
+    EmojiPicker,
     h1Generic,
     LiveActionsMenu,
     MenuGeneric,
@@ -676,7 +679,7 @@ export default {
       });
     },
     saveXml: function() {
-      let p1 = new Promise(r => {
+      let p1 = new Promise((r) => {
         let imscXml = new ImscExport(this.currentSubtitleData.tt);
         imscXml.iterateData();
         let serializer = new XMLSerializer();
@@ -687,7 +690,7 @@ export default {
           })
         );
       });
-      p1.then(v => saveAs(v, "imsc2.xml"));
+      p1.then((v) => saveAs(v, "imsc2.xml"));
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
