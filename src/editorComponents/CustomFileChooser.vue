@@ -5,13 +5,13 @@
       ><font-awesome-icon
         v-b-tooltip.hover
         :icon="icon"
-        size="lg"
-        :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
+        :size="size"
+        :style="iconStyle"
       >
       </font-awesome-icon
     ></span>
     <span v-else>{{ labelText }}</span>
-    <input type="file" :name="name" :id="id" @change="fileChanged" />
+    <input type="file" :name="name" :id="id" :accept="accept" @change="fileChanged" />
   </label>
 </template>
 
@@ -25,12 +25,18 @@ export default {
       type: Boolean,
       required: false
     },
-
+    iconStyle: {
+      type: Object,
+      default: () => ({ color: 'rgba(255, 255, 255, 0.75)' })
+    },
     id: {
       type: String,
       required: true
     },
-
+    size: {
+      type: String,
+      default: "lg"
+    },
     labelText: {
       type: String,
       required: true
@@ -47,6 +53,10 @@ export default {
     icon: {
       type: String,
       required: false
+    },
+    accept: {
+      type: String,
+      default: ""
     }
   },
   computed: {
@@ -74,7 +84,7 @@ export default {
     sendText: function(fileObj) {
       //Using standard file reader API
       var reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         var text = e.target.result;
         this.$emit("textSent", text);
       };

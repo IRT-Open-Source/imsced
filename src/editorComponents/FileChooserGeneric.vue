@@ -3,6 +3,7 @@
   <div>
     <FileChooserGenericPlain
       v-if="uiLayout == 'plain'"
+      :accept="accept"
       :name="name"
       :id="id"
       :labelText="labelText"
@@ -11,6 +12,7 @@
 
     <FileChooserGenericBS
       v-else
+      :accept="accept"
       :id="id"
       :name="name"
       :labelText="labelText"
@@ -49,6 +51,10 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    accept: {
+      type: String,
+      default: ""
     }
   },
   computed: {

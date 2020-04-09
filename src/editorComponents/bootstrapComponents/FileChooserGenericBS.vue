@@ -3,7 +3,7 @@
   <div>
     <b>{{ labelText }}</b>
     <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
-    <b-form-file class="mt-1" size="sm" @change.native="changedValue" />
+    <b-form-file class="mt-1" :accept="accept" size="sm" @change.native="changedValue" />
   </div>
 </template>
 
@@ -23,6 +23,11 @@ export default {
     name: {
       type: String,
       required: true
+    },
+
+    accept: {
+      type: String,
+      default: ""
     }
   },
   methods: {
