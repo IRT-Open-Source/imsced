@@ -304,11 +304,20 @@ var proto = {
         }
       }
     },
+    
+    importSrt: {
+      label: {
+        lang: {
+          en: "Import SRT",
+          de: "Importiere SRT"
+        }
+      }
+    },
     importStl: {
       label: {
         lang: {
-          en: "Import (STL)",
-          de: "Importieren (STL)"
+          en: "Import STL",
+          de: "Importiere STL"
         }
       }
     },
@@ -549,6 +558,14 @@ var proto = {
         lang: {
           en: "Show Configuration",
           de: "Konfiguration einblenden"
+        }
+      }
+    },
+    srtTemplateFile: {
+      label: {
+        lang: {
+          en: "SRT template file",
+          de: "SRT Datei-Vorlage"
         }
       }
     },

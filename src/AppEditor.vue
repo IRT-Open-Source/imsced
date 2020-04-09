@@ -492,6 +492,7 @@ export default {
       "movieSrc",
       "playTime",
       "resizingActive",
+      "scfData",
       "showRegionMenu",
       "showBurnIn",
       "showBodyMenu",
@@ -599,6 +600,27 @@ export default {
     this.$nextTick(function() {
       this.setMaxHeight();
     });
+    // scf service - get templates for SRT import
+    fetch(this.scfData.endpoints.template, {
+        method: "GET"
+      })
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error(
+              "Couldn't get template files."
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setSrtTemplateOptions(data);
+        })
+        .catch((error) => {
+          console.log(
+            "Something went wrong while communicating with the SCF service. " +
+              error
+          );
+        });
   },
   methods: {
     addNewRegion() {
@@ -713,6 +735,7 @@ export default {
       "setVideoDomHeight",
       "setVideoDomWidth",
       "toggleFullScreenMode",
+      "setSrtTemplateOptions",
       "setUiLayout"
     ]),
     ...mapActions([

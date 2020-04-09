@@ -22,10 +22,18 @@
       <ScfService
         class="menu-element"
         v-if="showScfService == 'show'"
-        :name="'importSubtitle1'"
-        :id="'is1'"
+        :id="'importStlMenuBar'"
         :labelText="getLabelText('importStl')"
-        :getText="true"
+        :importFormatProp="'stl'"
+        @textSent="newSubs"
+      />
+      <ScfService
+        class="menu-element"
+        v-if="showScfService == 'show'"
+        :id="'importSrtMenuBar'"
+        :labelText="getLabelText('importSrt')"
+        :importFormatProp="'srt'"
+        :exportFormatProp="'ttml'"
         @textSent="newSubs"
       />
       <button @click="saveXml" class="menu-element">
@@ -116,11 +124,11 @@ export default {
       let isdExport = new IsdExport(this.currentSubtitleData.tt);
       isdExport
         .saveAsPng(this.config.defaultImageExportSize)
-        .then(content => {
+        .then((content) => {
           let fname = `${this.subsFileName}.zip`;
           saveAs(content, fname);
         })
-        .catch(reason => {
+        .catch((reason) => {
           console.log(
             "an error occured while saving subtitles as png:",
             reason

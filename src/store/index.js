@@ -49,6 +49,9 @@ export const store = new Vuex.Store({
     showRegionSelect: "show",
     showScfService: "show",
     showSpanMenu: "show",
+    srtImportLang: "original (template)", // language for the imsc document
+    srtImportTemplate: "ebu-tt-d-basic-de.xml",
+    srtTemplateOptions: ["ebu-tt-d-basic-de.xml"],
     styleData: new StyleCentral(), // setting for and processing of style attributes
     subActive: false, // if subtitle data is rendered on video
     subsFileName: "imscTestFile", // default value if no subtitle file was loaded
@@ -286,6 +289,15 @@ export const store = new Vuex.Store({
     },
     setShowSpanMenu(state, val) {
       state.showSpanMenu = val;
+    },
+    setSrtImportLang(state, val){
+      state.srtImportLang = val;
+    },
+    setSrtImportTemplate(state, val){
+      state.srtImportTemplate = val;
+    },
+    setSrtTemplateOptions(state, val){
+      state.srtTemplateOptions = val;
     },
     setSubsFileName(state, val) {
       state.subsFileName = val;

@@ -90,28 +90,43 @@
                   :labelName="''"
                   @valueChanged="setShowScfService"
                 />
-
-                <DropDownGeneric
-                  v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
-                  :options="scfData.exportFormats"
-                  :selected="scfExportFormat"
-                  :labelName="getLabelText('scfExportFormat')"
-                  @valueChanged="setScfExportFormat"
-                />
-                <br />
-                <div>
-                  <fieldset>
-                    <legend v-if="uiLayout == 'plain'">
-                      {{ getLabelText("scfStartOffset") }}
-                    </legend>
-                    <b v-else>{{ getLabelText("scfStartOffset") }}</b>
-                    <InputGeneric
-                      :value="getScfStartOffsetFrames()"
-                      :labelName="''"
-                      @valueChanged="setOffsetFrames"
-                    />
-                  </fieldset>
-                </div>
+                <span v-if="showScfService == 'show'">
+                  <DropDownGeneric
+                    v-if="scfImportFormat != 'imsc'"
+                    :options="scfData.exportFormats"
+                    :selected="scfExportFormat"
+                    :labelName="getLabelText('scfExportFormat')"
+                    @valueChanged="setScfExportFormat"
+                  />
+                  <br />
+                  <div>
+                    <fieldset>
+                      <legend v-if="uiLayout == 'plain'">
+                        {{ getLabelText("scfStartOffset") }}
+                      </legend>
+                      <b v-else>{{ getLabelText("scfStartOffset") }}</b>
+                      <InputGeneric
+                        :value="getScfStartOffsetFrames()"
+                        :labelName="''"
+                        @valueChanged="setOffsetFrames"
+                      />
+                    </fieldset>
+                  </div>
+                  <br />
+                  <DropDownGeneric
+                    :options="srtTemplateOptions"
+                    :selected="srtImportTemplate"
+                    :labelName="getLabelText('srtTemplateFile')"
+                    @valueChanged="setSrtImportTemplate"
+                  />
+                  <br />
+                  <InputGeneric
+                    :value="srtImportLang"
+                    :labelName="'SRT import language'"
+                    @valueChanged="setSrtImportLang"
+                  />
+                  <br />
+                </span>
                 <hr class="full-width-hr" />
                 <h5>Burn-In Service</h5>
                 <RadioGeneric
@@ -334,9 +349,12 @@ export default {
       "scfData",
       "showScfService",
       "scfImportFormat",
+      "srtImportTemplate",
+      "srtTemplateOptions",
       "lang",
       "menuStyleConfig",
       "menuStyle",
+      "srtImportLang",
       "uiData",
       "uiLayout"
     ])
@@ -370,6 +388,8 @@ export default {
       "setShowScfService",
       "setLang",
       "setMenuStyle",
+      "setSrtImportLang",
+      "setSrtImportTemplate",
       "setUiLayout"
     ]),
     ...mapActions([

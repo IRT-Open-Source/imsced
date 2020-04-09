@@ -60,13 +60,23 @@
               @textSent="newSubs"
             />
           </b-dropdown-item-button>
+          <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item-button :disabled="showScfService == 'hide'">
             <!-- Select subtitle file with imsc format-->
             <ScfService
-              :name="'importSubtitle1'"
-              :id="'is1'"
+              :id="'importSTLMenuBS'"
               :labelText="getLabelText('importStl')"
-              :getText="true"
+              :importFormatProp="'stl'"
+              @textSent="newSubs"
+            />
+          </b-dropdown-item-button>
+          <b-dropdown-item-button :disabled="showScfService == 'hide'">
+            <!-- Select subtitle file with imsc format-->
+            <ScfService
+              :id="'importSRTMenuBS'"
+              :labelText="getLabelText('importSrt')"
+              :importFormatProp="'srt'"
+              :exportFormatProp="'ttml'"
               @textSent="newSubs"
             />
           </b-dropdown-item-button>
