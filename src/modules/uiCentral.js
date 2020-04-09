@@ -432,6 +432,30 @@ var proto = {
         }
       }
     },
+    ruby: {
+      label: {
+        lang: {
+          en: "Ruby",
+          de: "Ruby"
+        }
+      }
+    },
+    rubyAlign: {
+      label: {
+        lang: {
+          en: "Ruby alignment",
+          de: "Ruby Ausrichtung"
+        }
+      }
+    },
+    rubyPosition: {
+      label: {
+        lang: {
+          en: "Ruby - position",
+          de: "Ruby - Position"
+        }
+      }
+    },
     savePng: {
       label: {
         lang: {
@@ -493,6 +517,14 @@ var proto = {
         lang: {
           en: "Services",
           de: "Dienste"
+        }
+      }
+    },
+    shear: {
+      label: {
+        lang: {
+          en: "Shear (transvection)",
+          de: "Shear (Transvektion)"
         }
       }
     },
@@ -589,6 +621,14 @@ var proto = {
         lang: {
           en: "Region Area",
           de: "Regionsbereich"
+        }
+      }
+    },
+    tabRuby: {
+      label: {
+        lang: {
+          en: "Ruby",
+          de: "Ruby"
         }
       }
     },

@@ -47,13 +47,13 @@ let proto = {
   },
   aspectRatio: function(obj) {
     let el = this.stackObj.getLast();
-    let val = ''; 
-    switch (Math.trunc(obj*10)) {
+    let val = "";
+    switch (Math.trunc(obj * 10)) {
       case 17:
-        val = '16 9';
+        val = "16 9";
         break;
       case 13:
-        val = '4 3';
+        val = "4 3";
         break;
       default:
         let maxDecimalPlaces = 4;
@@ -61,7 +61,7 @@ let proto = {
         let numerator = obj.toFixed(maxDecimalPlaces) * denominator;
         val = `${numerator} ${denominator}`;
     }
-    if (val !== '') {
+    if (val !== "") {
       el.setAttribute("ttp:displayAspectRatio", val);
     }
   },
@@ -201,6 +201,19 @@ let proto = {
   "http://www.w3.org/ns/ttml#styling origin": function(obj) {
     var value = obj.w.value + obj.w.unit + " " + obj.h.value + obj.h.unit;
     this.setAttribute("tts:origin", value);
+  },
+  "http://www.w3.org/ns/ttml#styling ruby": function(obj) {
+    this.setAttribute("tts:ruby", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling rubyAlign": function(obj) {
+    this.setAttribute("tts:rubyAlign", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling rubyPosition": function(obj) {
+    this.setAttribute("tts:rubyPosition", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling shear": function(obj) {
+    var value = obj.value + obj.unit;
+    this.setAttribute("tts:shear", value);
   },
   "http://www.w3.org/ns/ttml#styling showBackground": function(obj) {
     this.setAttribute("tts:showBackground", obj);

@@ -101,6 +101,41 @@ var proto = {
       editOn: ["region"],
       valueObject: true
     },
+    ruby: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      allowedValues: [
+        "none",
+        "container",
+        "base",
+        "baseContainer",
+        "text",
+        "textContainer",
+        "delimiter"
+      ],
+      editOn: ["span"]
+    },
+    rubyAlign: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      allowedValues: [
+        "start",
+        "center",
+        "end",
+        "spaceAround",
+        "spaceBetween",
+        "withBase"
+      ],
+      editOn: ["body", "div", "p", "region", "span"]
+    },
+    rubyPosition: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      allowedValues: ["before", "after", "outside"],
+      editOn: ["body", "div", "p", "region", "span"]
+    },
+    shear: {
+      ns: "http://www.w3.org/ns/ttml#styling",
+      editOn: ["body", "div", "p", "region"],
+      valueObject: true
+    },
     showBackground: {
       ns: "http://www.w3.org/ns/ttml#styling",
       allowedValues: ["always", "whenActive"],
@@ -186,7 +221,12 @@ var proto = {
       var valueEntry = this.getValueEntry(name, styles);
       valueEntry.value = val;
     } else {
-      styles[styleName] = val;
+      if (name.includes("$")) {
+        var composition = this.getComposition(name);
+        styles[styleName][composition.propertyName] = val;
+      } else {
+        styles[styleName] = val;
+      }
     }
   },
   getComposition(name) {

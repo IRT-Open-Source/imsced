@@ -63,6 +63,38 @@
     />
 
     <AttrStyle
+      v-if="editable('ruby')"
+      :name="'ruby'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
+      v-if="editable('rubyAlign')"
+      :name="'rubyAlign'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
+      v-if="editable('rubyPosition')"
+      :name="'rubyPosition'"
+      :styles="styles"
+      :type="'radio'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
+      v-if="editable('shear')"
+      :name="'shear'"
+      :styles="styles"
+      :type="'simple'"
+      @gotFocus="focusBubble"
+    />
+
+    <AttrStyle
       v-if="editable('showBackground')"
       :name="'showBackground'"
       :styles="styles"
