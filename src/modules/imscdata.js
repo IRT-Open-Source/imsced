@@ -4,6 +4,16 @@ import helperGeneric from "./helperGeneric.js";
 function ImscData(text) {
   this.help = new helperGeneric();
   /*
+    get xml:lang attribute value 
+  */
+  try {
+    this.xmlLang = this.help.getXmlLang(this.help.getXmlDocument(text));
+  }
+  catch (e) {
+    console.log(e);
+    this.xmlLang = "en";
+  }
+  /*
 		parse TTML document with imscJS and get data structure
 	*/
   this.tt = imsc.fromXML(text);

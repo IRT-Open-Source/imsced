@@ -1,6 +1,7 @@
 import DefaultConfig from "../config/defaultConfig.js";
 import helperGeneric from "../modules/helperGeneric.js";
 import imsc from "imsc";
+import ImscExport from "../modules/imscExport.js";
 import MenuStyleConfig from "../config/menuStyleConfig.js";
 import MyRec from "../recommendations/myRec.js";
 import MyRegion from "../modules/myRegion.js";
@@ -397,6 +398,22 @@ export const store = new Vuex.Store({
       if (state.subActive) {
         dispatch("removeSub");
       }
+    },
+    /**
+     * Save the active subtitle document as xml
+     */
+    saveAsXml({ state }) {
+      return new Promise(r => {
+        let imscXml = new ImscExport(state.currentSubtitleData);
+        imscXml.iterateData();
+        let serializer = new XMLSerializer();
+        let xmlString = serializer.serializeToString(imscXml.doc);
+        r(
+          new Blob([xmlString], {
+            type: "text/xml"
+          })
+        );
+      });
     },
     setForcedOnlyMode({ state, dispatch }, val) {
       state.forcedOnly = val === "on";

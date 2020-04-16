@@ -378,7 +378,6 @@ import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
-import ImscExport from "./modules/imscExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
 import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
@@ -690,18 +689,8 @@ export default {
       });
     },
     saveXml: function() {
-      let p1 = new Promise((r) => {
-        let imscXml = new ImscExport(this.currentSubtitleData.tt);
-        imscXml.iterateData();
-        let serializer = new XMLSerializer();
-        let xmlString = serializer.serializeToString(imscXml.doc);
-        r(
-          new Blob([xmlString], {
-            type: "text/xml"
-          })
-        );
-      });
-      p1.then((v) => saveAs(v, "imsc2.xml"));
+      this.saveAsXml()
+      .then(v => saveAs(v, "imsc2.xml"));
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
@@ -731,6 +720,7 @@ export default {
       "addVideoTextTrack",
       "removeSub",
       "resetFocusContent",
+      "saveAsXml",
       "setNewRegion",
       "setOffsetFrames",
       "triggerTimeUpdate",

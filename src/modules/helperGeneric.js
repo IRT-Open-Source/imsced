@@ -40,6 +40,34 @@ var proto = {
       })
       .join("");
   },
+  /**
+   * parse XML from a string into a XMLDocument
+   * @param {string} text
+   * @returns {XMLDocument} 
+   */
+  getXmlDocument(text) {
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(text, "text/xml");
+    return xmlDoc;
+  },
+  /** 
+   * get xml:lang attribute value on the <tt> element
+   * @param {XMLDocument} xmlDoc
+   * @returns {string}   
+  */
+  getXmlLang(xmlDoc) {
+    let tt = xmlDoc.getElementsByTagName("tt");
+    if (tt.length == 0) {
+      throw new Error("Cannot get value of xml:lang, <tt> node not found.");
+    }
+
+    let value = tt[0].getAttribute("xml:lang");
+    if (value === null || value === "") {
+      throw new Error("Attribute xml:lang at <tt> node is required.");
+    }
+
+    return value;
+  },
   /* e.g. '0000ff' => [0, 0, 170, 250] */
   hexRgbToColorArray(hexRgb) {
     if (hexRgb.length !== 6) {

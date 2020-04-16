@@ -7,18 +7,21 @@
   Getting the imscJS parsed and through the editor
   manipulated data object as input for the constructor.
 */
-import helperGeneric from "./helperGeneric.js";
 
+/**
+ * constructor
+ * @param {ImscData} obj 
+ */
 function ImscExport(obj) {
   this.ttText =
-    "<tt xmlns='http://www.w3.org/ns/ttml' \
-		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter' \
-		 xmlns:tts='http://www.w3.org/ns/ttml#styling' \
-     xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling' \
-     xmlns:ebutts='urn:ebu:tt:style' \
-     xml:lang=''/> ";
+    `<tt xmlns='http://www.w3.org/ns/ttml'
+		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter'
+		 xmlns:tts='http://www.w3.org/ns/ttml#styling'
+     xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'
+     xmlns:ebutts='urn:ebu:tt:style'
+     xml:lang='${obj.xmlLang}'/>`;
   this.parser = new DOMParser();
-  this.help = new helperGeneric();
+  this.help = obj.help;
   this.xmlDoc = this.parser.parseFromString(this.ttText, "text/xml");
   this.convertColorHex = true;
   this.doc = this.xmlDoc.documentElement;
@@ -28,7 +31,7 @@ function ImscExport(obj) {
       return this.stack[this.stack.length - 1];
     }
   };
-  this.data = obj;
+  this.data = obj.tt;
   this.collapsWhitespace = true; //if empty span should be filtered out
   this.vttTimes = true;
 }

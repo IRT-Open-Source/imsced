@@ -141,7 +141,6 @@ import ButtonGeneric from "../ButtonGeneric.vue";
 import CustomFileChooser from "./../CustomFileChooser.vue";
 import FileChooserGeneric from "./../FileChooserGeneric.vue";
 import ImscData from "./../../modules/imscdata.js";
-import ImscExport from "../../modules/imscExport.js";
 import IsdExport from "../../modules/isdExport.js";
 import ScfService from "../../editorComponents/ScfService.vue";
 import { saveAs } from "file-saver";
@@ -222,18 +221,8 @@ export default {
         });
     },
     saveXml: function() {
-      let p1 = new Promise((r) => {
-        let imscXml = new ImscExport(this.currentSubtitleData.tt);
-        imscXml.iterateData();
-        let serializer = new XMLSerializer();
-        let xmlString = serializer.serializeToString(imscXml.doc);
-        r(
-          new Blob([xmlString], {
-            type: "text/xml"
-          })
-        );
-      });
-      p1.then((v) => saveAs(v, "imsc2.xml"));
+      this.saveAsXml()
+      .then(v => saveAs(v, "imsc2.xml"));
     },
     ...mapMutations([
       "addSubtitleData",
@@ -247,6 +236,7 @@ export default {
     ...mapActions([
       "addVideoTextTrack",
       "resetFocusContent",
+      "saveAsXml",
       "updateSubtitlePlanePlayTime"
     ])
   }
