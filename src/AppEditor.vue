@@ -303,21 +303,6 @@
           </font-awesome-icon>
           {{ getSubsFileName }}
         </div>
-        <div v-show="showMenu">
-          <ButtonGeneric
-            :buttonName="getLabelText('style')"
-            :variant="getEditorToggleStyle('style')"
-            @click.native="setEditorState('style')"
-          >
-          </ButtonGeneric>
-          <ButtonGeneric
-            :buttonName="getLabelText('position')"
-            :variant="getEditorToggleStyle('position')"
-            @click.native="setEditorState('position')"
-          >
-          </ButtonGeneric>
-          <EmojiPicker />
-        </div>
       </div>
       <div id="editArea" ref="editArea">
         <!-- Video to be displayed -->
@@ -359,7 +344,6 @@
           <MenuGeneric
             v-if="uiLayout == 'bootstrap' && showMenu"
             class="mt-2"
-            :state="editorState"
           />
         </div>
       </div>
@@ -414,7 +398,6 @@ export default {
   },
   data() {
     return {
-      editorState: "style",
       myDropKey: 0,
       videoIsLoaded: false
     };
@@ -614,10 +597,6 @@ export default {
     fullScreenDivDom() {
       return document.getElementById("fullScreenContainer");
     },
-    getEditorToggleStyle(buttonName) {
-      var style = buttonName == this.editorState ? "secondary" : "light";
-      return style;
-    },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
     },
@@ -691,9 +670,6 @@ export default {
         );
       });
       p1.then((v) => saveAs(v, "imsc2.xml"));
-    },
-    setEditorState: function(buttonName) {
-      this.editorState = buttonName;
     },
     setMaxHeight: function() {
       var box = this.$refs.subtitleListView.getBoundingClientRect();
