@@ -1,3 +1,54 @@
+## 0.6.0 (Apr, 17, 2020)
+### Enhancements
+[#67](https://github.com/IRT-Open-Source/imsced/issues/67)
+Add xml:lang on tt element to export
+ 
+[#63](https://github.com/IRT-Open-Source/imsced/issues/63)
+Add unsupported attributes to XML export
+
+[#61](https://github.com/IRT-Open-Source/imsced/issues/61)
+Improve UI for loading video and subtitle files
+
+[#60](https://github.com/IRT-Open-Source/imsced/issues/60)
+Add import feature for SRT FIles
+
+[#59](https://github.com/IRT-Open-Source/imsced/issues/59)
+Add tooltip for burn-in service
+
+[#58](https://github.com/IRT-Open-Source/imsced/issues/58)
+Move styling and position button
+
+[#57](https://github.com/IRT-Open-Source/imsced/issues/57)
+Improve usabilitiy of service configuration
+
+[#56](https://github.com/IRT-Open-Source/imsced/issues/56)
+Improve styling UI element text shadow
+
+[#55](https://github.com/IRT-Open-Source/imsced/issues/55)
+Add Emoji component
+
+[#51](https://github.com/IRT-Open-Source/imsced/issues/51)
+Improve tooltips for style attributes
+
+[#50](https://github.com/IRT-Open-Source/imsced/issues/50)
+Add cellResolution to export.
+
+[#5](https://github.com/IRT-Open-Source/imsced/issues/5)
+Support for some Ruby Features
+
+[#4](https://github.com/IRT-Open-Source/imsced/issues/4)
+Add partial support of nested spans
+
+
+### Fixes
+[#64](https://github.com/IRT-Open-Source/imsced/issues/64)
+Add all supported style attributes to XML export
+
+[#54](https://github.com/IRT-Open-Source/imsced/issues/54)
+Display of style attributes with subtitle content in focus
+
+
+
 ## 0.5.0 (Feb, 17, 2020)
 ### Enhancements
 [#40](https://github.com/IRT-Open-Source/imsced/issues/40):
