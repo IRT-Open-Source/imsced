@@ -19,7 +19,8 @@ function ImscExport(obj) {
 		 xmlns:tts='http://www.w3.org/ns/ttml#styling'
      xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'
      xmlns:ebutts='urn:ebu:tt:style'
-     xml:lang='${obj.xmlLang}'/>`;
+     xml:lang='${obj.xmlLang}'
+     ttp:cellResolution='${obj.docCellResolution}'/>`;
   this.parser = new DOMParser();
   this.help = obj.help;
   this.xmlDoc = this.parser.parseFromString(this.ttText, "text/xml");

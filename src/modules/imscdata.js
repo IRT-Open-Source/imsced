@@ -6,13 +6,18 @@ function ImscData(text) {
   /*
     get xml:lang attribute value 
   */
+  let xmlDoc = this.help.getXmlDocument(text);
   try {
-    this.xmlLang = this.help.getXmlLang(this.help.getXmlDocument(text));
+    this.xmlLang = this.help.getXmlLang(xmlDoc);
   }
   catch (e) {
     console.log(e);
     this.xmlLang = "";
   }
+  /*
+    get ttp:cellResolution
+  */
+  this.docCellResolution = this.help.getCellResolution(xmlDoc);
   /*
 		parse TTML document with imscJS and get data structure
 	*/

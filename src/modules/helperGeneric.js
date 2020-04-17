@@ -41,6 +41,21 @@ var proto = {
       .join("");
   },
   /**
+   * get ttp:cellResolution attribute value on the <tt> element
+   * if attribute value is not set, returns default value
+   * @param {XMLDocument} xmlDoc 
+   * @returns {string}
+   */
+  getCellResolution(xmlDoc) {
+    let tt = xmlDoc.documentElement;
+    let value = tt.getAttribute("ttp:cellResolution");
+    if (value === null) {
+      value = "32 15";
+    }
+
+    return value;
+  },
+  /**
    * parse XML from a string into a XMLDocument
    * @param {string} text
    * @returns {XMLDocument} 
