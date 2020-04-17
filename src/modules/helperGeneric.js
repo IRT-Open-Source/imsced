@@ -56,14 +56,10 @@ var proto = {
    * @returns {string}   
   */
   getXmlLang(xmlDoc) {
-    let tt = xmlDoc.getElementsByTagName("tt");
-    if (tt.length == 0) {
-      throw new Error("Cannot get value of xml:lang, <tt> node not found.");
-    }
-
-    let value = tt[0].getAttribute("xml:lang");
-    if (value === null || value === "") {
-      throw new Error("Attribute xml:lang at <tt> node is required.");
+    let tt = xmlDoc.documentElement;
+    let value = tt.getAttribute("xml:lang");
+    if (value === null) {
+      value = "";
     }
 
     return value;

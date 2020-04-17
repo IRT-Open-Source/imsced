@@ -11,7 +11,7 @@ function ImscData(text) {
   }
   catch (e) {
     console.log(e);
-    this.xmlLang = "en";
+    this.xmlLang = "";
   }
   /*
 		parse TTML document with imscJS and get data structure
