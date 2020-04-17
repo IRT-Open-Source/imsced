@@ -14,7 +14,8 @@ import {
   faPlus,
   faPlusCircle,
   faSave,
-  faToolbox
+  faToolbox,
+  faSmile
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -31,6 +32,7 @@ library.add(
   faPlus,
   faPlusCircle,
   faSave,
+  faSmile,
   faToolbox
 );
 

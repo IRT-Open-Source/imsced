@@ -316,6 +316,7 @@
           />
           {{ getSubsFileName }}
         </div>
+        <EmojiPicker />
       </div>
       <div id="editArea" ref="editArea">
         <!-- Video to be displayed -->

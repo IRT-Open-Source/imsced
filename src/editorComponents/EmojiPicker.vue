@@ -127,7 +127,7 @@ export default {
   display: block;
   z-index: 999;
   top: 0;
-  left: -105%;
+  left: -800%;
   width: 100%;
   height: 100%;
 }
