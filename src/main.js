@@ -14,7 +14,6 @@ import {
   faPlus,
   faPlusCircle,
   faSave,
-  faSmile,
   faToolbox
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -32,7 +31,14 @@ library.add(
   faPlus,
   faPlusCircle,
   faSave,
+<<<<<<< HEAD
+<<<<<<< HEAD
   faSmile,
+=======
+  faTimes,
+>>>>>>> 310e74d... improve add region
+=======
+>>>>>>> f9832b6... remove possibility to name new region, shorten generated region id
   faToolbox
 );
 

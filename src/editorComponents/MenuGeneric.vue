@@ -1,6 +1,7 @@
 <!-- Style Attributes for simple menu -->
 <template>
   <div class="bs-wrapper">
+<<<<<<< HEAD
     <!-- <b-card
       v-if="editorState == 'style'"
       :header="getLabelText('style')"
@@ -50,6 +51,35 @@
             <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
             <!-- </b-card> -->
           </div>
+=======
+    <b-card v-if="state == 'style'" :header="getLabelText('style')" no-body>
+    </b-card>
+    <b-card v-else :header="getLabelText('position')">
+      <!-- region styles -->
+      <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
+        <div class="d-flex flex-row align-items-stretch">
+          <!-- <b-card sub-title="Position" class="region-style"> -->
+          <div class="pr-1 d-flex flex-row flex-grow-1">
+            <DropDownGenericBS
+              :options="myRegionIds"
+              :selected="activeRegionId"
+              :labelName="''"
+              :labelWeight="'light'"
+              :dropKey="myDropKey"
+              @valueChanged="setNewRegion"
+              class="flex-grow-1"
+            />
+            <ButtonGeneric
+              class="mt-2 ml-1 p-1"
+              icon="plus-circle"
+              :iconStyle="{ color: 'grey' }"
+              :buttonName="getLabelText('addRegion')"
+              @click.native="addNewRegion"
+            />
+            <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
+          </div>
+          <!-- </b-card> -->
+>>>>>>> 310e74d... improve add region
         </div>
       </b-card>
       <!-- tabs for level (body, div, span, p) -->
@@ -129,7 +159,6 @@ export default {
         return ck;
       },*/
       contentKinds: ["region", "body", "div", "p", "span"],
-      editorState: "style",
       myDropKey: 0
     };
   },
@@ -351,8 +380,7 @@ export default {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
       return this.$store.state[storeProperty] == "show";
     },
-    ...mapMutations(["addRegion"]),
-    ...mapActions(["setNewRegion"])
+    ...mapActions(["addRegion","setNewRegion"])
   }
 };
 </script>

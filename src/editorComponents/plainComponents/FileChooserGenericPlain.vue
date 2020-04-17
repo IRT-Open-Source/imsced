@@ -3,7 +3,7 @@
   <div>
     <label :for="id">
       {{ labelText }}
-      <input type="file" :id="id" :name="name" @change="changedValue($event)" />
+      <input type="file" :id="id" :name="name" :accept="accept" @change="changedValue($event)" />
     </label>
   </div>
 </template>
@@ -24,6 +24,11 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    
+    accept: {
+      type: String,
+      default: ""
     }
   },
   methods: {
