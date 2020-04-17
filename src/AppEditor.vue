@@ -288,19 +288,32 @@
 
       <div class="captionWithButtons videoCol">
         <div>
-          <font-awesome-icon icon="photo-video" :style="{ color: 'grey' }">
-          </font-awesome-icon>
+          <CustomFileChooser
+            class="custom-icon-size"
+            name="choosevideosmall"
+            id="vcsmall"
+            icon="photo-video"
+            accept="video/*"
+            :iconStyle="{ color: 'grey' }"
+            :labelText="getLabelText('loadVideo')"
+            @filechange="changevideofile"
+          />
           {{ getMovieName }}
         </div>
       </div>
       <div class="captionWithButtons">
         <div>
-          <font-awesome-icon
+          <CustomFileChooser
+            :loader="true"
+            name="chooseSubtitleSmall"
+            id="scsmall"
             icon="closed-captioning"
-            :style="{ color: 'grey' }"
-            size="lg"
-          >
-          </font-awesome-icon>
+            :iconStyle="{ color: 'grey' }"
+            :labelText="getLabelText('load') + ' (IMSC)'"
+            :getText="true"
+            @filechange="changeSubs"
+            @textSent="newSubs"
+          />
           {{ getSubsFileName }}
         </div>
       </div>
@@ -360,6 +373,7 @@ import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
 import Config from "./editorComponents/Config.vue";
 import DragFeature from "./editorComponents/DragFeature.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
+import CustomFileChooser from "./editorComponents/CustomFileChooser.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
@@ -383,6 +397,7 @@ export default {
     ButtonGeneric,
     Config,
     ContentImsc,
+    CustomFileChooser,
     DragFeature,
     DropDownGeneric,
     EmojiPicker,
@@ -591,6 +606,14 @@ export default {
       this.myDropKey++; //needed to display gets refresh
       this.addRegion();
     },
+    changeSubs: function(file) {
+      this.setSubsFileName(file.obj.name);
+    },
+    changevideofile: function(file) {
+      this.changeVideo(file);
+      //equivalent to
+      //this.$store.commit('changeVideo', file.URL);
+    },
     editAreaDivDom() {
       return document.getElementById("editArea");
     },
@@ -620,6 +643,15 @@ export default {
       this.addSubtitleData({ imscData: dataItem }); //add to list
       this.setSubtitleData({ imscData: dataItem }); //set current
       this.setLoadingST(false);
+    },
+    newSubs: function(subtitleText) {
+      this.initSubs(subtitleText);
+      this.addVideoTextTrack(); //generatate track
+      this.updateSubtitlePlanePlayTime();
+      this.resetFocusContent();
+      if (this.debug) {
+        window.imscdata = this.currentSubtitleData;
+      }
     },
     processAfterVideoLoaded() {
       this.videoIsLoaded = true;
@@ -671,6 +703,9 @@ export default {
       });
       p1.then((v) => saveAs(v, "imsc2.xml"));
     },
+    setEditorState: function(buttonName) {
+      this.editorState = buttonName;
+    },
     setMaxHeight: function() {
       var box = this.$refs.subtitleListView.getBoundingClientRect();
       var newValue = document.documentElement.clientHeight - box.top - 30; // TODO try to get this value from CSS
@@ -682,8 +717,10 @@ export default {
     ...mapMutations([
       "addRegion",
       "addSubtitleData",
+      "changeVideo",
       "setFullScreenActive",
       "setLoadingST",
+      "setSubsFileName",
       "setSubtitleData",
       "setVideoDomHeight",
       "setVideoDomWidth",
@@ -755,6 +792,10 @@ input:focus {
 
 .videoCol {
   width: 42vw;
+}
+
+.custom-icon-size {
+  font-size: 0.75rem;
 }
 
 #config {
