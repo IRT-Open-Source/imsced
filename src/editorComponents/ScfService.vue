@@ -64,7 +64,7 @@ export default {
       } else if (this.importFormat == "srt") {
         formData.append("template", this.srtImportTemplate);
         if (this.srtImportLang != "original (template)") {
-          formData.append("lang", this.srtImportLang);
+          formData.append("language", this.srtImportLang);
         }
       }
       fetch(this.scfData.endpoints.convert, {
