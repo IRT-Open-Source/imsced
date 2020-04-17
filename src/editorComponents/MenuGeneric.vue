@@ -129,7 +129,7 @@ export default {
         return ck;
       },*/
       contentKinds: ["region", "body", "div", "p", "span"],
-      editorState: "style",
+      editorState: "style",      
       myDropKey: 0
     };
   },
@@ -351,8 +351,7 @@ export default {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
       return this.$store.state[storeProperty] == "show";
     },
-    ...mapMutations(["addRegion"]),
-    ...mapActions(["setNewRegion"])
+    ...mapActions(["addRegion","setNewRegion"])
   }
 };
 </script>

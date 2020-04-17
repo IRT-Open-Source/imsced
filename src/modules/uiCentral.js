@@ -126,7 +126,7 @@ var proto = {
           en:
             "Defines whether an element is included in the layout and composition of a region",
           de:
-            "Definiert, ob ein Element in das Layout der Region mit eingebunden wird" 
+            "Definiert, ob ein Element in das Layout der Region mit eingebunden wird"
         }
       }
     },

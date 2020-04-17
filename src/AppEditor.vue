@@ -715,7 +715,6 @@ export default {
       window.subs = this.currentSubtitleData;
     },
     ...mapMutations([
-      "addRegion",
       "addSubtitleData",
       "changeVideo",
       "setFullScreenActive",
@@ -728,6 +727,7 @@ export default {
       "setUiLayout"
     ]),
     ...mapActions([
+      "addRegion",
       "addVideoTextTrack",
       "removeSub",
       "resetFocusContent",

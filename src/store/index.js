@@ -201,11 +201,6 @@ export const store = new Vuex.Store({
     activateSub(state) {
       state.subActive = true;
     },
-    addRegion(state) {
-      let newRegionId = "r-" + state.helper.uuidv4();
-      let newRegion = new MyRegion(newRegionId);
-      Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
-    },
     addSubtitleData(state, payload) {
       state.subtitleDataList.unshift(payload.imscData);
     },
@@ -335,6 +330,12 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    addRegion({dispatch, state}) {
+      let newRegionId = "r-" + state.helper.uuidv4().substring(0,8);
+      let newRegion = new MyRegion(newRegionId);
+      dispatch("setNewRegion", newRegionId);
+      Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
+    },
     /* 
       Add video text track and init cues with callbacks
       to render the imsc subtitles.
