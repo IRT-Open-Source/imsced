@@ -34,7 +34,7 @@ See below for some of the important restrictions.
 ### Parameter
 
 - TTML parameter (`ttp:timeBase`, `ttp:frameRate` etc.) cannot be changed.
-- TTML parameter are not exported.
+- Not all TTML parameter are exported.
 
 ### Interactive positioning and resizing
 
@@ -43,10 +43,9 @@ See below for some of the important restrictions.
 
 ### File export
 
-- Only style attributes that can be edited are also exported.
 - The exported document structure is different from the original document structure. It is normalized based on the parsing by imscJS.
 - TTML metadata, foreign namespace elements and foreign namespace attributes are not exported.
-- TTML parameters are not exported.
+- Not all TTML parameters are exported.
 
 ### Style attribute support
 
@@ -70,6 +69,10 @@ See below for the current style attribute support:
 | multiRowAlign   |
 | opacity         |
 | origin          |
+| ruby            |
+| rubyAlign       |
+| rubyPosition    |
+| shear           |  
 | showBackground  |
 | textAlign       |
 | textShadow      |
@@ -81,13 +84,13 @@ See below for the current style attribute support:
 ### Player Controls
 
 - Native player controls for closed captions and fullscreen do not work with timed text rendering.
-- To view the video in full-screen mode, use the "Fullscreen" icon on top of the video.
+- To view the video in full-screen mode, use the "Fullscreen" icon below the video.
 
 ### Integrated REST services
 
 #### SCF Service
 
-The Subtitling Conversion Framework [(SCF)](https://github.com/IRT-Open-Source/scf) is used as a REST service to import EBU STL files. At the moment a public URL for this REST service is configured. See the [Service README](https://github.com/IRT-Open-Source/scf/blob/master/README-SCF-SERVICE.md) of the SCF project how to setup your own SCF service.
+The Subtitling Conversion Framework [(SCF)](https://github.com/IRT-Open-Source/scf) is used as a REST service to import SRT and EBU STL files. At the moment a public URL for this REST service is configured. See the [Service README](https://github.com/IRT-Open-Source/scf/blob/master/README-SCF-SERVICE.md) of the SCF project how to setup your own SCF service.
 
 #### Burnin-Service
 
@@ -130,7 +133,9 @@ npm run build
 ## Authors
 
 Maintainer: Andreas Tai (IRT)
+
 Development: Michaela Finger (IRT), Yury Lungantsov (IRT), Andreas Tai (IRT)
+
 UI Concept: Laura Ehlis (IRT), Michaela Finger (IRT)
 
 ## Acknowledgement

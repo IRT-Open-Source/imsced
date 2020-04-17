@@ -14,12 +14,17 @@
       * Start recursion through the content tree 
     -->
     <div v-if="type == 'body'">
-      <contentElement v-if="activeP && activeDiv" :content="activeDiv" />
+      <contentElement
+        v-if="activeP && activeDiv"
+        :content="activeDiv"
+        :level="level"
+      />
 
       <contentElement
         v-for="para in paraForView"
         :key="para.editorId"
         :content="para"
+        :level="level"
       />
     </div>
 
@@ -40,7 +45,7 @@
       <template v-if="content.contents">
         <div class="content">
           <template v-for="item in content.contents">
-            <ul v-if="debug" :key="item.editodId">
+            <ul v-if="debug" :key="item.editorId">
               <li>Contents of {{ type }}</li>
               <ul>
                 <li>
@@ -53,18 +58,37 @@
               v-if="item.kind == 'br'"
               :content="item"
               :key="item.editorId"
+              :level="level"
+            />
+
+            <contentElement
+              v-else-if="item.kind == 'span' && item.text && item.text.trim()"
+              :content="item"
+              :key="item.editorId"
+              :level="level"
+              @gotFocus="handleFocus"
             />
 
             <!-- Span with children or span with no whitespace text-->
-            <contentElement
-              v-else-if="
-                item.kind == 'span' &&
-                  (item.contents || (item.text && item.text.trim()))
-              "
-              :content="item"
+            <div
+              v-else-if="item.kind == 'span' && item.contents"
               :key="item.editorId"
-              @gotFocus="handleFocus"
-            />
+              class="nested-span"
+            >
+              <SpanElement
+                v-if="item.styleAttrs"
+                :key="`span_${item.editorId}`"
+                :element="item"
+                :level="level + 1"
+                @gotFocus="handleSpanFocus(item)"
+              />
+
+              <contentElement
+                :content="item"
+                :level="level + 1"
+                @gotFocus="handleFocus"
+              />
+            </div>
           </template>
         </div>
       </template>
@@ -84,16 +108,22 @@
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import SpanElement from "./SpanElement.vue";
 import TextImsc from "./TextImsc.vue";
 
 export default {
   name: "contentElement",
   components: {
+    SpanElement,
     TextImsc
   },
   props: {
     content: {
       type: Object,
+      required: true
+    },
+    level: {
+      type: Number,
       required: true
     }
   },
@@ -152,6 +182,7 @@ export default {
       return this.helper.vttTimestamp(seconds);
     },
     handleFocus() {
+      this.resetFocusContent();
       this.$emit("gotFocus");
       if (this.content.begin !== this.playTime) {
         this.setVideoPlayTime({ time: this.content.begin });
@@ -166,7 +197,16 @@ export default {
         this.setActiveSpan({ content: this.content });
       }
     },
-    ...mapActions(["setVideoPlayTime"]),
+    handleSpanFocus(item) {
+      this.$emit("gotFocus");
+      if (item.begin && item.begin !== this.playTime) {
+        this.setVideoPlayTime({ time: item.begin });
+      }
+      if (this.content.styleAttrs) {
+        this.setActiveSpan({ content: item });
+      }
+    },
+    ...mapActions(["resetFocusContent", "setVideoPlayTime"]),
     ...mapMutations(["setActiveP", "setActiveSpan"])
   }
 };
@@ -188,6 +228,12 @@ export default {
 
 .activeP {
   background-color: bisque;
+}
+.nested-span {
+  border: 0.2em solid rgba(129, 129, 129, 0.075);
+  margin-top: 0.5em;
+  padding: 0.25em;
+  background-color: rgba(129, 129, 129, 0.075);
 }
 
 .pBlock {

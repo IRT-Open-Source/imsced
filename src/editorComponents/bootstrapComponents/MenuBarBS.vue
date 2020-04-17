@@ -1,23 +1,23 @@
 <template>
-  <div class="top-bar">
+  <div id="menu-bar" class="top-bar">
     <b-navbar type="dark" variant="faded" class="custom-navbar">
       <b-navbar-brand class="custom-brand">imscED</b-navbar-brand>
       <b-navbar-nav class="mr-2 ml-4 first-element">
         <b-nav-item-dropdown
           class="custom-item"
           :text="getLabelText('video')"
-          :title="getLabelText('video')"
           left
         >
           <template slot="button-content">
             <font-awesome-icon
               v-b-tooltip.hover
+              :title="getLabelText('video')"
               icon="photo-video"
               size="lg"
               :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
             >
-            </font-awesome-icon
-          ></template>
+            </font-awesome-icon>
+          </template>
 
           <b-dropdown-item-button>
             <!-- Select video file  -->
@@ -35,18 +35,18 @@
         <b-nav-item-dropdown
           class="custom-item"
           :text="getLabelText('subtitles')"
-          :title="getLabelText('subtitles')"
           left
         >
           <template slot="button-content">
             <font-awesome-icon
               v-b-tooltip.hover
+              :title="getLabelText('subtitles')"
               icon="closed-captioning"
               size="lg"
               :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
             >
-            </font-awesome-icon
-          ></template>
+            </font-awesome-icon>
+          </template>
 
           <b-dropdown-item-button>
             <!-- Select subtitle file with imsc format-->
@@ -60,62 +60,74 @@
               @textSent="newSubs"
             />
           </b-dropdown-item-button>
+          <b-dropdown-divider></b-dropdown-divider>
           <b-dropdown-item-button :disabled="showScfService == 'hide'">
             <!-- Select subtitle file with imsc format-->
             <ScfService
-              :name="'importSubtitle1'"
-              :id="'is1'"
+              :id="'importSTLMenuBS'"
               :labelText="getLabelText('importStl')"
-              :getText="true"
+              :importFormatProp="'stl'"
+              @textSent="newSubs"
+            />
+          </b-dropdown-item-button>
+          <b-dropdown-item-button :disabled="showScfService == 'hide'">
+            <!-- Select subtitle file with imsc format-->
+            <ScfService
+              :id="'importSRTMenuBS'"
+              :labelText="getLabelText('importSrt')"
+              :importFormatProp="'srt'"
+              :exportFormatProp="'ttml'"
               @textSent="newSubs"
             />
           </b-dropdown-item-button>
         </b-nav-item-dropdown>
       </b-navbar-nav>
       <b-navbar-nav>
-        <b-nav-item-dropdown
-          left
-          class="custom-item"
-          text="serives"
-          title="Services"
-        >
+        <b-nav-item-dropdown left class="custom-item" text="serives">
           <template slot="button-content">
             <font-awesome-icon
               v-b-tooltip.hover
+              title="Services"
               icon="toolbox"
               size="lg"
               :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
             >
-            </font-awesome-icon
-          ></template>
-          <b-dropdown-item-button
-            :disabled="!activateBurnIn"
-            @click="toggleShowBurnIn"
-          >
-            {{ getLabelText("burnInService") }}</b-dropdown-item-button
-          >
+            </font-awesome-icon>
+          </template>
+          <span id="burnin-tooltip" class="d-inline-block" tabindex="0">
+            <b-tooltip
+              target="burnin-tooltip"
+              triggers="hover"
+              container="menu-bar"
+            >
+              {{ burnInTooltipText }}
+            </b-tooltip>
+            <b-dropdown-item-button
+              :disabled="!activateBurnIn"
+              @click="toggleShowBurnIn"
+            >
+              {{ getLabelText("burnInService") }}
+            </b-dropdown-item-button>
+          </span>
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto mr-2">
-        <b-nav-item-dropdown text="Save" title="Save" right class="custom-item">
+        <b-nav-item-dropdown text="Save/Export" right class="custom-item">
           <template slot="button-content">
             <font-awesome-icon
               v-b-tooltip.hover
+              title="Save/Export"
               icon="save"
               size="lg"
               :style="{ color: 'rgba(255, 255, 255, 0.75)' }"
             >
-            </font-awesome-icon
-          ></template>
+            </font-awesome-icon>
+          </template>
           <!-- Export IMSC as XML  -->
           <b-dropdown-item-button @click.native="saveXml">
             {{ getLabelText("saveXml") }}
           </b-dropdown-item-button>
-          <!-- Export ISD as PNG  -->
-          <!--    <b-dropdown-item-button @click.native="saveIsdAsPng">
-            {{ getLabelText("saveIsdAsPng") }}
-          </b-dropdown-item-button> -->
         </b-nav-item-dropdown>
       </b-navbar-nav>
 
@@ -139,7 +151,6 @@ import ButtonGeneric from "../ButtonGeneric.vue";
 import CustomFileChooser from "./../CustomFileChooser.vue";
 import FileChooserGeneric from "./../FileChooserGeneric.vue";
 import ImscData from "./../../modules/imscdata.js";
-import ImscExport from "../../modules/imscExport.js";
 import IsdExport from "../../modules/isdExport.js";
 import ScfService from "../../editorComponents/ScfService.vue";
 import { saveAs } from "file-saver";
@@ -152,6 +163,12 @@ export default {
     ScfService
   },
   computed: {
+    burnInTooltipText() {
+      if (!this.activateBurnIn) {
+        return "Burn-in Service is deactivated. You can activate the Service in Settings > Services > Burn-In Service if you are sure you can access the service.";
+      }
+      return "";
+    },
     configUiButtonName() {
       var name = this.showConfigUi ? "hideConfigUi" : "showConfigUi";
       return this.getLabelText(name);
@@ -202,11 +219,11 @@ export default {
       let isdExport = new IsdExport(this.currentSubtitleData.tt);
       isdExport
         .saveAsPng(this.config.defaultImageExportSize)
-        .then(content => {
+        .then((content) => {
           let fname = `${this.subsFileName}.zip`;
           saveAs(content, fname);
         })
-        .catch(reason => {
+        .catch((reason) => {
           console.log(
             "an error occured while saving subtitles as png:",
             reason
@@ -214,18 +231,8 @@ export default {
         });
     },
     saveXml: function() {
-      let p1 = new Promise(r => {
-        let imscXml = new ImscExport(this.currentSubtitleData.tt);
-        imscXml.iterateData();
-        let serializer = new XMLSerializer();
-        let xmlString = serializer.serializeToString(imscXml.doc);
-        r(
-          new Blob([xmlString], {
-            type: "text/xml"
-          })
-        );
-      });
-      p1.then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml()
+      .then(v => saveAs(v, "imsc2.xml"));
     },
     ...mapMutations([
       "addSubtitleData",
@@ -239,6 +246,7 @@ export default {
     ...mapActions([
       "addVideoTextTrack",
       "resetFocusContent",
+      "saveAsXml",
       "updateSubtitlePlanePlayTime"
     ])
   }
@@ -280,6 +288,11 @@ export default {
 .first-element {
   margin-left: 6.5em !important;
 }
+
+.my-tooltip-class {
+  color: green;
+}
+
 .top-bar {
   position: absolute;
   top: 0;

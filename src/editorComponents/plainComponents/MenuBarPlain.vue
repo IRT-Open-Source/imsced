@@ -22,10 +22,18 @@
       <ScfService
         class="menu-element"
         v-if="showScfService == 'show'"
-        :name="'importSubtitle1'"
-        :id="'is1'"
+        :id="'importStlMenuBar'"
         :labelText="getLabelText('importStl')"
-        :getText="true"
+        :importFormatProp="'stl'"
+        @textSent="newSubs"
+      />
+      <ScfService
+        class="menu-element"
+        v-if="showScfService == 'show'"
+        :id="'importSrtMenuBar'"
+        :labelText="getLabelText('importSrt')"
+        :importFormatProp="'srt'"
+        :exportFormatProp="'ttml'"
         @textSent="newSubs"
       />
       <button @click="saveXml" class="menu-element">
@@ -54,7 +62,6 @@ import ButtonGeneric from "../ButtonGeneric.vue";
 import CustomFileChooser from "./../CustomFileChooser.vue";
 import FileChooserGeneric from "./../FileChooserGeneric.vue";
 import ImscData from "./../../modules/imscdata.js";
-import ImscExport from "../../modules/imscExport.js";
 import IsdExport from "../../modules/isdExport.js";
 import ScfService from "../../editorComponents/ScfService.vue";
 import { saveAs } from "file-saver";
@@ -117,11 +124,11 @@ export default {
       let isdExport = new IsdExport(this.currentSubtitleData.tt);
       isdExport
         .saveAsPng(this.config.defaultImageExportSize)
-        .then(content => {
+        .then((content) => {
           let fname = `${this.subsFileName}.zip`;
           saveAs(content, fname);
         })
-        .catch(reason => {
+        .catch((reason) => {
           console.log(
             "an error occured while saving subtitles as png:",
             reason
@@ -129,18 +136,8 @@ export default {
         });
     },
     saveXml: function() {
-      let p1 = new Promise(r => {
-        let imscXml = new ImscExport(this.currentSubtitleData.tt);
-        imscXml.iterateData();
-        let serializer = new XMLSerializer();
-        let xmlString = serializer.serializeToString(imscXml.doc);
-        r(
-          new Blob([xmlString], {
-            type: "text/xml"
-          })
-        );
-      });
-      p1.then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml()
+      .then(v => saveAs(v, "imsc2.xml"));
     },
     ...mapMutations([
       "addSubtitleData",
@@ -154,6 +151,7 @@ export default {
     ...mapActions([
       "addVideoTextTrack",
       "resetFocusContent",
+      "saveAsXml",
       "updateSubtitlePlanePlayTime"
     ])
   }

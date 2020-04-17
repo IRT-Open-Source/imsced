@@ -7,17 +7,22 @@
   Getting the imscJS parsed and through the editor
   manipulated data object as input for the constructor.
 */
-import helperGeneric from "./helperGeneric.js";
 
+/**
+ * constructor
+ * @param {ImscData} obj 
+ */
 function ImscExport(obj) {
   this.ttText =
-    "<tt xmlns='http://www.w3.org/ns/ttml' \
-		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter' \
-		 xmlns:tts='http://www.w3.org/ns/ttml#styling' \
-     xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling' \
-     xml:lang=''/> ";
+    `<tt xmlns='http://www.w3.org/ns/ttml'
+		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter'
+		 xmlns:tts='http://www.w3.org/ns/ttml#styling'
+     xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'
+     xmlns:ebutts='urn:ebu:tt:style'
+     xml:lang='${obj.xmlLang}'
+     ttp:cellResolution='${obj.docCellResolution}'/>`;
   this.parser = new DOMParser();
-  this.help = new helperGeneric();
+  this.help = obj.help;
   this.xmlDoc = this.parser.parseFromString(this.ttText, "text/xml");
   this.convertColorHex = true;
   this.doc = this.xmlDoc.documentElement;
@@ -27,7 +32,7 @@ function ImscExport(obj) {
       return this.stack[this.stack.length - 1];
     }
   };
-  this.data = obj;
+  this.data = obj.tt;
   this.collapsWhitespace = true; //if empty span should be filtered out
   this.vttTimes = true;
 }
@@ -47,13 +52,13 @@ let proto = {
   },
   aspectRatio: function(obj) {
     let el = this.stackObj.getLast();
-    let val = ''; 
-    switch (Math.trunc(obj*10)) {
+    let val = "";
+    switch (Math.trunc(obj * 10)) {
       case 17:
-        val = '16 9';
+        val = "16 9";
         break;
       case 13:
-        val = '4 3';
+        val = "4 3";
         break;
       default:
         let maxDecimalPlaces = 4;
@@ -61,7 +66,7 @@ let proto = {
         let numerator = obj.toFixed(maxDecimalPlaces) * denominator;
         val = `${numerator} ${denominator}`;
     }
-    if (val !== '') {
+    if (val !== "") {
       el.setAttribute("ttp:displayAspectRatio", val);
     }
   },
@@ -161,6 +166,10 @@ let proto = {
   "http://www.w3.org/ns/ttml#styling direction": function(obj) {
     this.setAttribute("tts:direction", obj);
   },
+  "http://www.w3.org/ns/ttml#styling disparity": function(obj) {
+    var value = obj.value + obj.unit;
+    this.setAttribute("tts:disparity", value);
+  },  
   "http://www.w3.org/ns/ttml#styling display": function(obj) {
     this.setAttribute("tts:display", obj);
   },
@@ -191,6 +200,12 @@ let proto = {
     var value = obj.value + obj.unit;
     this.setAttribute("tts:fontSize", value);
   },
+  "http://www.w3.org/ns/ttml#styling fontStyle": function(obj) {
+    this.setAttribute("tts:fontStyle", obj);
+  },  
+  "http://www.w3.org/ns/ttml#styling fontWeight": function(obj) {
+    this.setAttribute("tts:fontWeight", obj);
+  },  
   "http://www.w3.org/ns/ttml#styling lineHeight": function(obj) {
     var value = obj.value + obj.unit;
     this.setAttribute("tts:lineHeight", value);
@@ -202,11 +217,55 @@ let proto = {
     var value = obj.w.value + obj.w.unit + " " + obj.h.value + obj.h.unit;
     this.setAttribute("tts:origin", value);
   },
+  "http://www.w3.org/ns/ttml#styling overflow": function(obj) {
+    this.setAttribute("tts:overflow", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling padding": function(obj) {
+    var value = obj
+      .map(function(x) {
+        return `${x.value}${x.unit}`;
+      })
+      .join(" ");
+    this.setAttribute("tts:padding", value);
+  },  
+  "http://www.w3.org/ns/ttml#styling position": function(obj) {
+    var hValue = obj.h.edge + " " + obj.h.offset.value + obj.h.offset.unit;
+    var vValue = obj.v.edge + " " + obj.v.offset.value + obj.v.offset.unit;
+    var value = hValue + " " + vValue;
+    this.setAttribute("tts:position", value);
+  },  
+  "http://www.w3.org/ns/ttml#styling ruby": function(obj) {
+    this.setAttribute("tts:ruby", obj);
+  },    
+  "http://www.w3.org/ns/ttml#styling rubyAlign": function(obj) {
+    this.setAttribute("tts:rubyAlign", obj);
+  },    
+  "http://www.w3.org/ns/ttml#styling rubyPosition": function(obj) {
+    this.setAttribute("tts:rubyPosition", obj);
+  },    
+  "http://www.w3.org/ns/ttml#styling rubyReserve": function(obj) {
+    var value = obj[0];
+    if (obj.length === 2 && obj[1] !== null) {
+      value += " " + obj[1].value + obj[1].unit;
+    }
+    this.setAttribute("tts:rubyReserve", value);
+  },    
+  "http://www.w3.org/ns/ttml#styling shear": function(obj) {
+    var value = obj.value + obj.unit;
+    this.setAttribute("tts:shear", value);
+  },
   "http://www.w3.org/ns/ttml#styling showBackground": function(obj) {
     this.setAttribute("tts:showBackground", obj);
   },
   "http://www.w3.org/ns/ttml#styling textAlign": function(obj) {
     this.setAttribute("tts:textAlign", obj);
+  },
+  "http://www.w3.org/ns/ttml#styling textCombine": function(obj) {
+    this.setAttribute("tts:textCombine", obj[0]);
+  },
+  "http://www.w3.org/ns/ttml#styling textDecoration": function(obj) {
+    var value = obj.join(" ");
+    this.setAttribute("tts:textDecoration", value);
   },
   "http://www.w3.org/ns/ttml#styling textShadow": function(obj) {
     var value = obj[0]
@@ -292,9 +351,12 @@ let proto = {
     var textNode = this.xmlDoc.createTextNode(obj);
     parent.appendChild(textNode);
   },
+  "urn:ebu:tt:style linePadding": function(obj) {
+    var value = obj.value + obj.unit;
+    this.setAttribute("ebutts:linePadding", value);
+  },
   "urn:ebu:tt:style multiRowAlign": function(obj) {
-    var value = obj.value;
-    this.setAttribute("ebutts:multiRowAlign", value);
+    this.setAttribute("ebutts:multiRowAlign", obj);
   }
 };
 

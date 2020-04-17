@@ -1,44 +1,48 @@
 <template>
   <label class="file-select">
     <span>{{ labelText }}</span>
-    <input type="file" :name="name" :id="id" @change="fileChanged" />
+    <input type="file" :id="id" @change="fileChanged" />
   </label>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import FileChooserGenericBS from "./bootstrapComponents/FileChooserGenericBS.vue";
-import FileChooserGenericPlain from "./plainComponents/FileChooserGenericPlain.vue";
 
 export default {
-  components: { FileChooserGenericBS, FileChooserGenericPlain },
   props: {
-    getText: {
-      type: Boolean,
-      required: false
-    },
-
     id: {
       type: String,
       required: true
     },
-
     labelText: {
       type: String,
       required: true
     },
-
-    name: {
-      type: String,
-      required: true
+    importFormatProp: {
+      type: String
+    },
+    exportFormatProp: {
+      type: String
     }
   },
   computed: {
+    importFormat() {
+      return this.importFormatProp
+        ? this.importFormatProp
+        : this.scfImportFormat;
+    },
+    exportFormat() {
+      return this.exportFormatProp
+        ? this.exportFormatProp
+        : this.scfExportFormat;
+    },
     ...mapState([
       "config",
       "scfData",
       "scfExportFormat",
       "scfImportFormat",
+      "srtImportLang",
+      "srtImportTemplate",
       "uiLayout"
     ])
   },
@@ -50,29 +54,37 @@ export default {
       var thisContext = this;
       const formData = new FormData();
       formData.append("input", fileObj);
-      formData.append("format_source", this.scfImportFormat);
-      formData.append("format_target", this.scfExportFormat);
-      formData.append("offset_frames", this.config.defaultOffsetFrames);
-      if (this.scfImportFormat == "stl") {
+      formData.append("format_source", this.importFormat);
+      formData.append("format_target", this.exportFormat);
+      // ---------- STL specific parameters------
+      if (this.importFormat == "stl") {
+        formData.append("offset_frames", this.config.defaultOffsetFrames);
         formData.append("ignore_manual_offset_for_tcp", "1");
+        // ---------- SRT specific parameters------
+      } else if (this.importFormat == "srt") {
+        formData.append("template", this.srtImportTemplate);
+        if (this.srtImportLang != "original (template)") {
+          formData.append("language", this.srtImportLang);
+        }
       }
-      fetch(this.scfData.url, {
+      fetch(this.scfData.endpoints.convert, {
         method: "POST",
         body: formData
       })
         .then(function(response) {
           if (!response.ok) {
+            console.log(response);
             throw new Error(
               "Couldn't import file! Please check if 'Original format' is set correctly and you chose a valid file."
             );
           }
           return response.text();
         })
-        .then(data => {
+        .then((data) => {
           thisContext.$emit("textSent", data);
           this.setSubsFileName(fileObj.name);
         })
-        .catch(error => {
+        .catch((error) => {
           this.setLoadingST(false);
           alert(
             "Something went wrong while communicating with the conversion service. " +

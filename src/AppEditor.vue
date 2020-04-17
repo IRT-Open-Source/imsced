@@ -283,40 +283,40 @@
 
     <div id="workview">
       <div id="subtitleListView" ref="subtitleListView">
-        <ContentImsc :content="body" v-if="body" />
+        <ContentImsc :content="body" :level="0" v-if="body" />
       </div>
 
       <div class="captionWithButtons videoCol">
         <div>
-          <font-awesome-icon icon="photo-video" :style="{ color: 'grey' }">
-          </font-awesome-icon>
+          <CustomFileChooser
+            class="custom-icon-size"
+            name="choosevideosmall"
+            id="vcsmall"
+            icon="photo-video"
+            accept="video/*"
+            :iconStyle="{ color: 'grey' }"
+            :labelText="getLabelText('loadVideo')"
+            @filechange="changevideofile"
+          />
           {{ getMovieName }}
         </div>
       </div>
       <div class="captionWithButtons">
         <div>
-          <font-awesome-icon
+          <CustomFileChooser
+            :loader="true"
+            name="chooseSubtitleSmall"
+            id="scsmall"
             icon="closed-captioning"
-            :style="{ color: 'grey' }"
-            size="lg"
-          >
-          </font-awesome-icon>
+            :iconStyle="{ color: 'grey' }"
+            :labelText="getLabelText('load') + ' (IMSC)'"
+            :getText="true"
+            @filechange="changeSubs"
+            @textSent="newSubs"
+          />
           {{ getSubsFileName }}
         </div>
-        <div v-if="showMenu">
-          <ButtonGeneric
-            :buttonName="getLabelText('style')"
-            :variant="getEditorToggleStyle('style')"
-            @click.native="setEditorState('style')"
-          >
-          </ButtonGeneric>
-          <ButtonGeneric
-            :buttonName="getLabelText('position')"
-            :variant="getEditorToggleStyle('position')"
-            @click.native="setEditorState('position')"
-          >
-          </ButtonGeneric>
-        </div>
+        <EmojiPicker />
       </div>
       <div id="editArea" ref="editArea">
         <!-- Video to be displayed -->
@@ -358,7 +358,6 @@
           <MenuGeneric
             v-if="uiLayout == 'bootstrap' && showMenu"
             class="mt-2"
-            :state="editorState"
           />
         </div>
       </div>
@@ -375,10 +374,11 @@ import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
 import Config from "./editorComponents/Config.vue";
 import DragFeature from "./editorComponents/DragFeature.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
+import CustomFileChooser from "./editorComponents/CustomFileChooser.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
+import EmojiPicker from "./editorComponents/EmojiPicker.vue";
 import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
-import ImscExport from "./modules/imscExport.js";
 import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
 import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
@@ -397,8 +397,10 @@ export default {
     ButtonGeneric,
     Config,
     ContentImsc,
+    CustomFileChooser,
     DragFeature,
     DropDownGeneric,
+    EmojiPicker,
     h1Generic,
     LiveActionsMenu,
     MenuGeneric,
@@ -411,7 +413,6 @@ export default {
   },
   data() {
     return {
-      editorState: "style",
       myDropKey: 0,
       videoIsLoaded: false
     };
@@ -492,6 +493,7 @@ export default {
       "movieSrc",
       "playTime",
       "resizingActive",
+      "scfData",
       "showRegionMenu",
       "showBurnIn",
       "showBodyMenu",
@@ -599,11 +601,40 @@ export default {
     this.$nextTick(function() {
       this.setMaxHeight();
     });
+    // scf service - get templates for SRT import
+    fetch(this.scfData.endpoints.template, {
+        method: "GET"
+      })
+        .then(function(response) {
+          if (!response.ok) {
+            throw new Error(
+              "Couldn't get template files."
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          this.setSrtTemplateOptions(data);
+        })
+        .catch((error) => {
+          console.log(
+            "Something went wrong while communicating with the SCF service. " +
+              error
+          );
+        });
   },
   methods: {
     addNewRegion() {
       this.myDropKey++; //needed to display gets refresh
       this.addRegion();
+    },
+    changeSubs: function(file) {
+      this.setSubsFileName(file.obj.name);
+    },
+    changevideofile: function(file) {
+      this.changeVideo(file);
+      //equivalent to
+      //this.$store.commit('changeVideo', file.URL);
     },
     editAreaDivDom() {
       return document.getElementById("editArea");
@@ -611,15 +642,13 @@ export default {
     fullScreenDivDom() {
       return document.getElementById("fullScreenContainer");
     },
-    getEditorToggleStyle(buttonName) {
-      var style = buttonName == this.editorState ? "secondary" : "light";
-      return style;
-    },
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
     },
     getPlaytimeAsVttTime() {
-      return (this.playTime == "-" ? this.playTime : this.helper.vttTimestamp(this.playTime));
+      return this.playTime == "-"
+        ? this.playTime
+        : this.helper.vttTimestamp(this.playTime);
     },
     getScfStartOffsetFrames() {
       return this.config.defaultOffsetFrames;
@@ -636,6 +665,15 @@ export default {
       this.addSubtitleData({ imscData: dataItem }); //add to list
       this.setSubtitleData({ imscData: dataItem }); //set current
       this.setLoadingST(false);
+    },
+    newSubs: function(subtitleText) {
+      this.initSubs(subtitleText);
+      this.addVideoTextTrack(); //generatate track
+      this.updateSubtitlePlanePlayTime();
+      this.resetFocusContent();
+      if (this.debug) {
+        window.imscdata = this.currentSubtitleData;
+      }
     },
     processAfterVideoLoaded() {
       this.videoIsLoaded = true;
@@ -674,18 +712,8 @@ export default {
       });
     },
     saveXml: function() {
-      let p1 = new Promise(r => {
-        let imscXml = new ImscExport(this.currentSubtitleData.tt);
-        imscXml.iterateData();
-        let serializer = new XMLSerializer();
-        let xmlString = serializer.serializeToString(imscXml.doc);
-        r(
-          new Blob([xmlString], {
-            type: "text/xml"
-          })
-        );
-      });
-      p1.then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml()
+      .then(v => saveAs(v, "imsc2.xml"));
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
@@ -699,20 +727,24 @@ export default {
       window.subs = this.currentSubtitleData;
     },
     ...mapMutations([
-      "addRegion",
       "addSubtitleData",
+      "changeVideo",
       "setFullScreenActive",
       "setLoadingST",
+      "setSubsFileName",
       "setSubtitleData",
       "setVideoDomHeight",
       "setVideoDomWidth",
       "toggleFullScreenMode",
+      "setSrtTemplateOptions",
       "setUiLayout"
     ]),
     ...mapActions([
+      "addRegion",
       "addVideoTextTrack",
       "removeSub",
       "resetFocusContent",
+      "saveAsXml",
       "setNewRegion",
       "setOffsetFrames",
       "triggerTimeUpdate",
@@ -774,6 +806,10 @@ input:focus {
 
 .videoCol {
   width: 42vw;
+}
+
+.custom-icon-size {
+  font-size: 0.75rem;
 }
 
 #config {

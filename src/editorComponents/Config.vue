@@ -80,68 +80,87 @@
             accordion="config-accordion"
             role="tabpanel"
           >
-            <b-card-body>
-              <b-card-text>
-                <!-- services config -->
-                <h5>SCF Service</h5>
-                <RadioGeneric
-                  :options="['show', 'hide']"
-                  :selected="showScfService"
-                  :labelName="''"
-                  @valueChanged="setShowScfService"
-                />
-
-                <DropDownGeneric
-                  v-if="scfImportFormat != 'imsc' && showScfService == 'show'"
-                  :options="scfData.exportFormats"
-                  :selected="scfExportFormat"
-                  :labelName="getLabelText('scfExportFormat')"
-                  @valueChanged="setScfExportFormat"
-                />
-                <br />
-                <div>
-                  <fieldset>
-                    <legend v-if="uiLayout == 'plain'">
-                      {{ getLabelText("scfStartOffset") }}
-                    </legend>
-                    <b v-else>{{ getLabelText("scfStartOffset") }}</b>
-                    <InputGeneric
-                      :value="getScfStartOffsetFrames()"
+            <!-- services config -->
+            <b-card no-body>
+              <b-tabs card content-class="mt-3">
+                <b-tab title="SCF Service">
+                  <b-card-title> SCF Service</b-card-title>
+                  <b-card-text>
+                    <RadioGeneric
+                      :options="['show', 'hide']"
+                      :selected="showScfService"
                       :labelName="''"
-                      @valueChanged="setOffsetFrames"
+                      @valueChanged="setShowScfService"
                     />
-                  </fieldset>
-                </div>
-                <hr class="full-width-hr" />
-                <h5>Burn-In Service</h5>
-                <RadioGeneric
-                  :options="['on', 'off']"
-                  :translateOptions="true"
-                  :selected="activateBurnIn ? 'on' : 'off'"
-                  :labelName="''"
-                  @valueChanged="setActivateBurnIn"
-                />
-                <hr class="full-width-hr" />
-                <div>
-                  <fieldset>
-                    <legend v-if="uiLayout == 'plain'">
-                      {{ getLabelText("exportIsdAsPng") }}
-                    </legend>
-                    <h5 v-else>{{ getLabelText("exportIsdAsPng") }}</h5>
-                    <InputGeneric
-                      :value="getImageExportWidth()"
-                      :labelName="getLabelText('imageExportWidth')"
-                      @valueChanged="setImageExportWidth"
+                    <span v-if="showScfService == 'show'">
+                      <DropDownGeneric
+                        v-if="scfImportFormat != 'imsc'"
+                        :options="scfData.exportFormats"
+                        :selected="scfExportFormat"
+                        :labelName="getLabelText('scfExportFormat')"
+                        @valueChanged="setScfExportFormat"
+                      />
+                      <br />
+                      <fieldset>
+                        <legend v-if="uiLayout == 'plain'">
+                          {{ getLabelText("scfStartOffset") }}
+                        </legend>
+                        <b v-else>{{ getLabelText("scfStartOffset") }}</b>
+                        <InputGeneric
+                          :value="getScfStartOffsetFrames()"
+                          :labelName="''"
+                          @valueChanged="setOffsetFrames"
+                        />
+                      </fieldset>
+                      <br />
+                      <DropDownGeneric
+                        :options="srtTemplateOptions"
+                        :selected="srtImportTemplate"
+                        :labelName="getLabelText('srtTemplateFile')"
+                        @valueChanged="setSrtImportTemplate"
+                      />
+                      <br />
+                      <InputGeneric
+                        :value="srtImportLang"
+                        :labelName="'SRT import language'"
+                        @valueChanged="setSrtImportLang"
+                      />
+                      <br />
+                    </span>
+                  </b-card-text>
+                </b-tab>
+
+                <b-tab title="Burn-In Service">
+                  <b-card-title>Burn-In Service</b-card-title>
+                  <b-card-text>
+                    <RadioGeneric
+                      :options="['on', 'off']"
+                      :translateOptions="true"
+                      :selected="activateBurnIn ? 'on' : 'off'"
+                      :labelName="''"
+                      @valueChanged="setActivateBurnIn"
                     />
-                    <InputGeneric
-                      :value="getImageExportHeight()"
-                      :labelName="getLabelText('imageExportHeight')"
-                      @valueChanged="setImageExportHeight"
-                    />
-                  </fieldset>
-                </div>
-              </b-card-text>
-            </b-card-body>
+                    <hr class="full-width-hr" />
+                    <fieldset>
+                      <legend v-if="uiLayout == 'plain'">
+                        {{ getLabelText("exportIsdAsPng") }}
+                      </legend>
+                      <h5 v-else>{{ getLabelText("exportIsdAsPng") }}</h5>
+                      <InputGeneric
+                        :value="getImageExportWidth()"
+                        :labelName="getLabelText('imageExportWidth')"
+                        @valueChanged="setImageExportWidth"
+                      />
+                      <InputGeneric
+                        :value="getImageExportHeight()"
+                        :labelName="getLabelText('imageExportHeight')"
+                        @valueChanged="setImageExportHeight"
+                      />
+                    </fieldset>
+                  </b-card-text>
+                </b-tab>
+              </b-tabs>
+            </b-card>
           </b-collapse>
         </b-card>
 
@@ -228,6 +247,17 @@
                   :labelName="'Display forced only mode'"
                   @valueChanged="setForcedOnlyMode"
                 />
+                <hr class="full-width-hr" />
+                <RadioGeneric
+                  :options="[
+                    'allowed only',
+                    'allowed + default',
+                    'default only'
+                  ]"
+                  :selected="showEmojisSetting"
+                  :labelName="'Show Emojis'"
+                  @valueChanged="setShowEmojisSetting"
+                />
               </b-card-text>
             </b-card-body>
           </b-collapse>
@@ -313,6 +343,7 @@ export default {
       "forcedOnly",
       "debug",
       "activateBurnIn",
+      "showEmojisSetting",
       "showRegionSelect",
       "showSpanMenu",
       "showPMenu",
@@ -322,9 +353,12 @@ export default {
       "scfData",
       "showScfService",
       "scfImportFormat",
+      "srtImportTemplate",
+      "srtTemplateOptions",
       "lang",
       "menuStyleConfig",
       "menuStyle",
+      "srtImportLang",
       "uiData",
       "uiLayout"
     ])
@@ -348,6 +382,7 @@ export default {
     ...mapMutations([
       "setDebug",
       "setActivateBurnIn",
+      "setShowEmojisSetting",
       "setShowRegionSelect",
       "setShowSpanMenu",
       "setShowPMenu",
@@ -357,6 +392,8 @@ export default {
       "setShowScfService",
       "setLang",
       "setMenuStyle",
+      "setSrtImportLang",
+      "setSrtImportTemplate",
       "setUiLayout"
     ]),
     ...mapActions([

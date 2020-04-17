@@ -1,86 +1,108 @@
 <!-- Style Attributes for simple menu -->
 <template>
   <div class="bs-wrapper">
-    <b-card v-if="state == 'style'" :header="getLabelText('style')" no-body>
-    </b-card>
-    <b-card v-else :header="getLabelText('position')">
-      <!-- region styles -->
-      <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
-        <div class="d-flex flex-row align-items-stretch">
-          <!-- <b-card sub-title="Position" class="region-style"> -->
-          <div class="pr-1 d-flex flex-row flex-grow-1">
-            <DropDownGenericBS
-              :options="myRegionIds"
-              :selected="activeRegionId"
-              :labelName="''"
-              :labelWeight="'light'"
-              :dropKey="myDropKey"
-              @valueChanged="setNewRegion"
-              class="flex-grow-1"
-            />
-            <ButtonGeneric
-              class="mt-2 ml-1 p-1"
-              icon="plus-circle"
-              :iconStyle="{ color: 'grey' }"
-              :buttonName="getLabelText('addRegion')"
-              @click.native="addNewRegion"
-            />
-          </div>
-          <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
-          <!-- </b-card> -->
-        </div>
-      </div>
-    </b-card>
+    <!-- <b-card
+      v-if="editorState == 'style'"
+      :header="getLabelText('style')"
+      no-body
+    >
+    </b-card> -->
 
-    <!-- tabs for level (body, div, span, p) -->
     <b-card no-body>
-      <b-tabs :nav-wrapper-class="getContentKindClass()" pills card vertical>
-        <!-- 
+      <b-card-header>
+        <ButtonGeneric
+          :buttonName="getLabelText('style')"
+          :variant="getEditorToggleStyle('style')"
+          @click.native="setEditorState('style')"
+        >
+        </ButtonGeneric>
+        <ButtonGeneric
+          :buttonName="getLabelText('position')"
+          :variant="getEditorToggleStyle('position')"
+          @click.native="setEditorState('position')"
+        >
+        </ButtonGeneric>
+      </b-card-header>
+
+      <b-card border-variant="white" v-if="editorState == 'position'">
+        <!-- region styles -->
+        <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
+          <div class="d-flex flex-row align-items-stretch">
+            <!-- <b-card sub-title="Position" class="region-style"> -->
+            <div class="pr-1 d-flex flex-row flex-grow-1">
+              <DropDownGenericBS
+                :options="myRegionIds"
+                :selected="activeRegionId"
+                :labelName="''"
+                :labelWeight="'light'"
+                :dropKey="myDropKey"
+                @valueChanged="setNewRegion"
+                class="flex-grow-1"
+              />
+              <ButtonGeneric
+                class="mt-2 ml-1 p-1"
+                icon="plus-circle"
+                :iconStyle="{ color: 'grey' }"
+                :buttonName="getLabelText('addRegion')"
+                @click.native="addNewRegion"
+              />
+            </div>
+            <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
+            <!-- </b-card> -->
+          </div>
+        </div>
+      </b-card>
+      <!-- tabs for level (body, div, span, p) -->
+
+      <b-card no-body border-variant="white"
+        ><b-tabs :nav-wrapper-class="getContentKindClass()" card pills vertical>
+          <!-- 
           Vertical list of content kinds, 
           kinds can be displayed differently (e.g. greyed out). 
           -->
-        <b-tab
-          class="p-0"
-          v-for="contentKind of Object.keys(activeContentKinds)"
-          :key="contentKind"
-          :title="contentKind"
-          :disabled="emptyContent(contentKind)"
-          active
-        >
-          <!-- tab menu with editable attributes -->
-          <b-tabs :nav-wrapper-class="getTabsClass()" card>
-            <b-tab
-              v-for="tab of Object.keys(activeContentKinds[contentKind])"
-              :key="tab"
-              :title="getTabText(tab)"
-            >
-              <!-- UI for each editable attribute based on tab and content kind  -->
-              <b-row>
-                <b-col
-                  v-for="attr of getEditableAttrs(contentKind, tab)"
-                  class="p-1"
-                  :key="attr"
-                  :title="attr"
-                >
-                  <!-- 
+          <b-tab
+            class="p-0"
+            v-for="contentKind of Object.keys(activeContentKinds)"
+            :key="contentKind"
+            :title="contentKind"
+            :disabled="emptyContent(contentKind)"
+            active
+          >
+            <!-- tab menu with editable attributes -->
+            <b-tabs :nav-wrapper-class="getTabsClass()" card>
+              <b-tab
+                v-for="tab of Object.keys(activeContentKinds[contentKind])"
+                :key="tab"
+                :title="getTabText(tab)"
+              >
+                <!-- UI for each editable attribute based on tab and content kind  -->
+                <b-row>
+                  <b-col
+                    v-for="attr of getEditableAttrs(contentKind, tab)"
+                    class="p-1"
+                    :key="attr"
+                    :title="getInfoText(attr)"
+                  >
+                    <!-- 
                     UI type of the AttrStyle component is selected based on value
                      of store setting (currently the setting of "uiLayout")
                   -->
-                  <AttrStyle
-                    class="attribute rounded"
-                    :name="attr"
-                    :styles="getStyles(contentKind, attr)"
-                    :type="getInputType(attr)"
-                    :setter="getSetter(attr)"
-                    :getter="getGetter(attr)"
-                    @gotFocus="focusBubble"
-                  />
-                </b-col>
-              </b-row>
-            </b-tab>
-          </b-tabs>
-        </b-tab>
-      </b-tabs>
+                    <AttrStyle
+                      class="attribute rounded"
+                      :name="attr"
+                      :styles="getStyles(contentKind, attr)"
+                      :type="getInputType(attr)"
+                      :setter="getSetter(attr)"
+                      :getter="getGetter(attr)"
+                      @gotFocus="focusBubble"
+                    />
+                  </b-col>
+                </b-row>
+              </b-tab>
+            </b-tabs>
+          </b-tab>
+        </b-tabs>
+      </b-card>
     </b-card>
   </div>
 </template>
@@ -99,12 +121,6 @@ export default {
     DropDownGenericBS,
     LiveActionsMenu
   },
-  props: {
-    state: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
       /*contentKinds: function() {
@@ -113,6 +129,7 @@ export default {
         return ck;
       },*/
       contentKinds: ["region", "body", "div", "p", "span"],
+      editorState: "style",      
       myDropKey: 0
     };
   },
@@ -134,7 +151,7 @@ export default {
       return activeContent;
     },
     configStyles() {
-      switch (this.state) {
+      switch (this.editorState) {
         case "position":
           return this.menuStyleConfig.position;
         default:
@@ -197,7 +214,7 @@ export default {
       this.$emit("gotFocus");
     },
     getContentKindClass() {
-      var ckc = this.state == "style" ? "border-right" : "hidden";
+      var ckc = this.editorState == "style" ? "border-right" : "hidden";
       return ckc;
     },
     /* 
@@ -214,6 +231,11 @@ export default {
         }
       }
       return editableaAttrs;
+    },
+    getEditorToggleStyle(buttonName) {
+      var style =
+        buttonName == this.editorState ? "secondary" : "outline-secondary";
+      return style;
     },
     getGetter(attr) {
       var helper;
@@ -235,7 +257,7 @@ export default {
       return this.uiData.getLabel(name, this.lang);
     },
     getNavWrapperClass() {
-      var nwc = this.state == "style" ? "border-right" : "hidden-col";
+      var nwc = this.editorState == "style" ? "border-right" : "hidden-col";
       return nwc;
     },
     getTabText(name) {
@@ -245,8 +267,11 @@ export default {
       );
     },
     getTabsClass() {
-      var tc = this.state == "style" ? "" : "hidden";
+      var tc = this.editorState == "style" ? "" : "hidden";
       return tc;
+    },
+    getInfoText(attr) {
+      return this.uiData.getInfo(attr, this.lang);
     },
     getSetter(attr) {
       var helper;
@@ -303,6 +328,9 @@ export default {
       }
       return false;
     },
+    setEditorState: function(buttonName) {
+      this.editorState = buttonName;
+    },
     /* 
       Check which tabs (e.g. position or style) have any "editable
       property/attribute" (e.g. color or textAlign). This is checked
@@ -323,8 +351,7 @@ export default {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
       return this.$store.state[storeProperty] == "show";
     },
-    ...mapMutations(["addRegion"]),
-    ...mapActions(["setNewRegion"])
+    ...mapActions(["addRegion","setNewRegion"])
   }
 };
 </script>

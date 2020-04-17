@@ -47,6 +47,10 @@ var proto = {
         opacity: "simple",
         origin$h: "simple",
         origin$w: "simple",
+        ruby: "radio",
+        rubyAlign: "radio",
+        rubyPosition: "radio",
+        shear: "simple",
         showBackground: "radio",
         textAlign: "radio",
         textShadow$0: "simple",
@@ -102,6 +106,7 @@ var proto = {
           "textShadow$2",
           "textShadow$3"
         ],
+        Ruby: ["ruby", "rubyAlign", "rubyPosition", "shear"],
         Color: ["color", "backgroundColor", "showBackground"],
         WritingDirection: ["writingMode", "direction", "unicodeBidi"],
         Line: ["lineHeight", "fillLineGap", "wrapOption"]
