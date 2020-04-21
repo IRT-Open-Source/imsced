@@ -174,7 +174,7 @@ export const store = new Vuex.Store({
     videoDom(state) {
       return document.getElementById(state.config.defaultVideo.videoId);
     },
-    // get a specific value from region styles (like "extent$h") (TODO: check if working for every case)
+    // get a specific value from region styles (like "extent$h")
     getRegionValue(state, getters) {
       return (name) => {
         let namespace = state.styleData.attrs[name].ns;
@@ -191,9 +191,8 @@ export const store = new Vuex.Store({
         } else {
           return;
         }
-
         if (!valueEntry.hasOwnProperty("value")) {
-          value = valueEntry; // better to check on string type?
+          value = valueEntry; 
         } else {
           value = valueEntry.value;
         }

@@ -57,22 +57,6 @@
         :labelName="getLabelText('outputQuality')"
         @valueChanged="setQuality"
       />
-      <!-- subtitles, pngs -->
-      <!-- <RadioGeneric
-        :class="[{ radio: uiLayout != 'plain' }, 'clear', 'floatBox']"
-        :options="['yes', 'no']"
-        :selected="selectedUseCurrentST"
-        :labelName="getLabelText('useCurrentST')"
-        @valueChanged="setUseCurrentST"
-      />
-      <FileChooserGeneric
-        class="clear floatBox"
-        v-if="selectedUseCurrentST == 'no'"
-        :name="'choosePNG'"
-        :id="'choosePNG'"
-        :labelText="getLabelText('choosePNG')"
-        @filechange="setSubtitlePngs"
-      /> -->
       <ButtonGeneric
         class="clear floatBox"
         :buttonName="getLabelText('burnInSubmit')"
@@ -109,18 +93,14 @@ import { mapMutations, mapState } from "vuex";
 import BurnerConfig from "../config/burnerConfig.js";
 import ButtonGeneric from "./ButtonGeneric.vue";
 import DropDownGeneric from "./DropDownGeneric.vue";
-import FileChooserGeneric from "./FileChooserGeneric.vue";
 import IsdExport from "../modules/isdExport.js";
-import RadioGeneric from "./RadioGeneric.vue";
 
 let burnerConfig = new BurnerConfig();
 
 export default {
   components: {
     ButtonGeneric,
-    DropDownGeneric,
-    FileChooserGeneric,
-    RadioGeneric
+    DropDownGeneric
   },
   data() {
     return {
@@ -169,7 +149,6 @@ export default {
         this.videoOptions = json;
         if (this.videoOptions.length > 0) {
           this.selectedVideo = this.videoOptions[0];
-          //TODO select current video as default for export?
         }
       })
       .catch(error => {
@@ -190,7 +169,6 @@ export default {
           return response.json();
         })
         .then(json => {
-          //console.log("response for job ", id, json);
           this.progressPercentage = json.progressPercentage;
           this.progressText = json.progressText;
           // check for end of progress
@@ -198,7 +176,6 @@ export default {
             clearInterval(this.intervalId);
             this.burnInJobRunning = false;
             this.jobFinished = true;
-            // TODO reset all select fields to default?
           }
         })
         .catch(error => {
@@ -342,7 +319,6 @@ export default {
     ...mapMutations(["toggleShowBurnIn"])
   },
   beforeDestroy: function() {
-    // TODO if job running -> cancel job in imsc-burner
     this.burnInJobRunning = false;
     if (this.intervalId != "") {
       clearInterval(this.intervalId);

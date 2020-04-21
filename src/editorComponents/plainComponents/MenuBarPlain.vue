@@ -39,9 +39,6 @@
       <button @click="saveXml" class="menu-element">
         {{ getLabelText("saveXml") }}
       </button>
-      <!--      <button @click="saveIsdAsPng" class="menu-element">
-        {{ getLabelText("saveIsdAsPng") }}
-      </button> -->
       <button
         v-if="activateBurnIn"
         @click="toggleShowBurnIn"
@@ -58,9 +55,7 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from "vuex";
-import ButtonGeneric from "../ButtonGeneric.vue";
 import CustomFileChooser from "./../CustomFileChooser.vue";
-import FileChooserGeneric from "./../FileChooserGeneric.vue";
 import ImscData from "./../../modules/imscdata.js";
 import IsdExport from "../../modules/isdExport.js";
 import ScfService from "../../editorComponents/ScfService.vue";
@@ -68,9 +63,7 @@ import { saveAs } from "file-saver";
 
 export default {
   components: {
-    ButtonGeneric,
     CustomFileChooser,
-    FileChooserGeneric,
     ScfService
   },
   computed: {
@@ -104,7 +97,6 @@ export default {
     },
     initSubs: function(subtitleText) {
       var dataItem = new ImscData(subtitleText);
-      //dataItem.initParaHash();
       dataItem.initData();
       dataItem.initRegionHash();
       this.addSubtitleData({ imscData: dataItem }); //add to list

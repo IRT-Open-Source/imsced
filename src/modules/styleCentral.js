@@ -4,7 +4,6 @@
   what kind of data structure attributes have.
 */
 function StyleCentral() {
-  //TODO: Import custom settings here
 }
 //TODO: Describe what he different properties of the attribtes mean
 //      e.g. editOn, valueObject etc.

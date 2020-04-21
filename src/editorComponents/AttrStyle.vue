@@ -49,7 +49,7 @@ export default {
   },
   props: {
     getter: {
-      type: String | Function, // TODO check if there is a better way than using strings in config or convert to function before
+      type: String | Function, 
       required: false
     },
 
@@ -64,7 +64,7 @@ export default {
     },
 
     setter: {
-      type: String | Function, // TODO check if there is a better way than using strings in config or convert to function before
+      type: String | Function,
       required: false
     },
 

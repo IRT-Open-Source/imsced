@@ -149,7 +149,6 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 import ButtonGeneric from "../ButtonGeneric.vue";
 import CustomFileChooser from "./../CustomFileChooser.vue";
-import FileChooserGeneric from "./../FileChooserGeneric.vue";
 import ImscData from "./../../modules/imscdata.js";
 import IsdExport from "../../modules/isdExport.js";
 import ScfService from "../../editorComponents/ScfService.vue";
@@ -159,7 +158,6 @@ export default {
   components: {
     ButtonGeneric,
     CustomFileChooser,
-    FileChooserGeneric,
     ScfService
   },
   computed: {
@@ -299,6 +297,5 @@ export default {
   left: 0;
   width: 100%;
   background-color: lightslategray;
-  //background-color: #00519e;
 }
 </style>

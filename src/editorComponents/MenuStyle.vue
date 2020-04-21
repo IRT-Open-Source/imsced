@@ -5,12 +5,6 @@
   from a content element or region.
   b) when it has any effect i.e. it applies to the content element
   from which it is passsed or it is inherited to a descendent content element.
-  </style>
-  
-</style>
-
-</style>
-
 -->
 <template>
   <div class="menu">
@@ -279,7 +273,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 import AttrStyle from "./AttrStyle.vue";
 
 export default {

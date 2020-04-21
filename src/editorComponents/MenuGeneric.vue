@@ -1,13 +1,6 @@
 <!-- Style Attributes for simple menu -->
 <template>
   <div class="bs-wrapper">
-    <!-- <b-card
-      v-if="editorState == 'style'"
-      :header="getLabelText('style')"
-      no-body
-    >
-    </b-card> -->
-
     <b-card no-body>
       <b-card-header>
         <ButtonGeneric
@@ -23,12 +16,10 @@
         >
         </ButtonGeneric>
       </b-card-header>
-
       <b-card border-variant="white" v-if="editorState == 'position'">
         <!-- region styles -->
         <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
           <div class="d-flex flex-row align-items-stretch">
-            <!-- <b-card sub-title="Position" class="region-style"> -->
             <div class="pr-1 d-flex flex-row flex-grow-1">
               <DropDownGenericBS
                 :options="myRegionIds"
@@ -48,12 +39,10 @@
               />
             </div>
             <LiveActionsMenu class="d-flex flex-row align-items-stretch" />
-            <!-- </b-card> -->
           </div>
         </div>
       </b-card>
       <!-- tabs for level (body, div, span, p) -->
-
       <b-card no-body border-variant="white"
         ><b-tabs :nav-wrapper-class="getContentKindClass()" card pills vertical>
           <!-- 
@@ -108,7 +97,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters, mapMutations } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 import AttrStyle from "./AttrStyle.vue";
 import ButtonGeneric from "./ButtonGeneric.vue";
 import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
@@ -123,11 +112,6 @@ export default {
   },
   data() {
     return {
-      /*contentKinds: function() {
-        var ck =
-          this.state == "style" ? ["body", "div", "p", "span"] : ["region"];
-        return ck;
-      },*/
       contentKinds: ["region", "body", "div", "p", "span"],
       editorState: "style",      
       myDropKey: 0
@@ -362,8 +346,6 @@ export default {
 }
 .attribute {
   padding: 1em;
-  // border: 1px solid lightgrey;
-  // background-color: rgb(240, 243, 250);
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
