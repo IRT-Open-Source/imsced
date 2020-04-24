@@ -240,7 +240,7 @@ export default {
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   padding: 5px;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 #tempTimingBox {

@@ -33,7 +33,7 @@ export const store = new Vuex.Store({
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
     movieName: "", // video file name
-    movieSrc: "./data/videos/coffee.mp4", // video for the subtitles
+    movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
