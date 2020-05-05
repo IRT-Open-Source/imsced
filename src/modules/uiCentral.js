@@ -85,7 +85,7 @@ var proto = {
       },
       info: {
         lang: {
-          en: "Bidirectional paragraph level", // todo?
+          en: "Bidirectional paragraph level",
           de: "Bidirektionale Absatz-Ebene"
         }
       }

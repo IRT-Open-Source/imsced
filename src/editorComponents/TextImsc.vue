@@ -7,15 +7,6 @@
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
     />
-    <!--    <label>
-      <input
-        type="text"
-        size="100"
-        :value="element.text"
-        @keyup="changedValue"
-        @focus="focusBubble"
-      />
-    </label>-->
   </div>
 </template>
 
@@ -40,7 +31,7 @@ export default {
         this.element.text = "Placeholder";
       } else {
         this.element.text = val;
-      } //console.log("change:" + this.element.text);
+      }
       this.updateSubtitlePlane({ time: this.playTime });
     },
     focusBubble() {

@@ -107,7 +107,6 @@ let proto = {
       parent.setAttribute("end", time);
     }
   },
-  //TODO: Better to reuse function in helper
   getVttTime: function(seconds) {
     var h = Math.floor(seconds / 3600);
     var m = Math.floor((seconds % 3600) / 60);

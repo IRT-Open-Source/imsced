@@ -29,7 +29,7 @@ var proto = {
   ],
   defaultExportQuality: "medium",
   qualityOptions: { low: 26, medium: 21, high: 15 },
-  url: "http://localhost:9010" // TODO
+  url: "http://localhost:9010"
 };
 
 BurnerConfig.prototype = proto;

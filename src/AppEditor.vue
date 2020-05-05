@@ -1,167 +1,8 @@
 <template>
   <div id="app">
-    <!-- Navbar/Header -->
     <MenuBar />
-
     <Config v-if="showConfigUi" />
-
     <BurnIn v-if="activateBurnIn" v-show="showBurnIn" />
-
-    <!--    <DropDownGeneric
-      class="floatRightBox"
-      :options="['bootstrap', 'plain']"
-      :selected="uiLayout"
-      :labelName="'UI Layout:'"
-      @valueChanged="setUiLayout"
-    />
-
-    <DropDownGeneric
-      v-if="uiLayout == 'bootstrap'"
-      class="floatRightBox"
-      :options="menuStyleOptions"
-      :selected="menuStyle"
-      :labelName="`${getLabelText('genericMenuType')}:`"
-      @valueChanged="setMenuStyle"
-    />
-
-  
-    <DropDownGeneric
-      id="selectLang"
-      :options="getAvailableLanguages()"
-      :selected="lang"
-      :labelName="getLabelText('Language')"
-      @valueChanged="setLang"
-    />
-
-    <div id="saveConfig">
-      
-      <ButtonGeneric
-        :buttonName="getLabelText('saveFile')"
-        @click.native="saveXml"
-      />
-
-   
-      <ButtonGeneric
-        :buttonName="getLabelText('saveIsdAsPng')"
-        @click.native="saveIsdAsPng"
-      />
-
-      
-      <ButtonGeneric
-        :buttonName="configUiButtonName"
-        @click.native="toggleShowConfigUi"
-      />
-      <br />&nbsp;
-      <transition name="fade">
-        <div v-if="showConfigUi" id="config">
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :translateOptions="true"
-            :selected="showBodyMenu"
-            :labelName="`${getLabelText('elementMenu')} <Body>`"
-            @valueChanged="setShowBodyMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :translateOptions="true"
-            :selected="showDivMenu"
-            :labelName="`${getLabelText('elementMenu')} <div>`"
-            @valueChanged="setShowDivMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :translateOptions="true"
-            :selected="showPMenu"
-            :labelName="`${getLabelText('elementMenu')} <p>`"
-            @valueChanged="setShowPMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :translateOptions="true"
-            :selected="showSpanMenu"
-            :labelName="`${getLabelText('elementMenu')} <span>`"
-            @valueChanged="setShowSpanMenu"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :translateOptions="true"
-            :selected="showRegionSelect"
-            :labelName="'Regions'"
-            @valueChanged="setShowRegionSelect"
-          />
-
-          <RadioGeneric
-            :options="['show', 'hide']"
-            :selected="showScfService"
-            :labelName="'SCF Service'"
-            @valueChanged="setShowScfService"
-          />
-
-          <RadioGeneric
-            :options="['on', 'off']"
-            :translateOptions="true"
-            :selected="showBurnInService ? 'on' : 'off'"
-            :labelName="'Activate Burn-In Service'"
-            @valueChanged="setShowBurnInService"
-          />
-
-          <RadioGeneric
-            :options="['on', 'off']"
-            :translateOptions="true"
-            :selected="debug ? 'on' : 'off'"
-            :labelName="'Debug info'"
-            @valueChanged="setDebug"
-          />
-
-          <RadioGeneric
-            :options="['on', 'off']"
-            :translateOptions="true"
-            :selected="forcedOnly ? 'on' : 'off'"
-            :labelName="'Display forced only mode'"
-            @valueChanged="setForcedOnlyMode"
-          />
-
-          <div>
-            <fieldset>
-              <legend v-if="uiLayout == 'plain'">
-                {{ getLabelText("exportIsdAsPng") }}
-              </legend>
-              <b v-else>{{ getLabelText("exportIsdAsPng") }}</b>
-              <InputGeneric
-                :value="getImageExportWidth()"
-                :labelName="getLabelText('imageExportWidth')"
-                @valueChanged="setImageExportWidth"
-              />
-              <InputGeneric
-                :value="getImageExportHeight()"
-                :labelName="getLabelText('imageExportHeight')"
-                @valueChanged="setImageExportHeight"
-              />
-            </fieldset>
-          </div>
-
-          <div>
-            <fieldset>
-              <legend v-if="uiLayout == 'plain'">
-                {{ getLabelText("scfStartOffset") }}
-              </legend>
-              <b v-else>{{ getLabelText("scfStartOffset") }}</b>
-              <InputGeneric
-                :value="getScfStartOffsetFrames()"
-                :labelName="''"
-                @valueChanged="setOffsetFrames"
-              />
-            </fieldset>
-          </div>
-        </div>
-      </transition>
-    </div>
-
-    <BurnIn v-if="showBurnInService" />-->
 
     <!-- Debug button set to test abritary methods  -->
     <MyDebug
@@ -264,10 +105,6 @@
         class="spanMenu"
       />
     </div>
-
-    <!-- Show menu depending on menustyle -->
-    <!-- <MenuGeneric v-if="uiLayout == 'bootstrap' && showMenu" class="mt-2" /> -->
-
     <!-- Loader in case ST take some time to load -->
     <div v-if="loadingST">
       <div class="loader"></div>
@@ -324,7 +161,6 @@
           id="fullScreenContainer"
           @fullscreenchange="handleFullscreenChange"
         >
-          <!-- <LiveActionsMenu /> -->
           <VideoGeneric
             :containerid="config.defaultVideo.containerId"
             :id="config.defaultVideo.videoId"
@@ -372,20 +208,17 @@ import { mapState, mapGetters, mapMutations, mapActions } from "vuex";
 import BurnIn from "./editorComponents/BurnIn.vue";
 import ButtonGeneric from "./editorComponents/ButtonGeneric.vue";
 import Config from "./editorComponents/Config.vue";
-import DragFeature from "./editorComponents/DragFeature.vue";
 import ContentImsc from "./editorComponents/ContentImsc.vue";
 import CustomFileChooser from "./editorComponents/CustomFileChooser.vue";
+import DragFeature from "./editorComponents/DragFeature.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
-import h1Generic from "./editorComponents/h1Generic.vue";
 import ImscData from "./modules/imscdata.js";
-import LiveActionsMenu from "./editorComponents/LiveActionsMenu.vue";
 import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
-import RadioGeneric from "./editorComponents/RadioGeneric.vue";
 import ResizeFeature from "./editorComponents/ResizeFeature.vue";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
 import { saveAs } from "file-saver";
@@ -401,13 +234,10 @@ export default {
     DragFeature,
     DropDownGeneric,
     EmojiPicker,
-    h1Generic,
-    LiveActionsMenu,
     MenuGeneric,
     MenuStyle,
     MyDebug,
     MenuBar,
-    RadioGeneric,
     ResizeFeature,
     VideoGeneric
   },
@@ -471,7 +301,6 @@ export default {
     showMenu() {
       return (
         this.activeP || this.activeSpan || this.activeDiv
-        //|| (this.body && this.helper.objectHasEntries(this.body.styleAttrs)) // TODO
       );
     },
     ...mapState([
@@ -659,7 +488,6 @@ export default {
     },
     initSubs: function(subtitleText) {
       var dataItem = new ImscData(subtitleText);
-      //dataItem.initParaHash();
       dataItem.initData();
       dataItem.initRegionHash();
       this.addSubtitleData({ imscData: dataItem }); //add to list
@@ -697,7 +525,6 @@ export default {
       }
       this.renderDivDom.style.width = this.videoDom.style.width;
       this.renderDivDom.style.height = this.videoDom.style.height;
-      // this.subsDivDom.style.height = this.videoDom.style.height;
       this.fullScreenDivDom().style.height = this.renderDivDom.style.height;
       this.editAreaDivDom().style.width = this.renderDivDom.style.width;
       this.triggerTimeUpdate();
@@ -720,7 +547,7 @@ export default {
     },
     setMaxHeight: function() {
       var box = this.$refs.subtitleListView.getBoundingClientRect();
-      var newValue = document.documentElement.clientHeight - box.top - 30; // TODO try to get this value from CSS
+      var newValue = document.documentElement.clientHeight - box.top - 30;
       this.$refs.subtitleListView.style.maxHeight = `${newValue}px`;
     },
     testLog() {
@@ -837,11 +664,9 @@ input:focus {
 }
 
 #subtitleListView {
-  /* height: 75vh; */
   grid-row: 2 / 5;
   grid-column: 2 / 3;
   overflow-y: auto;
-  /* margin-right: 5%; */
 }
 
 .captionWithButtons {

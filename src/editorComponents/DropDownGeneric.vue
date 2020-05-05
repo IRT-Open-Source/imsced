@@ -19,26 +19,13 @@
     @gotFocus="focusBubble"
     @valueChanged="changedValue"
   />
-  <!--<div>
-    <label
-      >{{ labelName }}
-      <select @change="changedValue" @focus="focusBubble">
-        <option
-          v-for="option in options"
-          :key="option"
-          :selected="option == selected ? true : false"
-        >
-          {{ option }}
-        </option>
-      </select>
-    </label>
-  </div>-->
 </template>
 
 <script>
+import { mapState } from "vuex";
 import DropDownGenericPlain from "./plainComponents/DropDownGenericPlain.vue";
 import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
-import { mapState } from "vuex";
+
 export default {
   components: {
     DropDownGenericPlain,

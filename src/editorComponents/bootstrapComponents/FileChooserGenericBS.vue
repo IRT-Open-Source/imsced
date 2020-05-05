@@ -2,7 +2,6 @@
 <template>
   <div>
     <b>{{ labelText }}</b>
-    <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
     <b-form-file class="mt-1" :accept="accept" size="sm" @change.native="changedValue" />
   </div>
 </template>

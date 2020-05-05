@@ -23,8 +23,6 @@ var proto = {
             Settings defined on a menu type will override the default settings.
   */
 
-  // TODO split into multiple files -> load custom style file e.g. as environment variable
-
   settings: {
     // default settings -> will be used if no specification in styles
     defaults: {

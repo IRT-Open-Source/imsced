@@ -18,11 +18,6 @@
       @click.native="toggleResizingActive"
       :disabled="activeP == undefined"
     />
-
-    <!-- <ButtonGeneric
-      :buttonName="fullScreenButtonName"
-      @click.native="toggleFullScreenMode"
-    /> -->
   </div>
 </template>
 
@@ -67,18 +62,10 @@ export default {
     resizeFeatureActive() {
       return this.activeP && this.resizingActive;
     }
-
-    // fullScreenButtonName() {
-    //   var name = this.fullScreenActive
-    //     ? "disableFullScreen"
-    //     : "enableFullScreen";
-    //   return this.uiData.getLabel(name, this.lang);
-    // }
   },
   methods: {
     ...mapMutations([
       "toggleDraggingActive",
-      // "toggleFullScreenMode",
       "toggleResizingActive"
     ])
   }

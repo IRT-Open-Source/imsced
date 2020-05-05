@@ -63,7 +63,6 @@ export default {
   methods: {
     changedValue: function(val) {
       this.$emit("valueChanged", val);
-      //console.log(val);
     },
     focusBubble() {
       this.$emit("gotFocus");
