@@ -1,8 +1,22 @@
 ## 0.6.0 (Apr, 17, 2020)
+
 ### Enhancements
+
+[#71](https://github.com/IRT-Open-Source/imsced/issues/71)
+Code Cleanup
+
+### Fixed
+
+[#70](https://github.com/IRT-Open-Source/imsced/issues/70)
+Fix security issues and update Vue CLI
+
+## 0.6.0 (Apr, 17, 2020)
+
+### Enhancements
+
 [#67](https://github.com/IRT-Open-Source/imsced/issues/67)
 Add xml:lang on tt element to export
- 
+
 [#63](https://github.com/IRT-Open-Source/imsced/issues/63)
 Add unsupported attributes to XML export
 
@@ -39,18 +53,18 @@ Support for some Ruby Features
 [#4](https://github.com/IRT-Open-Source/imsced/issues/4)
 Add partial support of nested spans
 
-
 ### Fixes
+
 [#64](https://github.com/IRT-Open-Source/imsced/issues/64)
 Add all supported style attributes to XML export
 
 [#54](https://github.com/IRT-Open-Source/imsced/issues/54)
 Display of style attributes with subtitle content in focus
 
-
-
 ## 0.5.0 (Feb, 17, 2020)
+
 ### Enhancements
+
 [#40](https://github.com/IRT-Open-Source/imsced/issues/40):
 Text labels for burn-in qualities
 
@@ -70,9 +84,9 @@ Simplify label for textShadow
 Remove PNG Export feature
 
 ### Fixes
+
 [#30](https://github.com/IRT-Open-Source/imsced/issues/30):
 Copy & Paste error with mouse
-
 
 ## 0.4.2 (Feb, 11, 2020)
 

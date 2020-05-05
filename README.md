@@ -72,7 +72,7 @@ See below for the current style attribute support:
 | ruby            |
 | rubyAlign       |
 | rubyPosition    |
-| shear           |  
+| shear           |
 | showBackground  |
 | textAlign       |
 | textShadow      |
@@ -123,10 +123,8 @@ npm run serve
 # build for production with minification
 npm run build
 
-# You need to copy index.html and the following directories to your
-# production environment:
-# * data (initial sample video and subtitle file for testing)
-# * dist (build JS files)
+# You need to copy the content of the dist directory
+# to your production environment
 
 ```
 
