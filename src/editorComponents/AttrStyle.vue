@@ -49,7 +49,7 @@ export default {
   },
   props: {
     getter: {
-      type: String | Function, 
+      type: String | Function,
       required: false
     },
 

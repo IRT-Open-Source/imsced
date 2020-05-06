@@ -3,8 +3,7 @@
   Stores also what values are allowed for style attribute and
   what kind of data structure attributes have.
 */
-function StyleCentral() {
-}
+function StyleCentral() {}
 //TODO: Describe what he different properties of the attribtes mean
 //      e.g. editOn, valueObject etc.
 var proto = {

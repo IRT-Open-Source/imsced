@@ -10,11 +10,10 @@
 
 /**
  * constructor
- * @param {ImscData} obj 
+ * @param {ImscData} obj
  */
 function ImscExport(obj) {
-  this.ttText =
-    `<tt xmlns='http://www.w3.org/ns/ttml'
+  this.ttText = `<tt xmlns='http://www.w3.org/ns/ttml'
 		 xmlns:ttp='http://www.w3.org/ns/ttml#parameter'
 		 xmlns:tts='http://www.w3.org/ns/ttml#styling'
      xmlns:itts='http://www.w3.org/ns/ttml/profile/imsc1#styling'
@@ -168,7 +167,7 @@ let proto = {
   "http://www.w3.org/ns/ttml#styling disparity": function(obj) {
     var value = obj.value + obj.unit;
     this.setAttribute("tts:disparity", value);
-  },  
+  },
   "http://www.w3.org/ns/ttml#styling display": function(obj) {
     this.setAttribute("tts:display", obj);
   },
@@ -201,10 +200,10 @@ let proto = {
   },
   "http://www.w3.org/ns/ttml#styling fontStyle": function(obj) {
     this.setAttribute("tts:fontStyle", obj);
-  },  
+  },
   "http://www.w3.org/ns/ttml#styling fontWeight": function(obj) {
     this.setAttribute("tts:fontWeight", obj);
-  },  
+  },
   "http://www.w3.org/ns/ttml#styling lineHeight": function(obj) {
     var value = obj.value + obj.unit;
     this.setAttribute("tts:lineHeight", value);
@@ -226,29 +225,29 @@ let proto = {
       })
       .join(" ");
     this.setAttribute("tts:padding", value);
-  },  
+  },
   "http://www.w3.org/ns/ttml#styling position": function(obj) {
     var hValue = obj.h.edge + " " + obj.h.offset.value + obj.h.offset.unit;
     var vValue = obj.v.edge + " " + obj.v.offset.value + obj.v.offset.unit;
     var value = hValue + " " + vValue;
     this.setAttribute("tts:position", value);
-  },  
+  },
   "http://www.w3.org/ns/ttml#styling ruby": function(obj) {
     this.setAttribute("tts:ruby", obj);
-  },    
+  },
   "http://www.w3.org/ns/ttml#styling rubyAlign": function(obj) {
     this.setAttribute("tts:rubyAlign", obj);
-  },    
+  },
   "http://www.w3.org/ns/ttml#styling rubyPosition": function(obj) {
     this.setAttribute("tts:rubyPosition", obj);
-  },    
+  },
   "http://www.w3.org/ns/ttml#styling rubyReserve": function(obj) {
     var value = obj[0];
     if (obj.length === 2 && obj[1] !== null) {
       value += " " + obj[1].value + obj[1].unit;
     }
     this.setAttribute("tts:rubyReserve", value);
-  },    
+  },
   "http://www.w3.org/ns/ttml#styling shear": function(obj) {
     var value = obj.value + obj.unit;
     this.setAttribute("tts:shear", value);
@@ -268,7 +267,7 @@ let proto = {
   },
   "http://www.w3.org/ns/ttml#styling textShadow": function(obj) {
     var value = obj[0]
-      .filter(x => x !== null)
+      .filter((x) => x !== null)
       .map(function(x) {
         if (x.value) {
           return `${x.value}${x.unit}`;

@@ -11,11 +11,11 @@ import JSZip from "jszip";
 
 function IsdExport(obj) {
   this.data = obj;
-  this.imageSize = {},
-  this.mainContainer = null,
-  this.mediaEvents = obj.getMediaTimeEvents(),
-  this.renderDiv = null,
-  this.svgContainer = null
+  (this.imageSize = {}),
+    (this.mainContainer = null),
+    (this.mediaEvents = obj.getMediaTimeEvents()),
+    (this.renderDiv = null),
+    (this.svgContainer = null);
 }
 
 let proto = {
@@ -56,7 +56,7 @@ let proto = {
 
       let ctx = canvas.getContext("2d");
       ctx.canvas.height = this.imageSize.height;
-      ctx.canvas.width = this.imageSize.width; 
+      ctx.canvas.width = this.imageSize.width;
 
       let img = new Image();
       img.onload = function() {
@@ -65,7 +65,7 @@ let proto = {
         resolve(data.substr(data.indexOf(",") + 1));
       };
       img.src = url;
-    })
+    });
   },
   createRenderDiv: function() {
     let rdiv = document.createElement("div");
@@ -104,15 +104,16 @@ let proto = {
       this.imageSize.width,
       store.state.forcedOnly
     );
-  }, 
+  },
   /*
     Generates the complete zip file.
     Returns a Promise of the generated zip file
-  */  
-  saveAsPng: function (size = {width: 1920, height: 1080}) {
+  */
+
+  saveAsPng: function(size = { width: 1920, height: 1080 }) {
     this.imageSize = size;
     this.mainContainer = this.createMainContainer();
-    
+
     let zip = new JSZip();
     document.body.appendChild(this.mainContainer);
 
@@ -123,25 +124,25 @@ let proto = {
 
         let svgser = new XMLSerializer().serializeToString(this.svgContainer);
         let fname = `${offset}.png`;
-        let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgser);
-        this.createPngImage(url)
-        .then(function(data) {
+        let url =
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgser);
+        this.createPngImage(url).then(function(data) {
           zip.file(fname, data, { base64: true });
           resolve();
-        })
+        });
       });
     };
 
     return Promise.all(this.mediaEvents.map(handleMediaEvent))
-    .then(() => {
-      document.body.removeChild(this.mainContainer);
-      return zip.generateAsync({ type: "blob" });
-    })
-    .catch((reason) => {
-      throw reason;
-    })
+      .then(() => {
+        document.body.removeChild(this.mainContainer);
+        return zip.generateAsync({ type: "blob" });
+      })
+      .catch((reason) => {
+        throw reason;
+      });
   }
-}
+};
 
 IsdExport.prototype = proto;
 

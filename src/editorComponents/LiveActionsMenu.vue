@@ -64,10 +64,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations([
-      "toggleDraggingActive",
-      "toggleResizingActive"
-    ])
+    ...mapMutations(["toggleDraggingActive", "toggleResizingActive"])
   }
 };
 </script>

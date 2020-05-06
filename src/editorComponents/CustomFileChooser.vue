@@ -11,7 +11,13 @@
       </font-awesome-icon
     ></span>
     <span v-else>{{ labelText }}</span>
-    <input type="file" :name="name" :id="id" :accept="accept" @change="fileChanged" />
+    <input
+      type="file"
+      :name="name"
+      :id="id"
+      :accept="accept"
+      @change="fileChanged"
+    />
   </label>
 </template>
 
@@ -27,7 +33,7 @@ export default {
     },
     iconStyle: {
       type: Object,
-      default: () => ({ color: 'rgba(255, 255, 255, 0.75)' })
+      default: () => ({ color: "rgba(255, 255, 255, 0.75)" })
     },
     id: {
       type: String,

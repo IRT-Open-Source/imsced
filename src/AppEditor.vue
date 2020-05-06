@@ -299,9 +299,7 @@ export default {
       return this.activeP && this.resizingActive;
     },
     showMenu() {
-      return (
-        this.activeP || this.activeSpan || this.activeDiv
-      );
+      return this.activeP || this.activeSpan || this.activeDiv;
     },
     ...mapState([
       "activateBurnIn",
@@ -432,25 +430,23 @@ export default {
     });
     // scf service - get templates for SRT import
     fetch(this.scfData.endpoints.template, {
-        method: "GET"
+      method: "GET"
+    })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("Couldn't get template files.");
+        }
+        return response.json();
       })
-        .then(function(response) {
-          if (!response.ok) {
-            throw new Error(
-              "Couldn't get template files."
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          this.setSrtTemplateOptions(data);
-        })
-        .catch((error) => {
-          console.log(
-            "Something went wrong while communicating with the SCF service. " +
-              error
-          );
-        });
+      .then((data) => {
+        this.setSrtTemplateOptions(data);
+      })
+      .catch((error) => {
+        console.log(
+          "Something went wrong while communicating with the SCF service. " +
+            error
+        );
+      });
   },
   methods: {
     addNewRegion() {
@@ -539,8 +535,7 @@ export default {
       });
     },
     saveXml: function() {
-      this.saveAsXml()
-      .then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml().then((v) => saveAs(v, "imsc2.xml"));
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;

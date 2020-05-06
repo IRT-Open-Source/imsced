@@ -304,7 +304,7 @@ var proto = {
         }
       }
     },
-    
+
     importSrt: {
       label: {
         lang: {

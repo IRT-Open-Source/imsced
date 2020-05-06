@@ -137,7 +137,7 @@ export default {
     fetch(`${this.burnerConfig.url}/essences`, {
       method: "GET"
     })
-      .then(response => {
+      .then((response) => {
         if (response.status != 200) {
           throw new Error(
             `Could not fetch Video files. Response status ${response.status}!`
@@ -145,13 +145,13 @@ export default {
         }
         return response.json();
       })
-      .then(json => {
+      .then((json) => {
         this.videoOptions = json;
         if (this.videoOptions.length > 0) {
           this.selectedVideo = this.videoOptions[0];
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.handleError(error);
       });
   },
@@ -160,7 +160,7 @@ export default {
       fetch(`${this.burnerConfig.url}/jobs/${id}`, {
         method: "GET"
       })
-        .then(response => {
+        .then((response) => {
           if (response.status != 200) {
             throw new Error(
               `Error requesting job status. Response status ${response.status}!`
@@ -168,7 +168,7 @@ export default {
           }
           return response.json();
         })
-        .then(json => {
+        .then((json) => {
           this.progressPercentage = json.progressPercentage;
           this.progressText = json.progressText;
           // check for end of progress
@@ -178,7 +178,7 @@ export default {
             this.jobFinished = true;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.handleError(error);
         });
     },
@@ -197,7 +197,7 @@ export default {
         method: "POST",
         body: formData
       })
-        .then(response => {
+        .then((response) => {
           if (response.status != 200) {
             throw new Error(
               `Couldn't create new job. Response status ${response.status}!`
@@ -205,7 +205,7 @@ export default {
           }
           return response.json();
         })
-        .then(json => {
+        .then((json) => {
           if (json.job_id) {
             //keep track of job
             let interval_id = window.setInterval(
@@ -221,7 +221,7 @@ export default {
             this.progressText = "New job started...";
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.handleError(error);
         });
     },
@@ -243,12 +243,12 @@ export default {
         let selectedResCopy = this.selectedResolution;
         isdExport
           .saveAsPng(this.config.defaultImageExportSize)
-          .then(content => {
+          .then((content) => {
             this.selectedPngs = content;
             //request to api
             this.burnInRequest();
           })
-          .catch(error => {
+          .catch((error) => {
             this.handleError(error);
           });
       } else {
@@ -275,7 +275,7 @@ export default {
     },
     getResolutionOpts() {
       let choices = ["source"];
-      this.burnerConfig.videoResolutionOptions.map(res => {
+      this.burnerConfig.videoResolutionOptions.map((res) => {
         choices.push(`${res.width}x${res.height}`);
       });
       return choices;

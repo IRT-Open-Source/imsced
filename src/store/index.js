@@ -192,7 +192,7 @@ export const store = new Vuex.Store({
           return;
         }
         if (!valueEntry.hasOwnProperty("value")) {
-          value = valueEntry; 
+          value = valueEntry;
         } else {
           value = valueEntry.value;
         }
@@ -289,13 +289,13 @@ export const store = new Vuex.Store({
     setShowSpanMenu(state, val) {
       state.showSpanMenu = val;
     },
-    setSrtImportLang(state, val){
+    setSrtImportLang(state, val) {
       state.srtImportLang = val;
     },
-    setSrtImportTemplate(state, val){
+    setSrtImportTemplate(state, val) {
       state.srtImportTemplate = val;
     },
-    setSrtTemplateOptions(state, val){
+    setSrtTemplateOptions(state, val) {
       state.srtTemplateOptions = val;
     },
     setSubsFileName(state, val) {
@@ -342,8 +342,8 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    addRegion({dispatch, state}) {
-      let newRegionId = "r-" + state.helper.uuidv4().substring(0,8);
+    addRegion({ dispatch, state }) {
+      let newRegionId = "r-" + state.helper.uuidv4().substring(0, 8);
       let newRegion = new MyRegion(newRegionId);
       dispatch("setNewRegion", newRegionId);
       Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
@@ -414,7 +414,7 @@ export const store = new Vuex.Store({
      * Save the active subtitle document as xml
      */
     saveAsXml({ state }) {
-      return new Promise(r => {
+      return new Promise((r) => {
         let imscXml = new ImscExport(state.currentSubtitleData);
         imscXml.iterateData();
         let serializer = new XMLSerializer();

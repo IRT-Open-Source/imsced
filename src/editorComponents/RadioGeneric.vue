@@ -33,7 +33,7 @@ export default {
 
     labelWeight: {
       type: String,
-      default: 'bold'
+      default: "bold"
     },
 
     options: {

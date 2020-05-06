@@ -27,8 +27,8 @@ export default {
 
     labelWeight: {
       type: String,
-      default: 'bold'
-    },    
+      default: "bold"
+    },
 
     options: {
       type: Array,
@@ -41,8 +41,8 @@ export default {
   },
   computed: {
     labelWeightClass: function() {
-      return 'font-weight-' + this.labelWeight
-    },    
+      return "font-weight-" + this.labelWeight;
+    },
     //unique name for group of radio buttons
     nameOfSet: function() {
       var helper = new helperGeneric();

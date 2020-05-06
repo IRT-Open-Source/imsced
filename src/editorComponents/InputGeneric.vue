@@ -39,15 +39,15 @@ export default {
     },
     labelWeight: {
       type: String,
-      default: 'bold'
-    },    
+      default: "bold"
+    },
     size: {
       type: Number,
       required: false
     },
     type: {
       type: String,
-      default: 'text'
+      default: "text"
     },
     value: {
       required: true

@@ -2,7 +2,12 @@
 <template>
   <div>
     <b>{{ labelText }}</b>
-    <b-form-file class="mt-1" :accept="accept" size="sm" @change.native="changedValue" />
+    <b-form-file
+      class="mt-1"
+      :accept="accept"
+      size="sm"
+      @change.native="changedValue"
+    />
   </div>
 </template>
 

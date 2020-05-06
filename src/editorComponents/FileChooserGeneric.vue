@@ -82,7 +82,7 @@ export default {
     sendText: function(fileObj) {
       //Using standard file reader API
       var reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         var text = e.target.result;
         this.$emit("textSent", text);
       };

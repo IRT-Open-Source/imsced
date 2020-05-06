@@ -9,8 +9,7 @@ function ImscData(text) {
   let xmlDoc = this.help.getXmlDocument(text);
   try {
     this.xmlLang = this.help.getXmlLang(xmlDoc);
-  }
-  catch (e) {
+  } catch (e) {
     console.log(e);
     this.xmlLang = "";
   }

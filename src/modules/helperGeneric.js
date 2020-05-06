@@ -43,7 +43,7 @@ var proto = {
   /**
    * get ttp:cellResolution attribute value on the <tt> element
    * if attribute value is not set, returns default value
-   * @param {XMLDocument} xmlDoc 
+   * @param {XMLDocument} xmlDoc
    * @returns {string}
    */
   getCellResolution(xmlDoc) {
@@ -58,18 +58,18 @@ var proto = {
   /**
    * parse XML from a string into a XMLDocument
    * @param {string} text
-   * @returns {XMLDocument} 
+   * @returns {XMLDocument}
    */
   getXmlDocument(text) {
     let parser = new DOMParser();
     let xmlDoc = parser.parseFromString(text, "text/xml");
     return xmlDoc;
   },
-  /** 
+  /**
    * get xml:lang attribute value on the <tt> element
    * @param {XMLDocument} xmlDoc
-   * @returns {string}   
-  */
+   * @returns {string}
+   */
   getXmlLang(xmlDoc) {
     let tt = xmlDoc.documentElement;
     let value = tt.getAttribute("xml:lang");
@@ -151,10 +151,10 @@ var proto = {
   /*
     e.g. "00:01:01.000" => 61
   */
- seconds(vttTimestamp) {
-  var seconds = new Date(`1970-01-01T${vttTimestamp}Z`).getTime() / 1000;
-  return seconds;
- }
+  seconds(vttTimestamp) {
+    var seconds = new Date(`1970-01-01T${vttTimestamp}Z`).getTime() / 1000;
+    return seconds;
+  }
 };
 
 helperGeneric.prototype = proto;
