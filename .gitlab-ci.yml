@@ -1,0 +1,28 @@
+default:
+  image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - setup
+  - test
+
+setup:
+  tags:
+    - docker
+  stage: setup
+  script:
+    - npm ci
+  only:
+    - test-ci-cd
+
+unit_test:
+  tags:
+    - docker
+  stage: test
+  script:
+    - npm run test:unit
+  only:
+    - test-ci-cd
