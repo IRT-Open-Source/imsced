@@ -8,6 +8,7 @@ cache:
 stages:
   - setup
   - test
+  - deploy
 
 setup:
   tags:
@@ -16,7 +17,7 @@ setup:
   script:
     - npm ci
   only:
-    - test-ci-cd
+    - dev
 
 unit_test:
   tags:
@@ -25,4 +26,19 @@ unit_test:
   script:
     - npm run test:unit
   only:
-    - test-ci-cd
+    - dev
+    
+pages: 
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - npm run build
+    - mv public public-vue # GitLab Pages hooks on the public folder
+    - mv dist public # rename the dist folder (result of npm run build)
+  artifacts:
+    paths:
+      - public # artifact path must be /public for GitLab Pages to pick it up    
+  only:
+    - dev
+    
