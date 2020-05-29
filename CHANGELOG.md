@@ -1,11 +1,56 @@
-## 0.6.0 (Apr, 17, 2020)
+## 0.7.0 (May, 29, 2020)
+
+### Enhancements
+
+[#89](https://github.com/IRT-Open-Source/imsced/issues/89)
+Configure visualisation duration guidlined (experimental)
+
+[#88](https://github.com/IRT-Open-Source/imsced/issues/88)
+Configure display of warnings and hints
+
+[#87](https://github.com/IRT-Open-Source/imsced/issues/87)
+Configure characters per line
+
+[#86](https://github.com/IRT-Open-Source/imsced/issues/86)
+Warning: Exceeded minimal duration
+
+[#83](https://github.com/IRT-Open-Source/imsced/issues/83)
+Info characters per line
+
+[#82](https://github.com/IRT-Open-Source/imsced/issues/82)
+Warning: Subtitle duration/characters and reading speed
+
+[#81](https://github.com/IRT-Open-Source/imsced/issues/81)
+Configuration reading speed
+
+[#80](https://github.com/IRT-Open-Source/imsced/issues/80)
+Warning characters per line exceeded
+
+[#79](https://github.com/IRT-Open-Source/imsced/issues/79)
+Warning too many lines in subtitle
+
+[#78](https://github.com/IRT-Open-Source/imsced/issues/78)
+Configuration max. number of lines per subtitle
+
+[#77](https://github.com/IRT-Open-Source/imsced/issues/77)
+Configuration numbers of characters per line
+
+[#76](https://github.com/IRT-Open-Source/imsced/issues/76)
+Save and load settings for subtitle guidelines
+
+### Fixes
+
+[#90](https://github.com/IRT-Open-Source/imsced/issues/90)
+Fix security issue for package dependency
+
+## 0.6.1 (May, 5, 2020)
 
 ### Enhancements
 
 [#71](https://github.com/IRT-Open-Source/imsced/issues/71)
 Code Cleanup
 
-### Fixed
+### Fixes
 
 [#70](https://github.com/IRT-Open-Source/imsced/issues/70)
 Fix security issues and update Vue CLI
