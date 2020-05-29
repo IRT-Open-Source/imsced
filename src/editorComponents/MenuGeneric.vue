@@ -113,7 +113,7 @@ export default {
   data() {
     return {
       contentKinds: ["region", "body", "div", "p", "span"],
-      editorState: "style",      
+      editorState: "style",
       myDropKey: 0
     };
   },
@@ -157,6 +157,7 @@ export default {
       return tabNames;
     },
     ...mapState([
+      "activeDiv",
       "activeP",
       "activeSpan",
       "currentSubtitleData",
@@ -168,7 +169,7 @@ export default {
       "styleData",
       "uiData"
     ]),
-    ...mapGetters(["activeDiv", "activeRegionId", "body", "regionStyles"])
+    ...mapGetters(["activeRegionId", "body", "regionStyles"])
   },
   methods: {
     addNewRegion() {
@@ -335,7 +336,7 @@ export default {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
       return this.$store.state[storeProperty] == "show";
     },
-    ...mapActions(["addRegion","setNewRegion"])
+    ...mapActions(["addRegion", "setNewRegion"])
   }
 };
 </script>

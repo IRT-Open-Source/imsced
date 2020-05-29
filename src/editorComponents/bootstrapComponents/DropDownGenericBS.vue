@@ -33,8 +33,8 @@ export default {
     },
     labelWeight: {
       type: String,
-      default: 'bold'
-    },    
+      default: "bold"
+    },
     options: {
       type: Array,
       required: true
@@ -46,9 +46,10 @@ export default {
   },
   computed: {
     labelClass: function() {
-      var lc = this.labelName == '' && !this.displayEmptyLabel ? 
-        'd-none' :
-        this.labelWeightClass();
+      var lc =
+        this.labelName == "" && !this.displayEmptyLabel
+          ? "d-none"
+          : this.labelWeightClass();
       return lc;
     }
   },
@@ -60,8 +61,8 @@ export default {
       this.$emit("gotFocus");
     },
     labelWeightClass: function() {
-      return 'font-weight-' + this.labelWeight
-    }    
+      return "font-weight-" + this.labelWeight;
+    }
   }
 };
 </script>

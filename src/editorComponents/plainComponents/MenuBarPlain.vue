@@ -128,8 +128,7 @@ export default {
         });
     },
     saveXml: function() {
-      this.saveAsXml()
-      .then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml().then((v) => saveAs(v, "imsc2.xml"));
     },
     ...mapMutations([
       "addSubtitleData",

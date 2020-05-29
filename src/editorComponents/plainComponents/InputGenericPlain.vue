@@ -1,17 +1,17 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div>
-    <label>
-      {{ labelName }}
-      <input
-        type="text"
-        :value="value"
-        :size="size"
-        @input="changedValue"
-        @focus="focusBubble"
-      />
-    </label>
-  </div>
+  <label>
+    {{ labelName }}
+    <input
+      :type="type"
+      :value="value"
+      :size="size"
+      :step="step"
+      :min="min"
+      @input="changedValue"
+      @focus="focusBubble"
+    />
+  </label>
 </template>
 
 <script>
@@ -24,9 +24,19 @@ export default {
       type: String | Number,
       required: true
     },
+    type: {
+      type: String,
+      default: "text"
+    },
     size: {
       type: Number,
       required: false
+    },
+    step: {
+      type: Number
+    },
+    min: {
+      type: Number
     }
   },
   computed: {

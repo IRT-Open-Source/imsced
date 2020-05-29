@@ -93,7 +93,10 @@ export default {
     },
     focusChanged(event) {
       // check if input field belongs to editor and not e.g. search field inside the emoji picker
-      if (event.type == "focusin" && event.target.classList.contains("form-control")) {
+      if (
+        event.type == "focusin" &&
+        event.target.classList.contains("form-control")
+      ) {
         this.focusId = event.target.id;
       } else if (event.type == "focusout") {
         if (this.showPicker) return;

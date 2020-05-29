@@ -11,7 +11,13 @@
       </font-awesome-icon
     ></span>
     <span v-else>{{ labelText }}</span>
-    <input type="file" :name="name" :id="id" :accept="accept" @change="fileChanged" />
+    <input
+      type="file"
+      :name="name"
+      :id="id"
+      :accept="accept"
+      @change="fileChanged"
+    />
   </label>
 </template>
 
@@ -27,7 +33,7 @@ export default {
     },
     iconStyle: {
       type: Object,
-      default: () => ({ color: 'rgba(255, 255, 255, 0.75)' })
+      default: () => ({ color: "rgba(255, 255, 255, 0.75)" })
     },
     id: {
       type: String,
@@ -80,6 +86,7 @@ export default {
       if (this.getText === true) {
         this.sendText(fileObj);
       }
+      e.target.value = "";
     },
     sendText: function(fileObj) {
       //Using standard file reader API
@@ -101,6 +108,7 @@ export default {
   cursor: pointer;
   margin: 0;
   padding: 0.25rem 0;
+  color: inherit;
 }
 
 .file-select input[type="file"] {

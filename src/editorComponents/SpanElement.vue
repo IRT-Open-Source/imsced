@@ -38,7 +38,7 @@ export default {
     getRubyAttribute() {
       let attr = "";
       let attrs = Object.keys(this.element.styleAttrs);
-      attrs.forEach(element => {
+      attrs.forEach((element) => {
         let name = element.split(" ")[1];
         if (name == "ruby") {
           attr = "Ruby - " + this.element.styleAttrs[element];

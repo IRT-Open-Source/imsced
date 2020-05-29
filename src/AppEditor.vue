@@ -120,7 +120,7 @@
 
     <div id="workview">
       <div id="subtitleListView" ref="subtitleListView">
-        <ContentImsc :content="body" :level="0" v-if="body" />
+        <ContentImsc :content="body" v-if="body" />
       </div>
 
       <div class="captionWithButtons videoCol">
@@ -189,13 +189,9 @@
             />
           </div>
         </div>
-        <div>
-          <!-- Show menu depending on menustyle -->
-          <MenuGeneric
-            v-if="uiLayout == 'bootstrap' && showMenu"
-            class="mt-2"
-          />
-        </div>
+        <DurationVisualizer v-if="activeP && showVisualization == 'show'" />
+        <!-- Show menu depending on menustyle -->
+        <MenuGeneric v-if="uiLayout == 'bootstrap' && showMenu" class="mt-2" />
       </div>
     </div>
 
@@ -212,6 +208,7 @@ import ContentImsc from "./editorComponents/ContentImsc.vue";
 import CustomFileChooser from "./editorComponents/CustomFileChooser.vue";
 import DragFeature from "./editorComponents/DragFeature.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
+import DurationVisualizer from "./editorComponents/DurationVisualizer.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
 import ImscData from "./modules/imscdata.js";
 import MenuBar from "./editorComponents/MenuBar.vue";
@@ -233,6 +230,7 @@ export default {
     CustomFileChooser,
     DragFeature,
     DropDownGeneric,
+    DurationVisualizer,
     EmojiPicker,
     MenuGeneric,
     MenuStyle,
@@ -299,11 +297,10 @@ export default {
       return this.activeP && this.resizingActive;
     },
     showMenu() {
-      return (
-        this.activeP || this.activeSpan || this.activeDiv
-      );
+      return this.activeP || this.activeSpan || this.activeDiv;
     },
     ...mapState([
+      "activeDiv",
       "activateBurnIn",
       "activeP",
       "activeSpan",
@@ -331,12 +328,12 @@ export default {
       "showPMenu",
       "showRegionSelect",
       "showSpanMenu",
+      "showVisualization",
       "subsFileName",
       "uiData",
       "uiLayout"
     ]),
     ...mapGetters([
-      "activeDiv",
       "activeRegionId",
       "body",
       "regionStyles",
@@ -432,25 +429,23 @@ export default {
     });
     // scf service - get templates for SRT import
     fetch(this.scfData.endpoints.template, {
-        method: "GET"
+      method: "GET"
+    })
+      .then(function(response) {
+        if (!response.ok) {
+          throw new Error("Couldn't get template files.");
+        }
+        return response.json();
       })
-        .then(function(response) {
-          if (!response.ok) {
-            throw new Error(
-              "Couldn't get template files."
-            );
-          }
-          return response.json();
-        })
-        .then((data) => {
-          this.setSrtTemplateOptions(data);
-        })
-        .catch((error) => {
-          console.log(
-            "Something went wrong while communicating with the SCF service. " +
-              error
-          );
-        });
+      .then((data) => {
+        this.setSrtTemplateOptions(data);
+      })
+      .catch((error) => {
+        console.log(
+          "Something went wrong while communicating with the SCF service. " +
+            error
+        );
+      });
   },
   methods: {
     addNewRegion() {
@@ -539,8 +534,7 @@ export default {
       });
     },
     saveXml: function() {
-      this.saveAsXml()
-      .then(v => saveAs(v, "imsc2.xml"));
+      this.saveAsXml().then((v) => saveAs(v, "imsc2.xml"));
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
