@@ -86,6 +86,7 @@ export default {
       if (this.getText === true) {
         this.sendText(fileObj);
       }
+      e.target.value = "";
     },
     sendText: function(fileObj) {
       //Using standard file reader API
@@ -107,6 +108,7 @@ export default {
   cursor: pointer;
   margin: 0;
   padding: 0.25rem 0;
+  color: inherit;
 }
 
 .file-select input[type="file"] {

@@ -17,8 +17,10 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
   state: {
     activateBurnIn: false, //activate or disactivate burn in service to allow usage
+    activeDiv: undefined, // div element with focus in editor
     activeP: undefined, // p element with focus in editor
     activeSpan: undefined, // span element with focus in editor
+    charsPerLine: 37, // the maximum number of allowed characters per line
     config: new DefaultConfig(),
     currentSubtitleData: {}, // active subtitle document as parsed by imscJS
     currentVideoTextTrack: undefined,
@@ -29,12 +31,15 @@ export const store = new Vuex.Store({
     fullScreenActive: false,
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
+    maxLinesPerST: 2, // max. number of lines per subtitle block
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
+    minStDuration: 1, // minimum lifetime for one subtitle in seconds
     movieName: "", // video file name
     movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
+    readingSpeed: 14, // reading speed: characters per second
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
     scfImportFormat: "stl",
@@ -45,10 +50,12 @@ export const store = new Vuex.Store({
     showBurnIn: false, // toggle the burn in user interface(requires activateBurnIn to be true)
     showConfigUi: false,
     showDivMenu: "show",
+    showHints: "hide", // show hints for subtitle standards like chars per line
     showPMenu: "show",
     showRegionSelect: "show",
     showScfService: "show",
     showSpanMenu: "show",
+    showVisualization: "hide", // show hints for subtitle standards like chars per line
     srtImportLang: "original (template)", // language for the imsc document
     srtImportTemplate: "ebu-tt-d-basic-de.xml",
     srtTemplateOptions: ["ebu-tt-d-basic-de.xml"],
@@ -60,21 +67,39 @@ export const store = new Vuex.Store({
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
   },
   getters: {
-    activeDiv(state) {
-      if (state.activeP) {
-        return state.activeP.parentDiv;
-      }
-    },
     activeRegionId(state, getters) {
-      if (getters.activeDiv) {
-        if (getters.activeDiv.regionID) {
-          return getters.activeDiv.regionID;
+      if (state.activeDiv) {
+        if (state.activeDiv.regionID) {
+          return state.activeDiv.regionID;
         } else if (state.activeP && state.activeP.regionID) {
           return state.activeP.regionID;
         }
       } else {
         return undefined;
       }
+    },
+    activeSubtitleDuration(state) {
+      if (!state.activeP) {
+        return 0;
+      }
+      return state.activeP.end - state.activeP.begin;
+    },
+    activeText(state, getters) {
+      if (!state.activeP) {
+        return "";
+      }
+      return getters._getTextHelper(state.activeP, "");
+    },
+    _getTextHelper: (state, getters) => (content, text) => {
+      if (content.text) {
+        text += content.text;
+      }
+      if (content.contents) {
+        content.contents.forEach((element) => {
+          text = getters._getTextHelper(element, text);
+        });
+      }
+      return text;
     },
     body(state) {
       if (state.currentSubtitleData) {
@@ -133,13 +158,11 @@ export const store = new Vuex.Store({
     },
     regionStylesActiveDiv(state, getters) {
       let regionStyles;
-      if (getters.activeDiv) {
-        if (getters.activeDiv.regionID) {
-          if (
-            state.currentSubtitleData.regionHash[getters.activeDiv.regionID]
-          ) {
+      if (state.activeDiv) {
+        if (state.activeDiv.regionID) {
+          if (state.currentSubtitleData.regionHash[state.activeDiv.regionID]) {
             regionStyles =
-              state.currentSubtitleData.regionHash[getters.activeDiv.regionID]
+              state.currentSubtitleData.regionHash[state.activeDiv.regionID]
                 .styleAttrs;
           }
         }
@@ -224,6 +247,9 @@ export const store = new Vuex.Store({
         state.activateBurnIn = false;
       }
     },
+    setActiveDiv(state, payload) {
+      state.activeDiv = payload.content;
+    },
     setActiveP(state, payload) {
       state.activeP = payload.content;
     },
@@ -240,6 +266,9 @@ export const store = new Vuex.Store({
     setLang(state, val) {
       state.lang = val;
     },
+    setCharsPerLine(state, val) {
+      state.charsPerLine = val;
+    },
     setCurrentTrack(state, payload) {
       state.currentVideoTextTrack = payload.track;
     },
@@ -252,8 +281,15 @@ export const store = new Vuex.Store({
     setLoadingST(state, val) {
       state.loadingST = val;
     },
+    setMaxLinesPerST(state, val) {
+      state.maxLinesPerST = val;
+    },
     setMenuStyle(state, val) {
       state.menuStyle = val;
+    },
+    setMinStDuration(state, val) {
+      if (isNaN(val)) return;
+      state.minStDuration = parseFloat(val);
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
@@ -279,6 +315,9 @@ export const store = new Vuex.Store({
     setShowDivMenu(state, val) {
       state.showDivMenu = val;
     },
+    setShowHints(state, val) {
+      state.showHints = val;
+    },
     setShowPMenu(state, val) {
       state.showPMenu = val;
     },
@@ -288,6 +327,9 @@ export const store = new Vuex.Store({
     },
     setShowSpanMenu(state, val) {
       state.showSpanMenu = val;
+    },
+    setShowVisualization(state, val) {
+      state.showVisualization = val;
     },
     setSrtImportLang(state, val) {
       state.srtImportLang = val;
@@ -303,6 +345,9 @@ export const store = new Vuex.Store({
     },
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
+    },
+    setReadingSpeed(state, val) {
+      state.readingSpeed = val;
     },
     setUiLayout(state, val) {
       state.uiLayout = val;
@@ -404,6 +449,7 @@ export const store = new Vuex.Store({
     resetFocusContent({ commit }) {
       commit("setActiveP", { content: undefined });
       commit("setActiveSpan", { content: undefined });
+      commit("setActiveDiv", { content: undefined });
     },
     resetSubtitlePlane({ dispatch, state }) {
       if (state.subActive) {
@@ -441,16 +487,16 @@ export const store = new Vuex.Store({
       is present either on div or p. It will not work
       if a default region applies
     */
-    setNewRegion({ state, getters, dispatch }, val) {
+    setNewRegion({ state, dispatch }, val) {
       let regionId = val;
-      if (getters.activeDiv && getters.activeDiv.regionID) {
+      if (state.activeDiv && state.activeDiv.regionID) {
         dispatch("setNewRegionActiveDiv", { regId: regionId });
       } else if (state.activeP && state.activeP.regionID) {
         dispatch("setNewRegionActiveP", { regId: regionId });
       }
     },
-    setNewRegionActiveDiv({ state, getters, dispatch }, payload) {
-      getters.activeDiv.regionID = payload.regId;
+    setNewRegionActiveDiv({ state, dispatch }, payload) {
+      state.activeDiv.regionID = payload.regId;
       dispatch("updateSubtitlePlane", { time: state.playTime });
     },
     setNewRegionActiveP({ state, dispatch }, payload) {

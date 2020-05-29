@@ -1,11 +1,13 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div>
+  <span>
     <InputGenericPlain
       v-if="uiLayout == 'plain'"
       :labelName="labelName"
       :size="size"
       :value="value"
+      :step="step"
+      :min="min"
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
     />
@@ -16,10 +18,12 @@
       :size="size"
       :value="value"
       :type="type"
+      :step="step"
+      :min="min"
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
     />
-  </div>
+  </span>
 </template>
 
 <script>
@@ -51,6 +55,14 @@ export default {
     },
     value: {
       required: true
+    },
+    step: {
+      type: Number,
+      default: 1
+    },
+    min: {
+      type: Number,
+      default: 0
     }
   },
   computed: {

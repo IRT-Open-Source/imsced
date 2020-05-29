@@ -64,6 +64,95 @@
         </b-card>
 
         <b-card no-body>
+          <!-- subtitle guidelines config -->
+          <b-card-header header-tag="header" class="p-0" role="tab">
+            <b-button
+              block
+              href="#"
+              v-b-toggle.accordion-standards
+              variant="secondary"
+              class="align-acc-left"
+            >
+              {{ getLabelText("subtitleGuidelines") }}
+            </b-button>
+          </b-card-header>
+          <b-collapse
+            id="accordion-standards"
+            accordion="config-accordion"
+            role="tabpanel"
+          >
+            <b-card-body>
+              <b-card-text>
+                <div class="buttons">
+                  <span
+                    class="mr-1 mt-1 btn btn-secondary btn-sm py-0"
+                    variant="secondary"
+                  >
+                    <CustomFileChooser
+                      :getText="true"
+                      id="settingsUpload"
+                      :labelText="getLabelText('load')"
+                      name="Load"
+                      @textSent="uploadSettings"
+                    />
+                  </span>
+                  <ButtonGeneric
+                    :buttonName="getLabelText('save')"
+                    @click.native="downloadSettings"
+                  />
+                </div>
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showHints"
+                  :labelName="getLabelText('showHints')"
+                  @valueChanged="setShowHints"
+                />
+                <InputGeneric
+                  :value="charsPerLine"
+                  type="number"
+                  :step="1"
+                  :labelName="getLabelText('charsPerLine')"
+                  @valueChanged="setCharsPerLine"
+                />
+                <br />
+                <InputGeneric
+                  :value="readingSpeed"
+                  type="number"
+                  :step="1"
+                  :labelName="getLabelText('readingSpeed')"
+                  @valueChanged="setReadingSpeed"
+                />
+                <br />
+                <InputGeneric
+                  :value="minStDuration"
+                  type="number"
+                  :step="0.01"
+                  :labelName="getLabelText('minStDuration')"
+                  @valueChanged="setMinStDuration"
+                />
+                <br />
+                <InputGeneric
+                  :value="maxLinesPerST"
+                  type="number"
+                  :step="1"
+                  :labelName="getLabelText('maxSTLines')"
+                  @valueChanged="setMaxLinesPerST"
+                />
+                <br />
+                <RadioGeneric
+                  :options="['show', 'hide']"
+                  :translateOptions="true"
+                  :selected="showVisualization"
+                  :labelName="getLabelText('showVisualization')"
+                  @valueChanged="setShowVisualization"
+                />
+              </b-card-text>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+
+        <b-card no-body>
           <b-card-header header-tag="header" class="p-0" role="tab">
             <b-button
               block
@@ -301,18 +390,22 @@
 
 <script>
 import { mapMutations, mapState, mapActions } from "vuex";
+import ButtonGeneric from "./ButtonGeneric.vue";
+import CheckboxGeneric from "./CheckboxGeneric.vue";
+import CustomFileChooser from "./CustomFileChooser.vue";
 import DropDownGeneric from "./DropDownGeneric.vue";
 import InputGeneric from "./InputGeneric.vue";
 import RadioGeneric from "./RadioGeneric.vue";
+import { saveAs } from "file-saver";
 
 export default {
   components: {
+    ButtonGeneric,
+    CheckboxGeneric,
+    CustomFileChooser,
     DropDownGeneric,
     InputGeneric,
     RadioGeneric
-  },
-  data() {
-    return {};
   },
   computed: {
     showConfigUi: {
@@ -339,31 +432,53 @@ export default {
       }
     },
     ...mapState([
-      "config",
-      "forcedOnly",
-      "debug",
       "activateBurnIn",
+      "charsPerLine",
+      "config",
+      "debug",
+      "forcedOnly",
+      "lang",
+      "maxLinesPerST",
+      "menuStyleConfig",
+      "menuStyle",
+      "minStDuration",
+      "readingSpeed",
       "showEmojisSetting",
+      "showHints",
       "showRegionSelect",
       "showSpanMenu",
       "showPMenu",
       "showDivMenu",
       "showBodyMenu",
+      "showVisualization",
       "scfExportFormat",
       "scfData",
       "showScfService",
       "scfImportFormat",
       "srtImportTemplate",
       "srtTemplateOptions",
-      "lang",
-      "menuStyleConfig",
-      "menuStyle",
       "srtImportLang",
       "uiData",
       "uiLayout"
     ])
   },
   methods: {
+    downloadSettings() {
+      let settingsData = {
+        showHints: this.showHints,
+        showVisualization: this.showVisualization,
+        charsPerLine: this.charsPerLine,
+        readingSpeed: this.readingSpeed,
+        minStDuration: this.minStDuration,
+        maxLinesPerST: this.maxLinesPerST
+      };
+      const settingsJson = JSON.stringify(settingsData);
+      var blob = new Blob([settingsJson], {
+        type: "text/plain;charset=utf-8"
+      });
+      saveAs(blob, "imscED_subtitle_guidelines.json");
+    },
+
     getImageExportHeight() {
       return this.config.defaultImageExportSize.height;
     },
@@ -379,15 +494,42 @@ export default {
     getScfStartOffsetFrames() {
       return this.config.defaultOffsetFrames;
     },
+    uploadSettings(data) {
+      let dataObj = null;
+      try {
+        dataObj = JSON.parse(data);
+      } catch (error) {
+        alert("Error: Invalid file! ", error);
+        return;
+      }
+      if (dataObj.hasOwnProperty("showHints"))
+        this.setShowHints(dataObj.showHints);
+      if (dataObj.hasOwnProperty("showVisualization"))
+        this.setShowVisualization(dataObj.showVisualization);
+      if (dataObj.hasOwnProperty("charsPerLine"))
+        this.setCharsPerLine(dataObj.charsPerLine);
+      if (dataObj.hasOwnProperty("readingSpeed"))
+        this.setReadingSpeed(dataObj.readingSpeed);
+      if (dataObj.hasOwnProperty("minStDuration"))
+        this.setMinStDuration(dataObj.minStDuration);
+      if (dataObj.hasOwnProperty("maxLinesPerST"))
+        this.setMaxLinesPerST(dataObj.maxLinesPerST);
+    },
     ...mapMutations([
       "setDebug",
       "setActivateBurnIn",
+      "setCharsPerLine",
+      "setMaxLinesPerST",
+      "setMinStDuration",
+      "setReadingSpeed",
       "setShowEmojisSetting",
+      "setShowHints",
       "setShowRegionSelect",
       "setShowSpanMenu",
       "setShowPMenu",
       "setShowDivMenu",
       "setShowBodyMenu",
+      "setShowVisualization",
       "setScfExportFormat",
       "setShowScfService",
       "setLang",
@@ -421,6 +563,11 @@ export default {
   margin: 10px -20px 10px;
 }
 
+.checkboxGroup {
+  display: inline-block;
+  margin: 0.5em;
+}
+
 #saveConfig {
   margin-top: 2rem;
 }
@@ -434,5 +581,8 @@ export default {
 #selectLang {
   margin-bottom: 20px;
   float: left;
+}
+.buttons {
+  float: right;
 }
 </style>

@@ -157,6 +157,7 @@ export default {
       return tabNames;
     },
     ...mapState([
+      "activeDiv",
       "activeP",
       "activeSpan",
       "currentSubtitleData",
@@ -168,7 +169,7 @@ export default {
       "styleData",
       "uiData"
     ]),
-    ...mapGetters(["activeDiv", "activeRegionId", "body", "regionStyles"])
+    ...mapGetters(["activeRegionId", "body", "regionStyles"])
   },
   methods: {
     addNewRegion() {

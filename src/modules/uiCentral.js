@@ -54,6 +54,14 @@ var proto = {
         }
       }
     },
+    charsPerLine: {
+      label: {
+        lang: {
+          en: "Maximum number of characters per line",
+          de: "Maximale Anzahl an Zeichen pro Zeile"
+        }
+      }
+    },
     choosePNG: {
       label: {
         lang: {
@@ -73,6 +81,22 @@ var proto = {
         lang: {
           en: "Foreground color/font color",
           de: "Farbe/Schriftfarbe"
+        }
+      }
+    },
+    countPunctuation: {
+      label: {
+        lang: {
+          en: "count punctuation",
+          de: "Satzzeichen mitzählen"
+        }
+      }
+    },
+    countSpaces: {
+      label: {
+        lang: {
+          en: "count whitespaces",
+          de: "Leerzeichen mitzählen"
         }
       }
     },
@@ -361,6 +385,30 @@ var proto = {
         }
       }
     },
+    maxSTLines: {
+      label: {
+        lang: {
+          en: "Maximum number of lines per subtitle block",
+          de: "Maximale Zeilenanzahl pro Untertitelblock"
+        }
+      }
+    },
+    minDurationWarning: {
+      label: {
+        lang: {
+          en: "Too short for minimum duration!",
+          de: "Zu kurz für minimale Standzeit!"
+        }
+      }
+    },
+    minStDuration: {
+      label: {
+        lang: {
+          en: "Minimum duration (seconds)",
+          de: "Mindeststandzeit (Sekunden)"
+        }
+      }
+    },
     multiRowAlign: {
       label: {
         lang: {
@@ -441,6 +489,14 @@ var proto = {
         }
       }
     },
+    readingSpeed: {
+      label: {
+        lang: {
+          en: "Reading speed (characters/second)",
+          de: "Lesegeschwindigkeit (Zeichen/Sekunde)"
+        }
+      }
+    },
     ruby: {
       label: {
         lang: {
@@ -462,6 +518,14 @@ var proto = {
         lang: {
           en: "Ruby - position",
           de: "Ruby - Position"
+        }
+      }
+    },
+    save: {
+      label: {
+        lang: {
+          en: "Save",
+          de: "Speichern"
         }
       }
     },
@@ -561,6 +625,22 @@ var proto = {
         }
       }
     },
+    showHints: {
+      label: {
+        lang: {
+          en: "Hints",
+          de: "Hinweise"
+        }
+      }
+    },
+    showVisualization: {
+      label: {
+        lang: {
+          en: "Color bar for duration",
+          de: "Farbbalken für Standzeit"
+        }
+      }
+    },
     srtTemplateFile: {
       label: {
         lang: {
@@ -590,6 +670,14 @@ var proto = {
         lang: {
           en: "Subtitles",
           de: "Untertitel"
+        }
+      }
+    },
+    subtitleGuidelines: {
+      label: {
+        lang: {
+          en: "Subtitle Guidelines",
+          de: "Untertitel Richtlinien"
         }
       }
     },
@@ -710,6 +798,30 @@ var proto = {
         lang: {
           en: "Color of shadow",
           de: "Farbe des Schattens"
+        }
+      }
+    },
+    timingWarning: {
+      label: {
+        lang: {
+          en: "Duration too short/too many characters for reading speed!",
+          de: "Standzeit zu kurz/zu viele Zeichen für Lesegeschwindigkeit!"
+        }
+      }
+    },
+    tooManyChars: {
+      label: {
+        lang: {
+          en: "Too many characters!",
+          de: "Zu viele Zeichen!"
+        }
+      }
+    },
+    tooManyLines: {
+      label: {
+        lang: {
+          en: "Too many lines!",
+          de: "Zu viele Zeilen!"
         }
       }
     },

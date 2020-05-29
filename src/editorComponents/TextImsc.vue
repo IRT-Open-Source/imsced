@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <!-- Add on change event and trigger update in parent component? -->
+  <span>
     <InputGeneric
       :value="getValue()"
       :labelName="''"
       @valueChanged="changedValue"
       @gotFocus="focusBubble"
     />
-  </div>
+  </span>
 </template>
 
 <script>
@@ -22,6 +21,11 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      charsOk: true
+    };
+  },
   computed: {
     ...mapState(["playTime", "debug"])
   },
@@ -32,6 +36,7 @@ export default {
       } else {
         this.element.text = val;
       }
+      this.$emit("textChanged");
       this.updateSubtitlePlane({ time: this.playTime });
     },
     focusBubble() {

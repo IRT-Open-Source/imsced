@@ -1,7 +1,7 @@
 <!-- Simple UI component for text values -->
 <template>
-  <div>
-    <p :class="[labelWeightClass]">{{ labelName }}</p>
+  <span>
+    <p v-if="labelName != ''" :class="[labelWeightClass]">{{ labelName }}</p>
     <!-- TODO set type dynamically (with config file) to get e.g. color picker  -->
     <b-form-input
       class="mt-1"
@@ -9,10 +9,12 @@
       autocomplete="off"
       :value="getValue()"
       :type="type"
+      :step="step"
+      :min="min"
       @input.native="changedValue"
       @focus.native="focusBubble"
     ></b-form-input>
-  </div>
+  </span>
 </template>
 
 <script>
@@ -41,6 +43,12 @@ export default {
     },
     value: {
       required: true
+    },
+    step: {
+      type: Number
+    },
+    min: {
+      type: Number
     }
   },
   computed: {
