@@ -237,11 +237,14 @@
                       <h5 v-else>{{ getLabelText("exportIsdAsPng") }}</h5>
                       <InputGeneric
                         :value="getImageExportWidth()"
+                        type="number"
                         :labelName="getLabelText('imageExportWidth')"
                         @valueChanged="setImageExportWidth"
                       />
+                      <br />
                       <InputGeneric
                         :value="getImageExportHeight()"
+                        type="number"
                         :labelName="getLabelText('imageExportHeight')"
                         @valueChanged="setImageExportHeight"
                       />
