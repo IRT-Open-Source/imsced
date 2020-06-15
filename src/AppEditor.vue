@@ -210,6 +210,7 @@ import DragFeature from "./editorComponents/DragFeature.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import DurationVisualizer from "./editorComponents/DurationVisualizer.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
+import EventBus from "./modules/eventBus.js";
 import ImscData from "./modules/imscdata.js";
 import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
@@ -218,6 +219,7 @@ import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
 import ResizeFeature from "./editorComponents/ResizeFeature.vue";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
+import { MouseMoveEvent, MouseUpEvent } from "./modules/appEvents.js";
 import { saveAs } from "file-saver";
 
 export default {
@@ -241,6 +243,7 @@ export default {
   },
   data() {
     return {
+      mouseUpEvent: MouseUpEvent,
       myDropKey: 0,
       videoIsLoaded: false
     };
@@ -345,6 +348,9 @@ export default {
   //Init Dummy subs on first load
   created: function() {
     window.addEventListener("resize", this.resizeHandler);
+    this.mouseUpEvent = new MouseUpEvent();
+    window.addEventListener("mouseup", this.handleMouseUp);
+    window.addEventListener("mousemove", this.handleMouseMove);
     this.initSubs(
       "<tt\
         xmlns='http://www.w3.org/ns/ttml' \
@@ -421,6 +427,8 @@ export default {
   },
   destroyed: function() {
     window.removeEventListener("resize", this.resizeHandler);
+    window.removeEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener("mousemove", this.handleMouseMove);
   },
   mounted: function() {
     this.addVideoTextTrack();
@@ -480,6 +488,16 @@ export default {
     handleFullscreenChange(event) {
       this.setFullScreenActive(!!document.fullscreenElement);
       this.updateSubtitlePlanePlayTime();
+    },
+    handleMouseUp(e) {
+      if (this.resizingActive) {
+        EventBus.publish(this.mouseUpEvent);
+      }
+    },
+    handleMouseMove(e) {
+      if (this.resizingActive) {
+        EventBus.publish(new MouseMoveEvent(e));
+      }
     },
     initSubs: function(subtitleText) {
       var dataItem = new ImscData(subtitleText);

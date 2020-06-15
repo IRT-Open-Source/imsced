@@ -116,5 +116,6 @@ export default {
   z-index: 9;
   position: relative;
   border: 1px solid red;
+  box-sizing: border-box;
 }
 </style>

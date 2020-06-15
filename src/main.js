@@ -43,6 +43,10 @@ import BootstrapVue from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
 
+import EventBus from "@/modules/eventBus";
+
+Vue.use(EventBus);
+
 import App from "./AppEditor.vue";
 
 import { store } from "./store/index";
