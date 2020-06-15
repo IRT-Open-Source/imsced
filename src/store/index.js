@@ -144,6 +144,13 @@ export const store = new Vuex.Store({
         return undefined;
       }
     },
+    regionSelectAvailable(state) {
+      return (
+        state.showRegionSelect === "show" &&
+        state.activeP &&
+        state.activeP.regionID.trim().length > 0
+      );
+    },
     /*
       The style attributes of the region element that is 
       referenced by the currently "active" div  element.
@@ -233,6 +240,12 @@ export const store = new Vuex.Store({
     changeVideo(state, payload) {
       state.movieName = payload.obj.name;
       state.movieSrc = payload.URL;
+    },
+    deactivateDragging(state) {
+      state.draggingActive = false;
+    },
+    deactivateResizing(state) {
+      state.resizingActive = false;
     },
     deactivateSub(state) {
       state.subActive = false;

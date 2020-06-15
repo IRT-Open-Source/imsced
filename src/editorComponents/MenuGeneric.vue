@@ -18,7 +18,7 @@
       </b-card-header>
       <b-card border-variant="white" v-if="editorState == 'position'">
         <!-- region styles -->
-        <div v-if="showRegionSelect === 'show' && activeP && activeP.regionID">
+        <div v-if="regionSelectAvailable">
           <div class="d-flex flex-row align-items-stretch">
             <div class="pr-1 d-flex flex-row flex-grow-1">
               <DropDownGenericBS
@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { mapState, mapActions, mapGetters } from "vuex";
+import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 import AttrStyle from "./AttrStyle.vue";
 import ButtonGeneric from "./ButtonGeneric.vue";
 import DropDownGenericBS from "./bootstrapComponents/DropDownGenericBS.vue";
@@ -161,15 +161,21 @@ export default {
       "activeP",
       "activeSpan",
       "currentSubtitleData",
+      "draggingActive",
       "helper",
       "menuStyle",
       "lang",
       "menuStyleConfig",
-      "showRegionSelect",
+      "resizingActive",
       "styleData",
       "uiData"
     ]),
-    ...mapGetters(["activeRegionId", "body", "regionStyles"])
+    ...mapGetters([
+      "activeRegionId",
+      "body",
+      "regionSelectAvailable",
+      "regionStyles"
+    ])
   },
   methods: {
     addNewRegion() {
@@ -315,6 +321,18 @@ export default {
     },
     setEditorState: function(buttonName) {
       this.editorState = buttonName;
+      if (
+        buttonName == "position" &&
+        this.regionSelectAvailable &&
+        !this.draggingActive &&
+        !this.resizingActive
+      ) {
+        this.toggleDraggingActive();
+      }
+      if (buttonName == "style") {
+        this.deactivateDragging();
+        this.deactivateResizing();
+      }
     },
     /* 
       Check which tabs (e.g. position or style) have any "editable
@@ -336,7 +354,12 @@ export default {
       var storeProperty = `show${this.helper.capitalize(contentKind)}Menu`;
       return this.$store.state[storeProperty] == "show";
     },
-    ...mapActions(["addRegion", "setNewRegion"])
+    ...mapActions(["addRegion", "setNewRegion"]),
+    ...mapMutations([
+      "deactivateDragging",
+      "deactivateResizing",
+      "toggleDraggingActive"
+    ])
   }
 };
 </script>
