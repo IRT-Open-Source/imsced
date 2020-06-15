@@ -1,6 +1,7 @@
 <template>
   <span>
     <InputGeneric
+      :elementId="`input_${element.editorId}`"
       :value="getValue()"
       :labelName="''"
       @valueChanged="changedValue"

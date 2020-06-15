@@ -3,6 +3,7 @@
   <span>
     <InputGenericPlain
       v-if="uiLayout == 'plain'"
+      :elementId="elementId"
       :labelName="labelName"
       :size="size"
       :value="value"
@@ -13,6 +14,7 @@
     />
     <InputGenericBS
       v-else
+      :elementId="elementId"
       :labelName="labelName"
       :labelWeight="labelWeight"
       :size="size"
@@ -37,6 +39,10 @@ export default {
     InputGenericPlain
   },
   props: {
+    elementId: {
+      type: String,
+      required: false
+    },
     labelName: {
       type: String | Number,
       required: true

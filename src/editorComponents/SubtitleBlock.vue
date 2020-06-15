@@ -3,6 +3,7 @@
     <div
       :id="[content.editorId]"
       :class="['pBlock', activeClass, { warningBorder: showWarning }]"
+      @click="handleClick"
     >
       <span id="tempTimingBox">
         <span class="timingValues">{{ convertToVttTime(content.begin) }}</span>
@@ -188,6 +189,21 @@ export default {
     getLabelText(name) {
       return this.uiData.getLabel(name, this.lang);
     },
+    getLastElementOfTheLine(subtitleLine) {
+      let lastElement = null;
+      let contentItem = null;
+      for (let i = subtitleLine.length - 1; i >= 0; i--) {
+        let item = subtitleLine[i];
+        if (item.text && item.text.trim()) {
+          contentItem = subtitleLine[i];
+          break;
+        }
+      }
+      if (contentItem != null) {
+        lastElement = document.getElementById(`input_${contentItem.editorId}`);
+      }
+      return lastElement;
+    },
     handleCharacterWarning(warning) {
       if (warning) {
         this.characterWarning++;
@@ -202,6 +218,17 @@ export default {
     },
     convertToVttTime(seconds) {
       return this.helper.vttTimestamp(seconds);
+    },
+    handleClick(e) {
+      if (e.target.localName != "input") {
+        let firstLine = this.subtitleLines[0];
+        let lastElement = this.getLastElementOfTheLine(firstLine);
+        if (lastElement) {
+          lastElement.focus();
+          lastElement.selectionStart = lastElement.selectionEnd =
+            lastElement.value.length;
+        }
+      }
     },
     handleFocus() {
       this.resetFocusContent();

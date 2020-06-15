@@ -7,6 +7,7 @@
       class="mt-1"
       size="300"
       autocomplete="off"
+      :id="elementId"
       :value="getValue()"
       :type="type"
       :step="step"
@@ -25,6 +26,10 @@ export default {
     };
   },
   props: {
+    elementId: {
+      type: String,
+      required: false
+    },
     labelName: {
       type: String | Number,
       required: true
