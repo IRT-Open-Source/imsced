@@ -105,7 +105,7 @@ export default {
     },
     newSubs: function(subtitleText) {
       this.initSubs(subtitleText);
-      this.addVideoTextTrack(); //generatate track
+      this.resetTextTrack();
       this.updateSubtitlePlanePlayTime();
       this.resetFocusContent();
       if (this.debug) {
@@ -133,6 +133,7 @@ export default {
     ...mapMutations([
       "addSubtitleData",
       "changeVideo",
+      "resetTextTrack",
       "setLoadingST",
       "setSubsFileName",
       "setSubtitleData",
@@ -140,7 +141,6 @@ export default {
       "toggleShowConfigUi"
     ]),
     ...mapActions([
-      "addVideoTextTrack",
       "resetFocusContent",
       "saveAsXml",
       "updateSubtitlePlanePlayTime"

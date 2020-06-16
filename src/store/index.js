@@ -23,7 +23,7 @@ export const store = new Vuex.Store({
     charsPerLine: 37, // the maximum number of allowed characters per line
     config: new DefaultConfig(),
     currentSubtitleData: {}, // active subtitle document as parsed by imscJS
-    currentVideoTextTrack: undefined,
+    currentCueCall: undefined,
     custom: new MyRec(), // user configuration
     debug: false, // show debug info in editor view
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
@@ -31,8 +31,8 @@ export const store = new Vuex.Store({
     fullScreenActive: false,
     helper: new helperGeneric(), // access to generic helper methods
     lang: "en", // language for the editor interface
-    maxLinesPerST: 2, // max. number of lines per subtitle block
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
+    maxLinesPerST: 2, // max. number of lines per subtitle block
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
     minStDuration: 1, // minimum lifetime for one subtitle in seconds
@@ -63,6 +63,7 @@ export const store = new Vuex.Store({
     subActive: false, // if subtitle data is rendered on video
     subsFileName: "imscTestFile", // default value if no subtitle file was loaded
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
+    textTrack: undefined,
     uiData: new UiCentral(), // language specific labels for ui
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
   },
@@ -253,6 +254,9 @@ export const store = new Vuex.Store({
     incrementTrackIdCounter(state) {
       state.trackIdCounter++;
     },
+    resetTextTrack(state) {
+      state.textTrack.removeAllCues();
+    },
     setActivateBurnIn(state, val) {
       if (val === "on") {
         state.activateBurnIn = true;
@@ -282,12 +286,6 @@ export const store = new Vuex.Store({
     setCharsPerLine(state, val) {
       state.charsPerLine = val;
     },
-    setCurrentTrack(state, payload) {
-      state.currentVideoTextTrack = payload.track;
-    },
-    setCurrentTrackMode(state, payload) {
-      state.currentVideoTextTrack.track.mode = payload.mode;
-    },
     setFullScreenActive(state, val) {
       state.fullScreenActive = val;
     },
@@ -306,6 +304,9 @@ export const store = new Vuex.Store({
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
+    },
+    setReadingSpeed(state, val) {
+      state.readingSpeed = val;
     },
     setScfExportFormat(state, val) {
       state.scfExportFormat = val;
@@ -359,8 +360,8 @@ export const store = new Vuex.Store({
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
     },
-    setReadingSpeed(state, val) {
-      state.readingSpeed = val;
+    setTextTrack(state, obj) {
+      state.textTrack = obj;
     },
     setUiLayout(state, val) {
       state.uiLayout = val;
@@ -400,59 +401,26 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    addCue({ state }, cue) {
+      state.textTrack.addMyCue(cue);
+    },
     addRegion({ dispatch, state }) {
       let newRegionId = "r-" + state.helper.uuidv4().substring(0, 8);
       let newRegion = new MyRegion(newRegionId);
       dispatch("setNewRegion", newRegionId);
       Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
     },
-    /* 
-      Add video text track and init cues with callbacks
-      to render the imsc subtitles.
-    */
-    addVideoTextTrack({ commit, getters, state }) {
-      if (state.currentVideoTextTrack) {
-        commit("setCurrentTrackMode", { mode: "disabled" });
-      }
-      var store = this;
-      var mediaTimeEvents = state.currentSubtitleData.tt.getMediaTimeEvents();
-      if (state.debug) console.log(mediaTimeEvents);
-      //Callback
-      var callIn = function() {
-        if (state.debug) {
-          console.log("Cue Enter: " + this.startTime + "/" + this.endTime);
-        }
-        store.dispatch("updateSubtitlePlane", { time: this.startTime });
-      };
-      var callOut = function() {
-        if (state.debug) {
-          console.log("Cue EXIT: " + this.startTime + "/" + this.endTime);
-        }
-        /*
-          when seeking backwards in time
-          chrome fires the onexit event of the
-          previous cue after the onenter event of 
-          the current cue. to avoid removal of the active
-          cue, in this case no removal action for the
-          onexist removal will be triggered-
-        */
-        if (
-          this.track.activeCues &&
-          !(this.track.activeCues[0].endTime < this.endTime)
-        ) {
-          store.dispatch("resetSubtitlePlane");
-        }
-      };
-      var trackObj = new MyTextTrack(
+    initTextTrack({ commit, getters }) {
+      let trackObj = new MyTextTrack(
         "subtitles",
         "imsc",
         "de",
         getters.videoDom
       );
-      if (state.debug) console.log(mediaTimeEvents);
-      if (state.debug) console.log(trackObj.track);
-      trackObj.initCues(mediaTimeEvents, callIn, callOut);
-      commit("setCurrentTrack", { track: trackObj });
+      commit("setTextTrack", trackObj);
+    },
+    removeCue({ state }, cue) {
+      state.textTrack.removeMyCue(cue);
     },
     removeSub({ getters, commit }) {
       var container = getters.renderDivDom;
@@ -527,7 +495,7 @@ export const store = new Vuex.Store({
         state.config.defaultOffsetSeconds = val;
       }
     },
-    setVideoPlayTime({ getters, dispatch }, payload) {
+    setVideoPlayTime({ state, getters, dispatch }, payload) {
       if (getters.videoDom) {
         var myVideo = getters.videoDom;
         myVideo.currentTime = payload.time;
@@ -541,7 +509,6 @@ export const store = new Vuex.Store({
           store.dispatch("updatePlayTime");
         };
         dispatch("updatePlayTime");
-        dispatch("updateSubtitlePlane", { time: state.playTime }); //re-render subs
       }
     },
     updatePlayTime({ getters, commit }) {
@@ -550,6 +517,7 @@ export const store = new Vuex.Store({
     },
     updateSubtitlePlane({ state, dispatch, getters, commit }, payload) {
       var isd = imsc.generateISD(state.currentSubtitleData.tt, payload.time);
+
       if (state.subActive) {
         dispatch("removeSub");
       }
@@ -560,6 +528,11 @@ export const store = new Vuex.Store({
         null,
         null,
         state.forcedOnly
+      );
+      console.log(
+        "update subtitle plane",
+        payload.time,
+        state.currentSubtitleData.tt
       );
       commit("activateSub");
     },

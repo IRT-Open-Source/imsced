@@ -15,6 +15,7 @@ import {
   faPlusCircle,
   faSave,
   faToolbox,
+  faTimesCircle,
   faSmile
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -33,6 +34,7 @@ library.add(
   faPlusCircle,
   faSave,
   faSmile,
+  faTimesCircle,
   faToolbox
 );
 

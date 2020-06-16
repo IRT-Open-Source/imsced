@@ -217,6 +217,7 @@ import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
+import MyTextTrack from "./modules/texttrack.js";
 import ResizeFeature from "./editorComponents/ResizeFeature.vue";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
 import { MouseMoveEvent, MouseUpEvent } from "./modules/appEvents.js";
@@ -431,7 +432,7 @@ export default {
     window.removeEventListener("mousemove", this.handleMouseMove);
   },
   mounted: function() {
-    this.addVideoTextTrack();
+    this.initTextTrack();
     this.$nextTick(function() {
       this.setMaxHeight();
     });
@@ -509,7 +510,7 @@ export default {
     },
     newSubs: function(subtitleText) {
       this.initSubs(subtitleText);
-      this.addVideoTextTrack(); //generatate track
+      this.resetTextTrack();
       this.updateSubtitlePlanePlayTime();
       this.resetFocusContent();
       if (this.debug) {
@@ -568,19 +569,20 @@ export default {
     ...mapMutations([
       "addSubtitleData",
       "changeVideo",
+      "resetTextTrack",
       "setFullScreenActive",
       "setLoadingST",
       "setSubsFileName",
       "setSubtitleData",
       "setVideoDomHeight",
       "setVideoDomWidth",
-      "toggleFullScreenMode",
       "setSrtTemplateOptions",
-      "setUiLayout"
+      "setUiLayout",
+      "toggleFullScreenMode"
     ]),
     ...mapActions([
       "addRegion",
-      "addVideoTextTrack",
+      "initTextTrack",
       "removeSub",
       "resetFocusContent",
       "saveAsXml",

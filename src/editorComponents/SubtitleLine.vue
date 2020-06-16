@@ -70,10 +70,6 @@ export default {
     };
   },
   props: {
-    parent: {
-      type: Object,
-      required: true
-    },
     contentGroup: {
       type: Array,
       required: true
@@ -81,16 +77,20 @@ export default {
     level: {
       type: Number,
       required: true
+    },
+    parent: {
+      type: Object,
+      required: true
     }
   },
   computed: {
-    ...mapState(["charsPerLine", "debug", "playTime", "showHints"])
+    ...mapState(["charsPerLine", "showHints"])
   },
   watch: {
-    textLength() {
+    charsPerLine() {
       this.updateCharacterWarning();
     },
-    charsPerLine() {
+    textLength() {
       this.updateCharacterWarning();
     }
   },
@@ -182,6 +182,37 @@ export default {
 </script>
 
 <style>
+.charactersHint {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 80%;
+  margin-right: 0.5em;
+  margin-bottom: -1.5em;
+  z-index: 2;
+}
+.hintWarning {
+  color: rgb(204, 37, 7);
+}
+
+.hintOk {
+  color: rgb(0, 150, 0);
+}
+.lineWithHints {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.nestedSpan {
+  border: 0.2em solid rgba(129, 129, 129, 0.075);
+  margin-top: 0.15em;
+  padding: 0.25em;
+  background-color: rgba(129, 129, 129, 0.075);
+}
+.subtitleLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .textInput {
   display: flex;
   flex-direction: column;
@@ -189,39 +220,5 @@ export default {
   padding-right: 2px;
   padding-left: 2px;
   width: 100%;
-}
-
-.subtitleLine {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.lineWithHints {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.nestedSpan {
-  border: 0.2em solid rgba(129, 129, 129, 0.075);
-  margin-top: 0.15em;
-  padding: 0.25em;
-  background-color: rgba(129, 129, 129, 0.075);
-}
-
-.charactersHint {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 80%;
-  margin-right: 0.5em;
-}
-
-.hintWarning {
-  color: rgb(204, 37, 7);
-}
-
-.hintOk {
-  color: rgb(0, 150, 0);
 }
 </style>

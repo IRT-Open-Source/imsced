@@ -6,7 +6,7 @@
       :title="buttonName"
       v-b-tooltip.hover
       :icon="icon"
-      size="lg"
+      :size="iconSize"
       :style="iconStyle"
     >
     </font-awesome-icon>
@@ -50,6 +50,10 @@ export default {
           color: "rgba(255, 255, 255, 0.75)"
         };
       }
+    },
+    iconSize: {
+      type: String,
+      default: "lg"
     }
   },
   computed: {
