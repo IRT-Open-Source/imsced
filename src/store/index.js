@@ -48,6 +48,7 @@ export const store = new Vuex.Store({
     movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     readingSpeed: customSettingsFile.readingSpeed, // reading speed: characters per second
+    refreshSubtitles: false, // request to refresh the order of subtitles
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
     scfImportFormat: "stl",
@@ -315,6 +316,9 @@ export const store = new Vuex.Store({
     },
     setReadingSpeed(state, val) {
       state.readingSpeed = val;
+    },
+    setRefreshSubtitles(state, val) {
+      state.refreshSubtitles = val;
     },
     setScfExportFormat(state, val) {
       state.scfExportFormat = val;

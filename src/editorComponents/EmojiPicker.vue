@@ -116,11 +116,11 @@ export default {
   position: relative;
 }
 .emoji-button {
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  padding: 0.25em 0.5em;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 0.125em 0.25em;
   border-radius: 0.25rem;
-  background-color: rgba(255, 255, 255, 0.5);
-  vertical-align: -0.25em;
+  background-color: rgba(255, 255, 255, 0.75);
+  vertical-align: -0.175em;
 }
 .emoji-button:hover {
   cursor: pointer;

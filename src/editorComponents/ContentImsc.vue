@@ -53,7 +53,26 @@ export default {
         return this.content.kind;
       }
     },
-    ...mapState(["activeDiv"])
+    ...mapState(["activeDiv", "refreshSubtitles"])
+  },
+  watch: {
+    refreshSubtitles(newValue) {
+      if (
+        newValue &&
+        this.content.kind == "div" &&
+        this.content.contents &&
+        this.content.contents[0].kind == "p"
+      ) {
+        this.content.contents.sort((a, b) => {
+          if (a.begin == b.begin) {
+            return a.end - b.end;
+          } else {
+            return a.begin - b.begin;
+          }
+        });
+        this.setRefreshSubtitles(false);
+      }
+    }
   },
   methods: {
     handleFocus() {
@@ -63,7 +82,7 @@ export default {
         this.setActiveDiv({ content: this.content });
       }
     },
-    ...mapMutations(["setActiveDiv"]),
+    ...mapMutations(["setActiveDiv", "setRefreshSubtitles"]),
     ...mapActions(["resetFocusContent"])
   }
 };

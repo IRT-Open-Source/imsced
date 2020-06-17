@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="captionWithButtons">
-        <div>
+        <div class="subtitleFile">
           <CustomFileChooser
             :loader="true"
             name="chooseSubtitleSmall"
@@ -154,6 +154,16 @@
           {{ getSubsFileName }}
         </div>
         <EmojiPicker />
+        <a @click="setRefreshSubtitles(true)"
+          ><span class="refresh" title="Update order of subtitles">
+            <font-awesome-icon
+              icon="sync-alt"
+              size="lg"
+              :style="{ color: 'rgba(0, 0, 0, 0.6)' }"
+            >
+            </font-awesome-icon>
+          </span>
+        </a>
       </div>
       <div id="editArea" ref="editArea">
         <!-- Video to be displayed -->
@@ -572,6 +582,7 @@ export default {
       "resetTextTrack",
       "setFullScreenActive",
       "setLoadingST",
+      "setRefreshSubtitles",
       "setSubsFileName",
       "setSubtitleData",
       "setVideoDomHeight",
@@ -775,5 +786,18 @@ video::-webkit-media-controls-fullscreen-button {
 }
 .hidden {
   display: none !important;
+}
+.refresh {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 0.125em 0.25em;
+  border-radius: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.75);
+  vertical-align: -0.175em;
+}
+.refresh:hover {
+  cursor: pointer;
+}
+.subtitleFile {
+  flex-grow: 1;
 }
 </style>

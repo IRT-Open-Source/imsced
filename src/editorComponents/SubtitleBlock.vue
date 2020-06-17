@@ -1,76 +1,74 @@
 <template>
-  <div>
-    <div
-      :id="[content.editorId]"
-      :class="['pBlock', activeClass, { warningBorder: showWarning }]"
-      @click="handleClick"
-    >
-      <span class="tempTimingBox">
-        <span class="timeDescription">BEGIN:</span>
-        <TimeInput
-          class="timeBox"
-          :time="begin"
-          @timeChanged="setBegin"
-          @gotFocus="handleTimeFocus(begin)"
-        />
-      </span>
-      <span class="tempTimingBox">
-        <span class="timeDescription">END:</span>
-        <TimeInput
-          class="timeBox"
-          :time="end"
-          @timeChanged="setEnd"
-          @gotFocus="handleTimeFocusEnd(end)"
-        />
-      </span>
-      <div v-if="initDelete" class="popup">
-        <div class="textSpacing">
-          Are you sure you want to delete this subtitle block?
-        </div>
-        <ButtonGeneric
-          class="buttonSpacing"
-          :buttonName="'Cancel'"
-          @click.native="toggleInitDelete"
-        />
-        <ButtonGeneric
-          class="buttonSpacing"
-          :buttonName="'Delete'"
-          variant="danger"
-          @click.native="deleteBlock"
-        />
+  <div
+    :id="[content.editorId]"
+    :class="['pBlock', activeClass, { warningBorder: showWarning }]"
+    @click="handleClick"
+  >
+    <span class="tempTimingBox">
+      <span class="timeDescription">BEGIN:</span>
+      <TimeInput
+        class="timeBox"
+        :time="begin"
+        @timeChanged="setBegin"
+        @gotFocus="handleTimeFocus(begin)"
+      />
+    </span>
+    <span class="tempTimingBox">
+      <span class="timeDescription">END:</span>
+      <TimeInput
+        class="timeBox"
+        :time="end"
+        @timeChanged="setEnd"
+        @gotFocus="handleTimeFocusEnd(end)"
+      />
+    </span>
+    <div v-if="initDelete" class="popup">
+      <div class="textSpacing">
+        Are you sure you want to delete this subtitle block?
       </div>
-      <span class="deleteBlock">
-        <ButtonGeneric
-          :buttonName="'delete'"
-          icon="times-circle"
-          iconSize="sm"
-          :iconStyle="{ color: 'grey' }"
-          @click.native="toggleInitDelete"
-          :disabled="activeP == undefined"
+      <ButtonGeneric
+        class="buttonSpacing"
+        :buttonName="'Cancel'"
+        @click.native="toggleInitDelete"
+      />
+      <ButtonGeneric
+        class="buttonSpacing"
+        :buttonName="'Delete'"
+        variant="danger"
+        @click.native="deleteBlock"
+      />
+    </div>
+    <span class="deleteBlock">
+      <ButtonGeneric
+        :buttonName="'delete'"
+        icon="times-circle"
+        iconSize="sm"
+        :iconStyle="{ color: 'grey' }"
+        @click.native="toggleInitDelete"
+        :disabled="activeP == undefined"
+      />
+    </span>
+    <!-- Iteration of grouped contents array of content element -->
+    <div class="subtitleLines">
+      <template v-for="(group, index) in subtitleLines">
+        <SubtitleLine
+          :parent="content"
+          :contentGroup="group"
+          :level="0"
+          :key="index"
+          @gotFocus="handleFocus"
+          @characterWarning="handleCharacterWarning"
         />
-      </span>
-      <!-- Iteration of grouped contents array of content element -->
-      <div class="subtitleLines">
-        <template v-for="(group, index) in subtitleLines">
-          <SubtitleLine
-            :parent="content"
-            :contentGroup="group"
-            :level="0"
-            :key="index"
-            @gotFocus="handleFocus"
-            @characterWarning="handleCharacterWarning"
-          />
-        </template>
+      </template>
+    </div>
+    <div v-if="showWarning" class="warningText">
+      <div v-if="minDurationWarning">
+        {{ getLabelText("minDurationWarning") }}
       </div>
-      <div v-if="showWarning" class="warningText">
-        <div v-if="minDurationWarning">
-          {{ getLabelText("minDurationWarning") }}
-        </div>
-        <div v-if="timingWarning">{{ getLabelText("timingWarning") }}</div>
-        <div v-if="stLinesWarning">{{ getLabelText("tooManyLines") }}</div>
-        <div v-if="characterWarning > 0">
-          {{ getLabelText("tooManyChars") }}
-        </div>
+      <div v-if="timingWarning">{{ getLabelText("timingWarning") }}</div>
+      <div v-if="stLinesWarning">{{ getLabelText("tooManyLines") }}</div>
+      <div v-if="characterWarning > 0">
+        {{ getLabelText("tooManyChars") }}
       </div>
     </div>
   </div>
