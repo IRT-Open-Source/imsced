@@ -20,6 +20,7 @@
           <TextImsc
             :element="item"
             @gotFocus="handleFocus(item)"
+            @gotFocusByApp="handleFocus(item, 'gotFocusByApp')"
             @textChanged="handleChange"
           />
         </div>
@@ -42,6 +43,7 @@
                 :key="`span_${index}`"
                 @textChanged="handleChange"
                 @gotFocus="handleFocus(item)"
+                @gotFocusByApp="handleFocus(item, 'gotFocusByApp')"
                 @characterWarning="handleCharacterWarning"
               />
             </template>
@@ -134,9 +136,9 @@ export default {
     handleCharacterWarning(warning) {
       this.$emit("characterWarning", warning);
     },
-    handleFocus(item) {
+    handleFocus(item, event = "gotFocus") {
       this.resetFocusContent();
-      this.$emit("gotFocus");
+      this.$emit(event);
       if (item.styleAttrs) {
         /* We need to ignore span with no styles,
          otherwise span parents with styles are

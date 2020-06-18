@@ -12,8 +12,14 @@ function MouseMoveEvent(event) {
  * Event to publish when a
  * mouse button is released
  * inside the app
-
  */
 function MouseUpEvent() {}
 
-export { MouseMoveEvent, MouseUpEvent };
+/**
+ * Event to publish when user
+ * paused the video
+ * Produced by VideoGeneric.vue
+ */
+function VideoPausedEvent() {}
+
+export { MouseMoveEvent, MouseUpEvent, VideoPausedEvent };

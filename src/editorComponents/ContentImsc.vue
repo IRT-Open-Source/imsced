@@ -8,6 +8,7 @@
           :content="item"
           :key="item.editorId"
           @gotFocus="handleFocus"
+          @gotFocusByApp="handleFocus('gotFocusByApp')"
         />
       </template>
     </template>
@@ -20,12 +21,14 @@
           :content="item"
           :key="item.editorId"
           @gotFocus="handleFocus"
+          @gotFocusByApp="handleFocus('gotFocusByApp')"
         />
         <contentElement
           v-else-if="item.kind == 'div'"
           :content="item"
           :key="item.editorId"
           @gotFocus="handleFocus"
+          @gotFocusByApp="handleFocus('gotFocusByApp')"
         />
       </template>
     </template>
@@ -75,9 +78,9 @@ export default {
     }
   },
   methods: {
-    handleFocus() {
+    handleFocus(event = "gotFocus") {
       this.resetFocusContent();
-      this.$emit("gotFocus");
+      this.$emit(event);
       if (this.type == "div") {
         this.setActiveDiv({ content: this.content });
       }

@@ -57,6 +57,7 @@
           :level="0"
           :key="index"
           @gotFocus="handleFocus"
+          @gotFocusByApp="handleFocus('gotFocusByApp')"
           @characterWarning="handleCharacterWarning"
         />
       </template>
@@ -76,6 +77,8 @@
 
 <script>
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
+import { VideoPausedEvent } from "../modules/appEvents.js";
+import EventBus from "../modules/eventBus.js";
 import ButtonGeneric from "./ButtonGeneric.vue";
 import InputGeneric from "./InputGeneric.vue";
 import SpanElement from "./SpanElement.vue";
@@ -237,7 +240,39 @@ export default {
       "textTrack",
       "uiData"
     ]),
-    ...mapGetters(["body", "videoDom"])
+    ...mapGetters(["body", "getFirstActivePara", "videoDom"])
+  },
+  created() {
+    EventBus.listen(VideoPausedEvent, () => {
+      if (this.content.contents && this.active) {
+        let firstParaId = this.getFirstActivePara
+          ? this.getFirstActivePara.editorId
+          : "";
+        if (this.content.editorId == firstParaId) {
+          this.setPlayTimeChangedByUser(true);
+
+          let firstLine = this.subtitleLines[0];
+          let contentItem = null;
+          for (let i = firstLine.length - 1; i >= 0; i--) {
+            let item = firstLine[i];
+            if (item.text && item.text.trim()) {
+              contentItem = firstLine[i];
+              break;
+            }
+          }
+          if (contentItem != null) {
+            let element = document.getElementById(
+              `input_${contentItem.editorId}`
+            );
+            if (element) {
+              element.focus();
+            }
+          } else {
+            this.setPlayTimeChangedByUser(false);
+          }
+        }
+      }
+    });
   },
   methods: {
     convertToSeconds(vttTime) {
@@ -331,11 +366,13 @@ export default {
         }
       }
     },
-    handleFocus() {
+    handleFocus(event = "gotFocus") {
       this.resetFocusContent();
-      this.$emit("gotFocus");
-      if (this.content.begin !== this.playTime) {
-        this.setVideoPlayTime({ time: this.content.begin });
+      this.$emit(event);
+      if (event == "gotFocus") {
+        if (this.content.begin !== this.playTime) {
+          this.setVideoPlayTime({ time: this.content.begin });
+        }
       }
       this.setActiveP({ content: this.content });
     },
@@ -427,7 +464,7 @@ export default {
       "resetFocusContent",
       "setVideoPlayTime"
     ]),
-    ...mapMutations(["setActiveP"])
+    ...mapMutations(["setActiveP", "setPlayTimeChangedByUser"])
   }
 };
 </script>

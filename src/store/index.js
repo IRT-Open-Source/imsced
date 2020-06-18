@@ -47,6 +47,8 @@ export const store = new Vuex.Store({
     movieName: "", // video file name
     movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
+    playTimeChangedByApp: false,
+    playTimeChangedByUser: false,
     readingSpeed: customSettingsFile.readingSpeed, // reading speed: characters per second
     refreshSubtitles: false, // request to refresh the order of subtitles
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
@@ -120,6 +122,34 @@ export const store = new Vuex.Store({
     },
     containerDom(state) {
       return document.getElementById(state.config.defaultVideo.containerId);
+    },
+    getFirstActivePara(state) {
+      let bodyContents = state.currentSubtitleData.body.contents;
+      let activeContent = null;
+      let isActive = function(content) {
+        return content.end
+          ? state.playTime >= content.begin && state.playTime <= content.end
+          : false;
+      };
+
+      let getLastContent = (contents) => {
+        for (let i = 0; i < contents.length; i++) {
+          let item = contents[i];
+          if (item.kind == "p" && isActive(item)) {
+            activeContent = item;
+            break;
+          } else if (item.contents) {
+            getLastContent(item.contents);
+          }
+
+          if (activeContent != null) {
+            break;
+          }
+        }
+      };
+
+      getLastContent(bodyContents);
+      return activeContent;
     },
     //all p elements as array
     paraList(state) {
@@ -313,6 +343,12 @@ export const store = new Vuex.Store({
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
+    },
+    setPlayTimeChangedByApp(state, val) {
+      state.playTimeChangedByApp = val;
+    },
+    setPlayTimeChangedByUser(state, val) {
+      state.playTimeChangedByUser = val;
     },
     setReadingSpeed(state, val) {
       state.readingSpeed = val;
@@ -509,6 +545,7 @@ export const store = new Vuex.Store({
     },
     setVideoPlayTime({ state, getters, dispatch }, payload) {
       if (getters.videoDom) {
+        state.playTimeChangedByApp = true;
         var myVideo = getters.videoDom;
         myVideo.currentTime = payload.time;
         dispatch("updateSubtitlePlane", { time: payload.time });

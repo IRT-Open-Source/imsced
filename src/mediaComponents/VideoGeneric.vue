@@ -7,12 +7,17 @@
       :id="id"
       :src="src"
       @loadeddata="videoLoaded"
+      @pause="changedToPause"
       @play="changedToPlay"
     ></video>
   </div>
 </template>
 
 <script>
+import EventBus from "../modules/eventBus.js";
+import { VideoPausedEvent } from "../modules/appEvents.js";
+import { mapState, mapMutations } from "vuex";
+
 export default {
   props: {
     autobuffer: {
@@ -36,7 +41,21 @@ export default {
       required: true
     }
   },
+  data: function() {
+    return {
+      videoPausedEvent: VideoPausedEvent
+    };
+  },
+  computed: {
+    ...mapState(["playTimeChangedByApp"])
+  },
+  created() {
+    this.videoPausedEvent = new VideoPausedEvent();
+  },
   methods: {
+    changedToPause() {
+      EventBus.publish(this.videoPausedEvent);
+    },
     changedToPlay() {
       this.$emit("videoPlays");
     },
