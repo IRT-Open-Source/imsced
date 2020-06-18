@@ -12,6 +12,14 @@ import UiCentral from "../modules/uiCentral.js";
 import Vue from "vue";
 import Vuex from "vuex";
 
+var customSettingsFile;
+
+if (process.env.VUE_APP_CUSTOMSETTINGS == "true") {
+  customSettingsFile = require("../../custom/customSettings.json");
+} else {
+  customSettingsFile = require("../config/customSettings.json");
+}
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -20,7 +28,7 @@ export const store = new Vuex.Store({
     activeDiv: undefined, // div element with focus in editor
     activeP: undefined, // p element with focus in editor
     activeSpan: undefined, // span element with focus in editor
-    charsPerLine: 37, // the maximum number of allowed characters per line
+    charsPerLine: customSettingsFile.charsPerLine, // the maximum number of allowed characters per line
     config: new DefaultConfig(),
     currentSubtitleData: {}, // active subtitle document as parsed by imscJS
     currentCueCall: undefined,
@@ -30,16 +38,16 @@ export const store = new Vuex.Store({
     forcedOnly: false, // enable/disable displayForcedOnlyMode
     fullScreenActive: false,
     helper: new helperGeneric(), // access to generic helper methods
-    lang: "en", // language for the editor interface
+    lang: customSettingsFile.lang, // language for the editor interface
+    maxLinesPerST: customSettingsFile.maxLinesPerST, // max. number of lines per subtitle block
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
-    maxLinesPerST: 2, // max. number of lines per subtitle block
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
-    minStDuration: 1, // minimum lifetime for one subtitle in seconds
+    minStDuration: customSettingsFile.minStDuration, // minimum lifetime for one subtitle in seconds
     movieName: "", // video file name
     movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
-    readingSpeed: 14, // reading speed: characters per second
+    readingSpeed: customSettingsFile.readingSpeed, // reading speed: characters per second
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
     scfImportFormat: "stl",
@@ -50,12 +58,12 @@ export const store = new Vuex.Store({
     showBurnIn: false, // toggle the burn in user interface(requires activateBurnIn to be true)
     showConfigUi: false,
     showDivMenu: "show",
-    showHints: "hide", // show hints for subtitle standards like chars per line
+    showHints: customSettingsFile.showHints, // show hints for subtitle standards like chars per line
     showPMenu: "show",
     showRegionSelect: "show",
     showScfService: "show",
     showSpanMenu: "show",
-    showVisualization: "hide", // show hints for subtitle standards like chars per line
+    showVisualization: customSettingsFile.showVisualization, // show hints for subtitle standards like chars per line
     srtImportLang: "original (template)", // language for the imsc document
     srtImportTemplate: "ebu-tt-d-basic-de.xml",
     srtTemplateOptions: ["ebu-tt-d-basic-de.xml"],

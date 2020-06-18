@@ -98,6 +98,65 @@ The Video Image Burner [(VIB)](https://github.com/IRT-Open-Source/vib/blob/maste
 
 To be used by imscED, the service needs to available at http://localhost:9010.
 
+### Configuration
+
+#### Integration of Custom Settings in Build Process
+
+A custom settings file can be added to the build process. This file is separated
+from the imscED repository. It is stored in a "custom" folder. This folder is ignored by this git
+repository. This way custom settings and other files can be maintained by the user in a seperate,
+user-specific repository.
+
+To enable this customization feature the file `.env.local` needs to be added to the root directory.
+
+```bash
+touch .env.local
+```
+
+The content
+of the file needs to be as follows:
+
+```
+VUE_APP_CUSTOMSETTINGS  = true
+```
+
+> Note: It is possible to use the `.env` file in the root directory as blueprint and to rename it into `.env.local`
+
+Then a custom folder needs to be added to the root directory with a file named `customSettings.json`.
+
+```bash
+mkdir custom
+touch custom/customSettings.json
+```
+
+The custom settings file need to have the following structure:
+
+```json
+{
+  "charsPerLine": 37,
+  "lang": "de",
+  "maxLinesPerST": 2,
+  "minStDuration": 1,
+  "readingSpeed": 14,
+  "showHints": "show",
+  "showVisualization": "show"
+}
+```
+
+Values can be adapted to the user requirements.
+
+Currently, only the following settings can be changed:
+
+- language of the user interface (German and English are supported)
+- maximum numbers of characters per line
+- maximum number of lines per subtitle block
+- minimum duration of the subtitle block
+- assumed average reading speed
+- switch to control the display of error messages and hints
+- switch to control the display of the duration guideline compliance visualization
+
+To get the settings into effect the project need to be rebuild (i.e. the development server needs to be restarted).
+
 ## Contributions
 
 If you want to ...
