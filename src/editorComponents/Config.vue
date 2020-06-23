@@ -82,25 +82,28 @@
             role="tabpanel"
           >
             <b-card-body>
-              <b-card-text>
-                <div class="buttons">
-                  <span
-                    class="mr-1 mt-1 btn btn-secondary btn-sm py-0"
-                    variant="secondary"
-                  >
-                    <CustomFileChooser
-                      :getText="true"
-                      id="settingsUpload"
-                      :labelText="getLabelText('load')"
-                      name="Load"
-                      @textSent="uploadSettings"
-                    />
-                  </span>
+              <div class="buttons">
+                <div class="settingsButton">
+                  <CustomFileChooser
+                    name="load"
+                    :getText="true"
+                    id="settingsUpload"
+                    icon="upload"
+                    :iconStyle="{ color: 'grey' }"
+                    :labelText="getLabelText('load')"
+                    @textSent="uploadSettings"
+                  />
+                </div>
+                <div class="settingsButton">
                   <ButtonGeneric
                     :buttonName="getLabelText('save')"
+                    :icon="'download'"
+                    :iconStyle="{ color: 'grey' }"
                     @click.native="downloadSettings"
                   />
                 </div>
+              </div>
+              <b-card-text>
                 <RadioGeneric
                   :options="['show', 'hide']"
                   :translateOptions="true"
@@ -586,6 +589,19 @@ export default {
   float: left;
 }
 .buttons {
-  float: right;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.settingsButton {
+  margin: 0 0 0 0.25rem;
+  padding: 0.25rem;
+  font-size: 1.25rem;
+  border: 1px solid grey;
+}
+
+.settingsButton .file-select {
+  padding: 0;
 }
 </style>
