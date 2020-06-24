@@ -4,24 +4,29 @@
     :class="['pBlock', activeClass, { warningBorder: showWarning }]"
     @click="handleClick"
   >
-    <span class="tempTimingBox">
-      <span class="timeDescription">BEGIN:</span>
-      <TimeInput
-        class="timeBox"
-        :time="begin"
-        @timeChanged="setBegin"
-        @gotFocus="handleTimeFocus(begin)"
-      />
-    </span>
-    <span class="tempTimingBox">
-      <span class="timeDescription">END:</span>
-      <TimeInput
-        class="timeBox"
-        :time="end"
-        @timeChanged="setEnd"
-        @gotFocus="handleTimeFocusEnd(end)"
-      />
-    </span>
+    <div class="timingRow">
+      <span class="tempTimingBox">
+        <span class="timeDescription">BEGIN:</span>
+        <TimeInput
+          class="timeBox"
+          :time="begin"
+          @timeChanged="setBegin"
+          @gotFocus="handleTimeFocus(begin)"
+        />
+      </span>
+      <span class="tempTimingBox">
+        <span class="timeDescription">END:</span>
+        <TimeInput
+          class="timeBox"
+          :time="end"
+          @timeChanged="setEnd"
+          @gotFocus="handleTimeFocusEnd(end)"
+        />
+      </span>
+      <span class="duration" :class="{ warningText: wrongTimecode }">{{
+        duration.toFixed(3)
+      }}</span>
+    </div>
     <div v-if="initDelete" class="popup">
       <div class="textSpacing">
         Are you sure you want to delete this subtitle block?
@@ -62,7 +67,10 @@
         />
       </template>
     </div>
-    <div v-if="showWarning" class="warningText">
+    <div v-if="wrongTimecode" class="warningText">
+      {{ getLabelText("wrongTimecode") }}
+    </div>
+    <div v-if="showWarning && !wrongTimecode" class="warningText">
       <div v-if="minDurationWarning">
         {{ getLabelText("minDurationWarning") }}
       </div>
@@ -154,6 +162,9 @@ export default {
     end() {
       return this.convertToVttTime(this.content.end);
     },
+    duration() {
+      return this.content.end - this.content.begin;
+    },
     minDurationWarning() {
       let duration = this.content.end - this.content.begin;
       if (duration < this.minStDuration) {
@@ -226,6 +237,9 @@ export default {
       if (this.content) {
         return this.content.kind;
       }
+    },
+    wrongTimecode() {
+      return this.content.end <= this.content.begin;
     },
     ...mapState([
       "activeDiv",
@@ -487,6 +501,16 @@ export default {
   font-weight: bold;
   color: rgb(209, 0, 0);
 }
+.duration {
+  white-space: nowrap;
+  font-size: 80%;
+  padding: 0.25em 0.2em 0.2em 0.2em;
+  margin-left: 0.25em;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.noWrap {
+  white-space: nowrap;
+}
 .passiveP {
   background-color: rgb(238, 238, 252);
 }
@@ -501,10 +525,9 @@ export default {
 }
 .tempTimingBox {
   white-space: nowrap;
-  padding: 0 0.25em;
-  padding-right: 0;
-  padding-bottom: 0.2em;
-  margin: 0.25em;
+  padding: 0 0 0.2em 0.2em;
+  margin: 0 0 0 0.25em;
+  background-color: rgba(0, 0, 0, 0.06);
 }
 .textSpacing {
   margin: 0.5em;
@@ -516,6 +539,11 @@ export default {
   color: rgba(0, 0, 0, 0.5);
   font-size: 70%;
   font-weight: bold;
+}
+.timingRow {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 .popup {
   z-index: 99;
@@ -536,5 +564,6 @@ export default {
   color: rgb(204, 37, 7);
   font-size: 80%;
   margin-left: 0.25em;
+  padding-top: 0.25em;
 }
 </style>

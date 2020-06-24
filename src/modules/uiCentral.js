@@ -888,6 +888,14 @@ var proto = {
           de: "Schreibrichtung"
         }
       }
+    },
+    wrongTimecode: {
+      label: {
+        lang: {
+          en: "End time before begin time!",
+          de: "Ende liegt vor dem Start!"
+        }
+      }
     }
   },
   getLabel(name, lang) {
