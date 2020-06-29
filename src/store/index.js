@@ -37,6 +37,7 @@ export const store = new Vuex.Store({
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
     forcedOnly: false, // enable/disable displayForcedOnlyMode
     fullScreenActive: false,
+    framegap: 0.04, // gab between two subtitles in seconds, should depend on fps
     helper: new helperGeneric(), // access to generic helper methods
     lang: customSettingsFile.lang, // language for the editor interface
     maxLinesPerST: customSettingsFile.maxLinesPerST, // max. number of lines per subtitle block
@@ -74,6 +75,8 @@ export const store = new Vuex.Store({
     subActive: false, // if subtitle data is rendered on video
     subsFileName: "imscTestFile", // default value if no subtitle file was loaded
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
+    templateImsc: undefined, // subtitle data object that is used as template for style attributes and region, parsed by imscJS
+    templateSrc: "/assets/template.xml",
     textTrack: undefined,
     uiData: new UiCentral(), // language specific labels for ui
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
@@ -408,6 +411,9 @@ export const store = new Vuex.Store({
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
     },
+    setTemplateImsc(state, payload) {
+      state.templateImsc = payload.imscData;
+    },
     setTextTrack(state, obj) {
       state.textTrack = obj;
     },
@@ -578,11 +584,11 @@ export const store = new Vuex.Store({
         null,
         state.forcedOnly
       );
-      console.log(
+      /* console.log(
         "update subtitle plane",
         payload.time,
         state.currentSubtitleData.tt
-      );
+      ); */
       commit("activateSub");
     },
     updateSubtitlePlanePlayTime({ state, dispatch }) {

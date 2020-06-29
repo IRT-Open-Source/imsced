@@ -344,6 +344,7 @@ export default {
       "showSpanMenu",
       "showVisualization",
       "subsFileName",
+      "templateSrc",
       "uiData",
       "uiLayout"
     ]),
@@ -465,6 +466,25 @@ export default {
             error
         );
       });
+
+    // parse template file
+    // TODO check for valid template structure -> must contain p, spand and region
+    let templatefile = fetch(this.templateSrc)
+      .then((response) => {
+        response
+          .text()
+          .then((text) => {
+            let dataItem = new ImscData(text);
+            dataItem.initRegionHash();
+            this.setTemplateImsc({ imscData: dataItem });
+          })
+          .catch((e) => {
+            console.log("error parsing template file", e);
+          });
+      })
+      .catch((e) => {
+        console.log("could not read template file", e);
+      });
   },
   methods: {
     addNewRegion() {
@@ -585,6 +605,7 @@ export default {
       "setRefreshSubtitles",
       "setSubsFileName",
       "setSubtitleData",
+      "setTemplateImsc",
       "setVideoDomHeight",
       "setVideoDomWidth",
       "setSrtTemplateOptions",

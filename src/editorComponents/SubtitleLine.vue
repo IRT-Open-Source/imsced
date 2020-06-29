@@ -1,5 +1,5 @@
 <template>
-  <div class="lineWithHints">
+  <div class="lineWithHints" @focusout="handleFocusOut">
     <template v-if="showHints == 'show' && level == 0">
       <div
         v-bind:class="[
@@ -10,6 +10,28 @@
         {{ textLength }}/{{ charsPerLine }}
       </div>
     </template>
+    <ButtonGeneric
+      v-if="showDelete"
+      :class="{ visible: active, deleteLine }"
+      :buttonName="'delete subtitle line'"
+      icon="window-close"
+      iconSize="xs"
+      :iconStyle="{
+        color: 'grey'
+      }"
+      @click.native="deleteLine"
+    />
+    <ButtonGeneric
+      v-if="level < 1"
+      :class="{ visible: active, addLine }"
+      :buttonName="'add subtitle line'"
+      icon="plus-circle"
+      iconSize="xs"
+      :iconStyle="{
+        color: 'grey'
+      }"
+      @click.native="addLine"
+    />
     <div class="subtitleLine">
       <template v-for="(item, index) in contentGroup">
         <div
@@ -56,17 +78,20 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import ButtonGeneric from "./ButtonGeneric.vue";
 import SpanElement from "./SpanElement.vue";
 import TextImsc from "./TextImsc.vue";
 
 export default {
   name: "SubtitleLine",
   components: {
+    ButtonGeneric,
     SpanElement,
     TextImsc
   },
   data() {
     return {
+      active: false,
       characterWarning: false,
       textLength: 0
     };
@@ -83,10 +108,14 @@ export default {
     parent: {
       type: Object,
       required: true
+    },
+    showDelete: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
-    ...mapState(["charsPerLine", "showHints"])
+    ...mapState(["activeSpan", "charsPerLine", "showHints"])
   },
   watch: {
     charsPerLine() {
@@ -110,6 +139,21 @@ export default {
         });
       }
       return text;
+    },
+    addLine(e) {
+      e.stopPropagation();
+      this.$emit(
+        "addLineAfter",
+        this.contentGroup[this.contentGroup.length - 1].editorId
+      );
+    },
+    deleteLine(e) {
+      e.stopPropagation();
+      let contentIds = [];
+      this.contentGroup.forEach((obj, i) => {
+        contentIds.push(obj.editorId);
+      });
+      this.$emit("deleteLine", contentIds);
     },
     getContentGroups(content) {
       let lines = [];
@@ -139,6 +183,7 @@ export default {
     handleFocus(item, event = "gotFocus") {
       this.resetFocusContent();
       this.$emit(event);
+      this.active = true;
       if (item.styleAttrs) {
         /* We need to ignore span with no styles,
          otherwise span parents with styles are
@@ -147,8 +192,12 @@ export default {
         this.setActiveSpan({ content: item });
       }
     },
+    handleFocusOut() {
+      this.active = false;
+    },
     handleSpanFocus(item) {
       this.$emit("gotFocus");
+      this.active = true;
       if (this.parent.styleAttrs) {
         this.setActiveSpan({ content: item });
       }
@@ -184,6 +233,15 @@ export default {
 </script>
 
 <style>
+.addLine {
+  position: absolute;
+  right: 0.5em;
+  margin-top: 1.25em;
+}
+.addLine,
+.deleteLine {
+  visibility: hidden;
+}
 .charactersHint {
   display: flex;
   justify-content: flex-end;
@@ -192,10 +250,14 @@ export default {
   margin-bottom: -1.5em;
   z-index: 2;
 }
+.deleteLine {
+  position: absolute;
+  right: 0.5em;
+  margin-top: -0.125em;
+}
 .hintWarning {
   color: rgb(204, 37, 7);
 }
-
 .hintOk {
   color: rgb(0, 150, 0);
 }
@@ -222,5 +284,8 @@ export default {
   padding-right: 2px;
   padding-left: 2px;
   width: 100%;
+}
+.visible {
+  visibility: visible !important;
 }
 </style>

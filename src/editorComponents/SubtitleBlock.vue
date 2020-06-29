@@ -46,7 +46,7 @@
     <span class="deleteBlock">
       <ButtonGeneric
         :buttonName="'delete'"
-        icon="times-circle"
+        icon="window-close"
         iconSize="sm"
         :iconStyle="{ color: 'grey' }"
         @click.native="toggleInitDelete"
@@ -56,15 +56,38 @@
     <!-- Iteration of grouped contents array of content element -->
     <div class="subtitleLines">
       <template v-for="(group, index) in subtitleLines">
-        <SubtitleLine
-          :parent="content"
-          :contentGroup="group"
-          :level="0"
-          :key="index"
-          @gotFocus="handleFocus"
-          @gotFocusByApp="handleFocus('gotFocusByApp')"
-          @characterWarning="handleCharacterWarning"
-        />
+        <span class="oneLine" :key="index">
+          <div
+            v-if="initDeleteLines.includes(index)"
+            :key="`${index}_popup`"
+            class="popupLine"
+          >
+            <span class="textDeleteLine">
+              Delete this subtitle line?
+            </span>
+            <ButtonGeneric
+              class="buttonSpacing"
+              :buttonName="'Cancel'"
+              @click.native="removeInitDelete(index)"
+            />
+            <ButtonGeneric
+              class="buttonSpacing"
+              :buttonName="'Delete'"
+              variant="danger"
+              @click.native="deleteSubtitleLine(group, index)"
+            />
+          </div>
+          <SubtitleLine
+            :parent="content"
+            :contentGroup="group"
+            :level="0"
+            :showDelete="subtitleLines.length > 1"
+            @addLineAfter="addSubtitleLine"
+            @deleteLine="setInitDelete(index)"
+            @gotFocus="handleFocus"
+            @characterWarning="handleCharacterWarning"
+          />
+        </span>
       </template>
     </div>
     <div v-if="wrongTimecode" class="warningText">
@@ -108,7 +131,8 @@ export default {
     return {
       characterWarning: 0,
       cue: undefined,
-      initDelete: false
+      initDelete: false,
+      initDeleteLines: []
     };
   },
   props: {
@@ -244,6 +268,7 @@ export default {
     ...mapState([
       "activeDiv",
       "activeP",
+      "currentSubtitleData",
       "helper",
       "lang",
       "maxLinesPerST",
@@ -251,6 +276,7 @@ export default {
       "playTime",
       "readingSpeed",
       "showHints",
+      "templateImsc",
       "textTrack",
       "uiData"
     ]),
@@ -289,6 +315,25 @@ export default {
     });
   },
   methods: {
+    addSubtitleLine(lastElemId) {
+      let newBr = this.currentSubtitleData.createBr(this.content);
+      let newSpan = this.currentSubtitleData.createSpan(
+        this.content,
+        this.templateImsc
+      );
+      if (newBr && newSpan)
+        this.content.contents.forEach((obj, i) => {
+          if (obj.editorId == lastElemId) {
+            this.content.contents.splice(i + 1, 0, newBr);
+            this.content.contents.splice(i + 2, 0, newSpan);
+          }
+        });
+      this.updateSubtitlePlane({ time: this.playTime });
+      this.$nextTick(() => {
+        let inputNew = document.getElementById(`input_${newSpan.editorId}`);
+        inputNew.focus();
+      });
+    },
     convertToSeconds(vttTime) {
       return this.helper.seconds(vttTime);
     },
@@ -333,6 +378,28 @@ export default {
         this.resetFocusContent();
       }
     },
+    deleteSubtitleLine(group, index) {
+      group.forEach((groupObj, j) => {
+        this.content.contents.forEach((obj, i) => {
+          if (obj.editorId && obj.editorId == groupObj.editorId) {
+            if (
+              i == 0 &&
+              this.content.contents.length >= i + 1 &&
+              this.content.contents[i + 1].kind == "br"
+            ) {
+              this.content.contents.splice(i + 1, 1);
+            }
+            this.content.contents.splice(i, 1);
+            if (i - 1 >= 0 && this.content.contents[i - 1].kind == "br") {
+              this.content.contents.splice(i - 1, 1);
+            }
+          }
+        });
+      });
+      this.removeInitDelete(index);
+      this.updateSubtitlePlane({ time: this.playTime });
+      this.resetFocusContent();
+    },
     getAllText(content, text) {
       if (content.text) {
         text += content.text;
@@ -371,13 +438,7 @@ export default {
     },
     handleClick(e) {
       if (e.target.localName != "input") {
-        let firstLine = this.subtitleLines[0];
-        let lastElement = this.getLastElementOfTheLine(firstLine);
-        if (lastElement) {
-          lastElement.focus();
-          lastElement.selectionStart = lastElement.selectionEnd =
-            lastElement.value.length;
-        }
+        this.setFocus();
       }
     },
     handleFocus(event = "gotFocus") {
@@ -415,6 +476,12 @@ export default {
         this.setVideoPlayTime({ time: focusTime });
       }
       this.setActiveP({ content: this.content });
+    },
+    removeInitDelete(key) {
+      this.initDeleteLines = this.initDeleteLines.filter((val) => val != key);
+      if (this.subtitleLines.length == 1) {
+        this.initDeleteLines = [];
+      }
     },
     setBegin(val) {
       this.content.begin = this.convertToSeconds(val);
@@ -468,6 +535,18 @@ export default {
         this.setVideoPlayTime({ time: timeUpdate });
       }
     },
+    setFocus() {
+      let firstLine = this.subtitleLines[0];
+      let lastElement = this.getLastElementOfTheLine(firstLine);
+      if (lastElement) {
+        lastElement.focus();
+        lastElement.selectionStart = lastElement.selectionEnd =
+          lastElement.value.length;
+      }
+    },
+    setInitDelete(key) {
+      this.initDeleteLines.push(key);
+    },
     toggleInitDelete() {
       this.initDelete = !this.initDelete;
     },
@@ -499,7 +578,7 @@ export default {
   width: 12px;
   text-align: center;
   font-weight: bold;
-  color: rgb(209, 0, 0);
+  color: rgb(24, 20, 20);
 }
 .duration {
   white-space: nowrap;
@@ -511,13 +590,22 @@ export default {
 .noWrap {
   white-space: nowrap;
 }
+.oneLine {
+  display: inline-block;
+  width: 98%;
+  padding-right: 3%;
+}
 .passiveP {
   background-color: rgb(238, 238, 252);
 }
 .pBlock {
-  margin-bottom: 0.25em;
   padding: 0.5em 0.25em;
+  padding-right: 0.5em;
   position: relative;
+}
+.oneLine:hover .deleteLine,
+.oneLine:hover .addLine {
+  visibility: visible;
 }
 .subtitleLines {
   padding-top: 0.2em;
@@ -528,6 +616,12 @@ export default {
   padding: 0 0 0.2em 0.2em;
   margin: 0 0 0 0.25em;
   background-color: rgba(0, 0, 0, 0.06);
+}
+.textDeleteLine {
+  display: inline-block;
+  text-align: center;
+  margin: 0.75em;
+  margin-bottom: 0;
 }
 .textSpacing {
   margin: 0.5em;
@@ -549,6 +643,17 @@ export default {
   z-index: 99;
   right: 0;
   top: 0;
+  position: absolute;
+  text-align: center;
+  background-color: white;
+  border: 2px solid rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  padding: 0.5em;
+  padding-top: 0;
+}
+.popupLine {
+  z-index: 98;
+  right: 0;
   position: absolute;
   text-align: center;
   background-color: white;

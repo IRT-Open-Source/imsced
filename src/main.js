@@ -19,7 +19,8 @@ import {
   faSyncAlt,
   faToolbox,
   faTimesCircle,
-  faUpload
+  faUpload,
+  faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -41,7 +42,8 @@ library.add(
   faSyncAlt,
   faTimesCircle,
   faToolbox,
-  faUpload
+  faUpload,
+  faWindowClose
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
