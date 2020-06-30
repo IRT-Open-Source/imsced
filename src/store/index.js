@@ -46,7 +46,7 @@ export const store = new Vuex.Store({
     menuStyleConfig: new MenuStyleConfig(),
     minStDuration: customSettingsFile.minStDuration, // minimum lifetime for one subtitle in seconds
     movieName: "", // video file name
-    movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
+    movieSrc: "./assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
     playTimeChangedByApp: false,
     playTimeChangedByUser: false,
