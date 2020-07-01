@@ -24,12 +24,18 @@ See below for some of the important restrictions.
 
 ### Adding and removing content elements
 
-- It is not possible to add content elements (`div`, `p`, `span` etc.).
+- It is possible to add and remove a `<p>` element
+  (refered to as subtitle block).
+
+- It is possible to add and remove subtitle lines by
+  inserting a `<br>` element and a new `<span>` element.
+
+- It is not possible to add an additional `<span>` element
+  on a subtitle line.
 
 ### Timing values
 
-- Timing values are only displayed for `p` elements.
-- Timing values cannot be changed.
+- Timing values are only displayed and can be edited for `p` elements.
 
 ### Parameter
 
@@ -194,6 +200,8 @@ Maintainer: Andreas Tai (IRT)
 Development: Michaela Finger (IRT), Yury Lungantsov (IRT), Andreas Tai (IRT)
 
 UI Concept: Laura Ehlis (IRT), Michaela Finger (IRT)
+
+Requirements: Laura Ehlis (IRT), Andreas Tai (IRT) and Rico Zimmermann (IRT)
 
 ## Acknowledgement
 
