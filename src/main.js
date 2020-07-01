@@ -7,6 +7,7 @@ import {
   faArrowsAltH,
   faClosedCaptioning,
   faCog,
+  faDownload,
   faExpand,
   faExpandAlt,
   faFileVideo,
@@ -14,8 +15,12 @@ import {
   faPlus,
   faPlusCircle,
   faSave,
+  faSmile,
+  faSyncAlt,
   faToolbox,
-  faSmile
+  faTimesCircle,
+  faUpload,
+  faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -25,6 +30,7 @@ library.add(
   faArrowsAltH,
   faClosedCaptioning,
   faCog,
+  faDownload,
   faExpand,
   faExpandAlt,
   faFileVideo,
@@ -33,7 +39,11 @@ library.add(
   faPlusCircle,
   faSave,
   faSmile,
-  faToolbox
+  faSyncAlt,
+  faTimesCircle,
+  faToolbox,
+  faUpload,
+  faWindowClose
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
@@ -42,6 +52,10 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 import BootstrapVue from "bootstrap-vue";
 
 Vue.use(BootstrapVue);
+
+import EventBus from "@/modules/eventBus";
+
+Vue.use(EventBus);
 
 import App from "./AppEditor.vue";
 

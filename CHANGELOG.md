@@ -1,3 +1,40 @@
+## 0.8.0 (Jul, 1, 2020)
+
+### Enhancements
+
+[#105](https://github.com/IRT-Open-Source/imsced/issues/105)
+Option to add and remove subtitle lines
+
+[#103](https://github.com/IRT-Open-Source/imsced/issues/103)
+Option to add subtitle blocks
+
+[#98](https://github.com/IRT-Open-Source/imsced/issues/98)
+Optimize usability of interactive region positioning
+
+[#97](https://github.com/IRT-Open-Source/imsced/issues/97)
+Focus subtite field based on user action
+
+[#96](https://github.com/IRT-Open-Source/imsced/issues/96)
+Optimize usability to resize region
+
+[#95](https://github.com/IRT-Open-Source/imsced/issues/95)
+Option to apply custom settings before build
+
+[#94](https://github.com/IRT-Open-Source/imsced/issues/94)
+Option to delete subtitle lines
+
+[#93](https://github.com/IRT-Open-Source/imsced/issues/93)
+Edit subtitle timings
+
+[#92](https://github.com/IRT-Open-Source/imsced/issues/92)
+Option to delete subtitle blocks
+
+[#76](https://github.com/IRT-Open-Source/imsced/issues/76)
+Improve UI to save and load subtitle guidelines
+
+[#74](https://github.com/IRT-Open-Source/imsced/issues/74)
+Focus on subtitle field when video is paused
+
 ## 0.7.0 (May, 29, 2020)
 
 ### Enhancements

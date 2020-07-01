@@ -34,7 +34,11 @@ function MyRegion(regionId) {
   this.sets = [];
 }
 
-var proto = {};
+var proto = {
+  setStyleAttrs: function(styles) {
+    this.styleAttrs = styles;
+  }
+};
 
 MyRegion.prototype = proto;
 

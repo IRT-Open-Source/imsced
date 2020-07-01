@@ -13,32 +13,17 @@ function MyTextTrack(kind, label, lang, video) {
 }
 
 var proto = {
-  addMyCue: function(inTime, outTime, inFunc, outFunc) {
-    // Edge does not support VTTCue but uses TextTrackCue
-    var Cue = window.VTTCue || window.TextTrackCue;
-    var myCue = new Cue(inTime, outTime, "");
-    myCue.onenter = inFunc;
-    myCue.onexit = outFunc;
-    myCue.id = this.makeCueId(inTime, outTime);
-    this.track.addCue(myCue);
+  addMyCue(cue) {
+    this.track.addCue(cue);
   },
-  initCues: function(mediaTimes, inFunc, outFunc) {
-    for (var i = 0; i < mediaTimes.length; i++) {
-      var inTime = mediaTimes[i];
-      var outTime = undefined;
-      if (i < mediaTimes.length - 1) {
-        outTime = mediaTimes[i + 1];
-      } else {
-        outTime = Number.MAX_VALUE;
-      }
-      // endtime in IMSC is exclusive, but in HTML seems
-      // to be inclusive
-      let inclusiveEndTime = outTime - 0.000000001;
-      this.addMyCue(inTime, inclusiveEndTime, inFunc, outFunc);
-    }
+  removeAllCues() {
+    let allCues = Object.values(this.track.cues);
+    allCues.forEach((cue) => {
+      this.track.removeCue(cue);
+    });
   },
-  makeCueId: function(inTime, outTime) {
-    return inTime + "#" + outTime;
+  removeMyCue(cue) {
+    this.track.removeCue(cue);
   }
 };
 

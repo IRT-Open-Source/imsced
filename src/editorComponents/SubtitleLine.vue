@@ -1,5 +1,5 @@
 <template>
-  <div class="lineWithHints">
+  <div class="lineWithHints" @focusout="handleFocusOut">
     <template v-if="showHints == 'show' && level == 0">
       <div
         v-bind:class="[
@@ -10,6 +10,28 @@
         {{ textLength }}/{{ charsPerLine }}
       </div>
     </template>
+    <ButtonGeneric
+      v-if="showDelete"
+      :class="{ visible: active, deleteLine }"
+      :buttonName="'delete subtitle line'"
+      icon="window-close"
+      iconSize="xs"
+      :iconStyle="{
+        color: 'grey'
+      }"
+      @click.native="deleteLine"
+    />
+    <ButtonGeneric
+      v-if="level < 1"
+      :class="{ visible: active, addLine }"
+      :buttonName="'add subtitle line'"
+      icon="plus-circle"
+      iconSize="xs"
+      :iconStyle="{
+        color: 'grey'
+      }"
+      @click.native="addLine"
+    />
     <div class="subtitleLine">
       <template v-for="(item, index) in contentGroup">
         <div
@@ -20,6 +42,7 @@
           <TextImsc
             :element="item"
             @gotFocus="handleFocus(item)"
+            @gotFocusByApp="handleFocus(item, 'gotFocusByApp')"
             @textChanged="handleChange"
           />
         </div>
@@ -42,6 +65,7 @@
                 :key="`span_${index}`"
                 @textChanged="handleChange"
                 @gotFocus="handleFocus(item)"
+                @gotFocusByApp="handleFocus(item, 'gotFocusByApp')"
                 @characterWarning="handleCharacterWarning"
               />
             </template>
@@ -54,26 +78,25 @@
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import ButtonGeneric from "./ButtonGeneric.vue";
 import SpanElement from "./SpanElement.vue";
 import TextImsc from "./TextImsc.vue";
 
 export default {
   name: "SubtitleLine",
   components: {
+    ButtonGeneric,
     SpanElement,
     TextImsc
   },
   data() {
     return {
+      active: false,
       characterWarning: false,
       textLength: 0
     };
   },
   props: {
-    parent: {
-      type: Object,
-      required: true
-    },
     contentGroup: {
       type: Array,
       required: true
@@ -81,16 +104,24 @@ export default {
     level: {
       type: Number,
       required: true
+    },
+    parent: {
+      type: Object,
+      required: true
+    },
+    showDelete: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
-    ...mapState(["charsPerLine", "debug", "playTime", "showHints"])
+    ...mapState(["activeSpan", "charsPerLine", "showHints"])
   },
   watch: {
-    textLength() {
+    charsPerLine() {
       this.updateCharacterWarning();
     },
-    charsPerLine() {
+    textLength() {
       this.updateCharacterWarning();
     }
   },
@@ -108,6 +139,21 @@ export default {
         });
       }
       return text;
+    },
+    addLine(e) {
+      e.stopPropagation();
+      this.$emit(
+        "addLineAfter",
+        this.contentGroup[this.contentGroup.length - 1].editorId
+      );
+    },
+    deleteLine(e) {
+      e.stopPropagation();
+      let contentIds = [];
+      this.contentGroup.forEach((obj, i) => {
+        contentIds.push(obj.editorId);
+      });
+      this.$emit("deleteLine", contentIds);
     },
     getContentGroups(content) {
       let lines = [];
@@ -134,9 +180,10 @@ export default {
     handleCharacterWarning(warning) {
       this.$emit("characterWarning", warning);
     },
-    handleFocus(item) {
+    handleFocus(item, event = "gotFocus") {
       this.resetFocusContent();
-      this.$emit("gotFocus");
+      this.$emit(event);
+      this.active = true;
       if (item.styleAttrs) {
         /* We need to ignore span with no styles,
          otherwise span parents with styles are
@@ -145,8 +192,12 @@ export default {
         this.setActiveSpan({ content: item });
       }
     },
+    handleFocusOut() {
+      this.active = false;
+    },
     handleSpanFocus(item) {
       this.$emit("gotFocus");
+      this.active = true;
       if (this.parent.styleAttrs) {
         this.setActiveSpan({ content: item });
       }
@@ -182,6 +233,50 @@ export default {
 </script>
 
 <style>
+.addLine {
+  position: absolute;
+  right: 0.5em;
+  margin-top: 1.25em;
+}
+.addLine,
+.deleteLine {
+  visibility: hidden;
+}
+.charactersHint {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 80%;
+  margin-right: 0.5em;
+  margin-bottom: -1.5em;
+  z-index: 2;
+}
+.deleteLine {
+  position: absolute;
+  right: 0.5em;
+  margin-top: -0.125em;
+}
+.hintWarning {
+  color: rgb(204, 37, 7);
+}
+.hintOk {
+  color: rgb(0, 150, 0);
+}
+.lineWithHints {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.nestedSpan {
+  border: 0.2em solid rgba(129, 129, 129, 0.075);
+  margin-top: 0.15em;
+  padding: 0.25em;
+  background-color: rgba(129, 129, 129, 0.075);
+}
+.subtitleLine {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .textInput {
   display: flex;
   flex-direction: column;
@@ -190,38 +285,7 @@ export default {
   padding-left: 2px;
   width: 100%;
 }
-
-.subtitleLine {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.lineWithHints {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.nestedSpan {
-  border: 0.2em solid rgba(129, 129, 129, 0.075);
-  margin-top: 0.15em;
-  padding: 0.25em;
-  background-color: rgba(129, 129, 129, 0.075);
-}
-
-.charactersHint {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 80%;
-  margin-right: 0.5em;
-}
-
-.hintWarning {
-  color: rgb(204, 37, 7);
-}
-
-.hintOk {
-  color: rgb(0, 150, 0);
+.visible {
+  visibility: visible !important;
 }
 </style>

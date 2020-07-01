@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="captionWithButtons">
-        <div>
+        <div class="subtitleFile">
           <CustomFileChooser
             :loader="true"
             name="chooseSubtitleSmall"
@@ -154,6 +154,16 @@
           {{ getSubsFileName }}
         </div>
         <EmojiPicker />
+        <a @click="setRefreshSubtitles(true)"
+          ><span class="refresh" title="Update order of subtitles">
+            <font-awesome-icon
+              icon="sync-alt"
+              size="lg"
+              :style="{ color: 'rgba(0, 0, 0, 0.6)' }"
+            >
+            </font-awesome-icon>
+          </span>
+        </a>
       </div>
       <div id="editArea" ref="editArea">
         <!-- Video to be displayed -->
@@ -210,14 +220,17 @@ import DragFeature from "./editorComponents/DragFeature.vue";
 import DropDownGeneric from "./editorComponents/DropDownGeneric.vue";
 import DurationVisualizer from "./editorComponents/DurationVisualizer.vue";
 import EmojiPicker from "./editorComponents/EmojiPicker.vue";
+import EventBus from "./modules/eventBus.js";
 import ImscData from "./modules/imscdata.js";
 import MenuBar from "./editorComponents/MenuBar.vue";
 import MenuGeneric from "./editorComponents/MenuGeneric.vue";
 import MenuStyle from "./editorComponents/MenuStyle.vue";
 import MyRegion from "./modules/myRegion.js";
 import MyDebug from "./helper/MyDebug.vue";
+import MyTextTrack from "./modules/texttrack.js";
 import ResizeFeature from "./editorComponents/ResizeFeature.vue";
 import VideoGeneric from "./mediaComponents/VideoGeneric.vue";
+import { MouseMoveEvent, MouseUpEvent } from "./modules/appEvents.js";
 import { saveAs } from "file-saver";
 
 export default {
@@ -241,6 +254,7 @@ export default {
   },
   data() {
     return {
+      mouseUpEvent: MouseUpEvent,
       myDropKey: 0,
       videoIsLoaded: false
     };
@@ -330,6 +344,7 @@ export default {
       "showSpanMenu",
       "showVisualization",
       "subsFileName",
+      "templateSrc",
       "uiData",
       "uiLayout"
     ]),
@@ -345,6 +360,9 @@ export default {
   //Init Dummy subs on first load
   created: function() {
     window.addEventListener("resize", this.resizeHandler);
+    this.mouseUpEvent = new MouseUpEvent();
+    window.addEventListener("mouseup", this.handleMouseUp);
+    window.addEventListener("mousemove", this.handleMouseMove);
     this.initSubs(
       "<tt\
         xmlns='http://www.w3.org/ns/ttml' \
@@ -421,9 +439,11 @@ export default {
   },
   destroyed: function() {
     window.removeEventListener("resize", this.resizeHandler);
+    window.removeEventListener("mouseup", this.handleMouseUp);
+    window.removeEventListener("mousemove", this.handleMouseMove);
   },
   mounted: function() {
-    this.addVideoTextTrack();
+    this.initTextTrack();
     this.$nextTick(function() {
       this.setMaxHeight();
     });
@@ -445,6 +465,25 @@ export default {
           "Something went wrong while communicating with the SCF service. " +
             error
         );
+      });
+
+    // parse template file
+    // TODO check for valid template structure -> must contain p, spand and region
+    let templatefile = fetch(this.templateSrc)
+      .then((response) => {
+        response
+          .text()
+          .then((text) => {
+            let dataItem = new ImscData(text);
+            dataItem.initRegionHash();
+            this.setTemplateImsc({ imscData: dataItem });
+          })
+          .catch((e) => {
+            console.log("error parsing template file", e);
+          });
+      })
+      .catch((e) => {
+        console.log("could not read template file", e);
       });
   },
   methods: {
@@ -481,6 +520,16 @@ export default {
       this.setFullScreenActive(!!document.fullscreenElement);
       this.updateSubtitlePlanePlayTime();
     },
+    handleMouseUp(e) {
+      if (this.resizingActive) {
+        EventBus.publish(this.mouseUpEvent);
+      }
+    },
+    handleMouseMove(e) {
+      if (this.resizingActive) {
+        EventBus.publish(new MouseMoveEvent(e));
+      }
+    },
     initSubs: function(subtitleText) {
       var dataItem = new ImscData(subtitleText);
       dataItem.initData();
@@ -491,7 +540,7 @@ export default {
     },
     newSubs: function(subtitleText) {
       this.initSubs(subtitleText);
-      this.addVideoTextTrack(); //generatate track
+      this.resetTextTrack();
       this.updateSubtitlePlanePlayTime();
       this.resetFocusContent();
       if (this.debug) {
@@ -550,19 +599,22 @@ export default {
     ...mapMutations([
       "addSubtitleData",
       "changeVideo",
+      "resetTextTrack",
       "setFullScreenActive",
       "setLoadingST",
+      "setRefreshSubtitles",
       "setSubsFileName",
       "setSubtitleData",
+      "setTemplateImsc",
       "setVideoDomHeight",
       "setVideoDomWidth",
-      "toggleFullScreenMode",
       "setSrtTemplateOptions",
-      "setUiLayout"
+      "setUiLayout",
+      "toggleFullScreenMode"
     ]),
     ...mapActions([
       "addRegion",
-      "addVideoTextTrack",
+      "initTextTrack",
       "removeSub",
       "resetFocusContent",
       "saveAsXml",
@@ -755,5 +807,18 @@ video::-webkit-media-controls-fullscreen-button {
 }
 .hidden {
   display: none !important;
+}
+.refresh {
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 0.125em 0.25em;
+  border-radius: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.75);
+  vertical-align: -0.175em;
+}
+.refresh:hover {
+  cursor: pointer;
+}
+.subtitleFile {
+  flex-grow: 1;
 }
 </style>

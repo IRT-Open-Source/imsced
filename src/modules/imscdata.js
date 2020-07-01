@@ -1,5 +1,7 @@
 import imsc from "imsc";
 import helperGeneric from "./helperGeneric.js";
+import MyRegion from "./myRegion.js";
+import Vue from "vue";
 
 function ImscData(text) {
   this.help = new helperGeneric();
@@ -56,6 +58,105 @@ function ImscData(text) {
 }
 
 var proto = {
+  // create a new region with given id and and style attributes and add to the regionhash of this imscdata element
+  addRegion: function(id, styleAttrs) {
+    let newRegion = new MyRegion(id);
+    newRegion.setStyleAttrs(styleAttrs);
+    Vue.set(this.regionHash, id, newRegion);
+  },
+  createP: function(parent, begin, end, templateImsc) {
+    if (parent.kind != "div") {
+      console.log(
+        "Error: template structure not supported. Cannot create p element, parent must be div. Parent is: ",
+        parent
+      );
+      return null;
+    }
+    let p = {};
+    let templateP = undefined;
+    if (templateImsc) templateP = templateImsc.body.contents[0].contents[0];
+    // template is not valid, create default p element without style attributes
+    if (!templateImsc || templateP.kind != "p") {
+      p.kind = "p";
+      p.regionID = Object.keys(this.regionHash)[0];
+      p.contents = [];
+      p.contents.push(this.createSpan(p, null));
+      p.sets = [];
+      p.styleAttrs = {};
+      p.timeContainer = "par";
+    } else {
+      // template is valid, copy p element and adjust timecodes
+      p = this.help.cloneObj(templateP);
+      this.processInlineChildren(p.contents);
+      let templateRegionIds = Object.keys(templateImsc.regionHash);
+      // if template has more than one region take the last one defined
+      let tempRegionId = templateRegionIds[templateRegionIds.length - 1];
+      if (!Object.keys(this.regionHash).includes(tempRegionId)) {
+        this.addRegion(
+          tempRegionId,
+          templateImsc.regionHash[tempRegionId].styleAttrs
+        );
+      }
+    }
+    p.parentDiv = parent;
+    // templateImsc has no editorIds yet, so we need to add one here
+    p.editorId = this.help.uuidv4();
+    p.begin = begin;
+    p.end = end;
+    this.setBeginTimeChildren(p, p.begin);
+    return p;
+  },
+  createSpan: function(parent, templateImsc) {
+    if (parent.kind != "p" && parent.kind != "span") {
+      console.log(
+        "Error: template structure not supported. Cannot create span element, parent must be span or p. Parent is: ",
+        parent
+      );
+      return null;
+    }
+    let span = {};
+    let templateSpan = undefined;
+    if (templateImsc) {
+      templateSpan = templateImsc.body.contents[0].contents[0].contents[1]; // we need to take the second span child, because a valid span is usually surrounded by two AnonymousSpan Elements
+    }
+    // template is valid, copy span element and adjust timecodes
+    if (
+      !templateSpan ||
+      templateSpan.kind != "span" ||
+      !templateSpan.styleAttrs
+    ) {
+      span.kind = "span";
+      span.text = "placeholder";
+      span.regionID = "";
+      span.sets = [];
+      span.space = "default";
+      span.styleAttrs = {};
+      span.timeContainer = "par";
+    } else {
+      span = this.help.cloneObj(templateSpan);
+    }
+    span.editorId = this.help.uuidv4();
+    span.begin = parent.begin;
+    span.end = Infinity;
+    this.setBeginTimeChildren(span, span.begin);
+    return span;
+  },
+  createBr: function(parent) {
+    if (parent.kind != "p" && parent.kind != "span") {
+      console.log(
+        "Error: template structure not supported. Cannot create br element, parent must be span or p. Parent is: ",
+        parent
+      );
+      return null;
+    }
+    let br = { kind: "br" };
+    br.begin = parent.begin;
+    br.end = Infinity;
+    br.regionID = "";
+    br.timeContainer = "par";
+    br.editorId = this.help.uuidv4();
+    return br;
+  },
   initRegionHash: function() {
     this.regionHash = this.tt.head.layout.regions;
   },
@@ -136,6 +237,16 @@ var proto = {
   },
   processBr(br) {
     br.editorId = this.help.uuidv4(); // each br gets unique id
+  },
+  setBeginTimeChildren: function(content, time) {
+    if (content.contents) {
+      content.contents.forEach((element) => {
+        element.begin = time;
+        if (element.contents) {
+          this.setBeginTimeChildren(element, time);
+        }
+      });
+    }
   }
 };
 

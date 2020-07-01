@@ -1,0 +1,17 @@
+<tt xml:lang="en" xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling">
+  <head>
+    <metadata/>
+    <styling/>
+    <layout>
+      <region xml:id="template-region" tts:displayAlign="center" tts:extent="80% 30%" tts:showBackground="whenActive" tts:writingMode="lrtb"
+	tts:origin="10% 65%"/>
+    </layout>
+  </head>
+  <body>
+    <div>
+      <p begin="0s" end="1s" xml:id="template" region="template-region" tts:textAlign="center" tts:fontSize="120%">
+         <span tts:backgroundColor="black" tts:color="white">placeholder</span>
+      </p>
+    </div>
+  </body>
+</tt>

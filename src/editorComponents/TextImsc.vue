@@ -1,6 +1,7 @@
 <template>
   <span>
     <InputGeneric
+      :elementId="`input_${element.editorId}`"
       :value="getValue()"
       :labelName="''"
       @valueChanged="changedValue"
@@ -10,7 +11,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import InputGeneric from "./InputGeneric.vue";
 
 export default {
@@ -27,7 +28,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["playTime", "debug"])
+    ...mapState(["playTime", "playTimeChangedByUser", "debug"])
   },
   methods: {
     changedValue(val) {
@@ -41,7 +42,12 @@ export default {
     },
     focusBubble() {
       if (this.debug) console.log("got focus");
-      this.$emit("gotFocus");
+      if (this.playTimeChangedByUser) {
+        this.setPlayTimeChangedByUser(false);
+        this.$emit("gotFocusByApp");
+      } else {
+        this.$emit("gotFocus");
+      }
     },
     getValue() {
       if (this.element.text != "") {
@@ -50,7 +56,8 @@ export default {
         return this.element.text;
       }
     },
-    ...mapActions(["updateSubtitlePlane", "changeText"])
+    ...mapActions(["updateSubtitlePlane", "changeText"]),
+    ...mapMutations(["setPlayTimeChangedByUser"])
   }
 };
 </script>

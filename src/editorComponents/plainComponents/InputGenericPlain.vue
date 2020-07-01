@@ -3,6 +3,7 @@
   <label>
     {{ labelName }}
     <input
+      :id="elementId"
       :type="type"
       :value="value"
       :size="size"
@@ -19,6 +20,10 @@ export default {
   props: {
     value: {
       required: true
+    },
+    elementId: {
+      type: String,
+      required: false
     },
     labelName: {
       type: String | Number,

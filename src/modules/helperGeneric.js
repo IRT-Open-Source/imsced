@@ -40,6 +40,36 @@ var proto = {
       })
       .join("");
   },
+  /* deep clones an object, 
+  does not work for some cases where there are referencing loops, 
+  e.g. it cannot copy a full imscdata object that contains parentDiv references! */
+  cloneObj(obj) {
+    let copy;
+    if (obj == null || typeof obj != "object") return obj;
+    // Handle Date
+    if (obj instanceof Date) {
+      copy = new Date();
+      copy.setTime(obj.getTime());
+      return copy;
+    }
+    // Handle Array
+    if (obj instanceof Array) {
+      copy = [];
+      for (let i = 0, length = obj.length; i < length; i++) {
+        copy[i] = this.cloneObj(obj[i]);
+      }
+      return copy;
+    }
+    // Handle Object
+    if (obj instanceof Object) {
+      copy = {};
+      for (var attr in obj) {
+        if (obj.hasOwnProperty(attr)) copy[attr] = this.cloneObj(obj[attr]);
+      }
+      return copy;
+    }
+    throw new Error("Unable to copy object!");
+  },
   /**
    * get ttp:cellResolution attribute value on the <tt> element
    * if attribute value is not set, returns default value

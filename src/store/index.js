@@ -12,6 +12,14 @@ import UiCentral from "../modules/uiCentral.js";
 import Vue from "vue";
 import Vuex from "vuex";
 
+var customSettingsFile;
+
+if (process.env.VUE_APP_CUSTOMSETTINGS == "true") {
+  customSettingsFile = require("../../custom/customSettings.json");
+} else {
+  customSettingsFile = require("../config/customSettings.json");
+}
+
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
@@ -20,26 +28,30 @@ export const store = new Vuex.Store({
     activeDiv: undefined, // div element with focus in editor
     activeP: undefined, // p element with focus in editor
     activeSpan: undefined, // span element with focus in editor
-    charsPerLine: 37, // the maximum number of allowed characters per line
+    charsPerLine: customSettingsFile.charsPerLine, // the maximum number of allowed characters per line
     config: new DefaultConfig(),
     currentSubtitleData: {}, // active subtitle document as parsed by imscJS
-    currentVideoTextTrack: undefined,
+    currentCueCall: undefined,
     custom: new MyRec(), // user configuration
     debug: false, // show debug info in editor view
     draggingActive: false, // status of drag/move feature - can not be true the same time as resizingActive
     forcedOnly: false, // enable/disable displayForcedOnlyMode
     fullScreenActive: false,
+    framegap: 0.04, // gab between two subtitles in seconds, should depend on fps
     helper: new helperGeneric(), // access to generic helper methods
-    lang: "en", // language for the editor interface
-    maxLinesPerST: 2, // max. number of lines per subtitle block
+    lang: customSettingsFile.lang, // language for the editor interface
+    maxLinesPerST: customSettingsFile.maxLinesPerST, // max. number of lines per subtitle block
     loadingST: false, // are subtitles currently loaded (or converted) -> not ready to show
     menuStyle: "default",
     menuStyleConfig: new MenuStyleConfig(),
-    minStDuration: 1, // minimum lifetime for one subtitle in seconds
+    minStDuration: customSettingsFile.minStDuration, // minimum lifetime for one subtitle in seconds
     movieName: "", // video file name
-    movieSrc: "/assets/videos/coffee.mp4", // video for the subtitles
+    movieSrc: "./assets/videos/coffee.mp4", // video for the subtitles
     playTime: "-", //current playtime of the video
-    readingSpeed: 14, // reading speed: characters per second
+    playTimeChangedByApp: false,
+    playTimeChangedByUser: false,
+    readingSpeed: customSettingsFile.readingSpeed, // reading speed: characters per second
+    refreshSubtitles: false, // request to refresh the order of subtitles
     resizingActive: false, // status of resizing feature - can not be true the same time as draggingActive
     scfData: new scfData(), //config for subtitle conversion api
     scfImportFormat: "stl",
@@ -50,12 +62,12 @@ export const store = new Vuex.Store({
     showBurnIn: false, // toggle the burn in user interface(requires activateBurnIn to be true)
     showConfigUi: false,
     showDivMenu: "show",
-    showHints: "hide", // show hints for subtitle standards like chars per line
+    showHints: customSettingsFile.showHints, // show hints for subtitle standards like chars per line
     showPMenu: "show",
     showRegionSelect: "show",
     showScfService: "show",
     showSpanMenu: "show",
-    showVisualization: "hide", // show hints for subtitle standards like chars per line
+    showVisualization: customSettingsFile.showVisualization, // show hints for subtitle standards like chars per line
     srtImportLang: "original (template)", // language for the imsc document
     srtImportTemplate: "ebu-tt-d-basic-de.xml",
     srtTemplateOptions: ["ebu-tt-d-basic-de.xml"],
@@ -63,6 +75,9 @@ export const store = new Vuex.Store({
     subActive: false, // if subtitle data is rendered on video
     subsFileName: "imscTestFile", // default value if no subtitle file was loaded
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
+    templateImsc: undefined, // subtitle data object that is used as template for style attributes and region, parsed by imscJS
+    templateSrc: "./assets/template.xml",
+    textTrack: undefined,
     uiData: new UiCentral(), // language specific labels for ui
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
   },
@@ -111,6 +126,34 @@ export const store = new Vuex.Store({
     containerDom(state) {
       return document.getElementById(state.config.defaultVideo.containerId);
     },
+    getFirstActivePara(state) {
+      let bodyContents = state.currentSubtitleData.body.contents;
+      let activeContent = null;
+      let isActive = function(content) {
+        return content.end
+          ? state.playTime >= content.begin && state.playTime <= content.end
+          : false;
+      };
+
+      let getLastContent = (contents) => {
+        for (let i = 0; i < contents.length; i++) {
+          let item = contents[i];
+          if (item.kind == "p" && isActive(item)) {
+            activeContent = item;
+            break;
+          } else if (item.contents) {
+            getLastContent(item.contents);
+          }
+
+          if (activeContent != null) {
+            break;
+          }
+        }
+      };
+
+      getLastContent(bodyContents);
+      return activeContent;
+    },
     //all p elements as array
     paraList(state) {
       var paraData = [];
@@ -143,6 +186,13 @@ export const store = new Vuex.Store({
       } else {
         return undefined;
       }
+    },
+    regionSelectAvailable(state) {
+      return (
+        state.showRegionSelect === "show" &&
+        state.activeP &&
+        state.activeP.regionID.trim().length > 0
+      );
     },
     /*
       The style attributes of the region element that is 
@@ -234,11 +284,20 @@ export const store = new Vuex.Store({
       state.movieName = payload.obj.name;
       state.movieSrc = payload.URL;
     },
+    deactivateDragging(state) {
+      state.draggingActive = false;
+    },
+    deactivateResizing(state) {
+      state.resizingActive = false;
+    },
     deactivateSub(state) {
       state.subActive = false;
     },
     incrementTrackIdCounter(state) {
       state.trackIdCounter++;
+    },
+    resetTextTrack(state) {
+      state.textTrack.removeAllCues();
     },
     setActivateBurnIn(state, val) {
       if (val === "on") {
@@ -269,12 +328,6 @@ export const store = new Vuex.Store({
     setCharsPerLine(state, val) {
       state.charsPerLine = val;
     },
-    setCurrentTrack(state, payload) {
-      state.currentVideoTextTrack = payload.track;
-    },
-    setCurrentTrackMode(state, payload) {
-      state.currentVideoTextTrack.track.mode = payload.mode;
-    },
     setFullScreenActive(state, val) {
       state.fullScreenActive = val;
     },
@@ -293,6 +346,18 @@ export const store = new Vuex.Store({
     },
     setPlayTime(state, payload) {
       state.playTime = payload.time;
+    },
+    setPlayTimeChangedByApp(state, val) {
+      state.playTimeChangedByApp = val;
+    },
+    setPlayTimeChangedByUser(state, val) {
+      state.playTimeChangedByUser = val;
+    },
+    setReadingSpeed(state, val) {
+      state.readingSpeed = val;
+    },
+    setRefreshSubtitles(state, val) {
+      state.refreshSubtitles = val;
     },
     setScfExportFormat(state, val) {
       state.scfExportFormat = val;
@@ -346,8 +411,11 @@ export const store = new Vuex.Store({
     setSubtitleData(state, payload) {
       state.currentSubtitleData = payload.imscData;
     },
-    setReadingSpeed(state, val) {
-      state.readingSpeed = val;
+    setTemplateImsc(state, payload) {
+      state.templateImsc = payload.imscData;
+    },
+    setTextTrack(state, obj) {
+      state.textTrack = obj;
     },
     setUiLayout(state, val) {
       state.uiLayout = val;
@@ -387,59 +455,26 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
+    addCue({ state }, cue) {
+      state.textTrack.addMyCue(cue);
+    },
     addRegion({ dispatch, state }) {
       let newRegionId = "r-" + state.helper.uuidv4().substring(0, 8);
       let newRegion = new MyRegion(newRegionId);
       dispatch("setNewRegion", newRegionId);
       Vue.set(state.currentSubtitleData.regionHash, newRegionId, newRegion);
     },
-    /* 
-      Add video text track and init cues with callbacks
-      to render the imsc subtitles.
-    */
-    addVideoTextTrack({ commit, getters, state }) {
-      if (state.currentVideoTextTrack) {
-        commit("setCurrentTrackMode", { mode: "disabled" });
-      }
-      var store = this;
-      var mediaTimeEvents = state.currentSubtitleData.tt.getMediaTimeEvents();
-      if (state.debug) console.log(mediaTimeEvents);
-      //Callback
-      var callIn = function() {
-        if (state.debug) {
-          console.log("Cue Enter: " + this.startTime + "/" + this.endTime);
-        }
-        store.dispatch("updateSubtitlePlane", { time: this.startTime });
-      };
-      var callOut = function() {
-        if (state.debug) {
-          console.log("Cue EXIT: " + this.startTime + "/" + this.endTime);
-        }
-        /*
-          when seeking backwards in time
-          chrome fires the onexit event of the
-          previous cue after the onenter event of 
-          the current cue. to avoid removal of the active
-          cue, in this case no removal action for the
-          onexist removal will be triggered-
-        */
-        if (
-          this.track.activeCues &&
-          !(this.track.activeCues[0].endTime < this.endTime)
-        ) {
-          store.dispatch("resetSubtitlePlane");
-        }
-      };
-      var trackObj = new MyTextTrack(
+    initTextTrack({ commit, getters }) {
+      let trackObj = new MyTextTrack(
         "subtitles",
         "imsc",
         "de",
         getters.videoDom
       );
-      if (state.debug) console.log(mediaTimeEvents);
-      if (state.debug) console.log(trackObj.track);
-      trackObj.initCues(mediaTimeEvents, callIn, callOut);
-      commit("setCurrentTrack", { track: trackObj });
+      commit("setTextTrack", trackObj);
+    },
+    removeCue({ state }, cue) {
+      state.textTrack.removeMyCue(cue);
     },
     removeSub({ getters, commit }) {
       var container = getters.renderDivDom;
@@ -514,8 +549,9 @@ export const store = new Vuex.Store({
         state.config.defaultOffsetSeconds = val;
       }
     },
-    setVideoPlayTime({ getters, dispatch }, payload) {
+    setVideoPlayTime({ state, getters, dispatch }, payload) {
       if (getters.videoDom) {
+        state.playTimeChangedByApp = true;
         var myVideo = getters.videoDom;
         myVideo.currentTime = payload.time;
         dispatch("updateSubtitlePlane", { time: payload.time });
@@ -528,7 +564,6 @@ export const store = new Vuex.Store({
           store.dispatch("updatePlayTime");
         };
         dispatch("updatePlayTime");
-        dispatch("updateSubtitlePlane", { time: state.playTime }); //re-render subs
       }
     },
     updatePlayTime({ getters, commit }) {
@@ -537,6 +572,7 @@ export const store = new Vuex.Store({
     },
     updateSubtitlePlane({ state, dispatch, getters, commit }, payload) {
       var isd = imsc.generateISD(state.currentSubtitleData.tt, payload.time);
+
       if (state.subActive) {
         dispatch("removeSub");
       }
@@ -548,6 +584,11 @@ export const store = new Vuex.Store({
         null,
         state.forcedOnly
       );
+      /* console.log(
+        "update subtitle plane",
+        payload.time,
+        state.currentSubtitleData.tt
+      ); */
       commit("activateSub");
     },
     updateSubtitlePlanePlayTime({ state, dispatch }) {
