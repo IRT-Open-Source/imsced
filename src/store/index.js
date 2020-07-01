@@ -76,7 +76,7 @@ export const store = new Vuex.Store({
     subsFileName: "imscTestFile", // default value if no subtitle file was loaded
     subtitleDataList: [], // for using more than one subtitle doc (not implemented yet)
     templateImsc: undefined, // subtitle data object that is used as template for style attributes and region, parsed by imscJS
-    templateSrc: "/assets/template.xml",
+    templateSrc: "./assets/template.xml",
     textTrack: undefined,
     uiData: new UiCentral(), // language specific labels for ui
     uiLayout: "bootstrap" // choose UI layout for editor (e.g. bootstrap), bootstrap is default
