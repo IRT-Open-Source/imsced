@@ -1,3 +1,14 @@
+## 0.8.1 (Sep, 4, 2020)
+### Fixes
+
+[#113](https://github.com/IRT-Open-Source/imsced/issues/113)
+Node module updates
+
+[#108](https://github.com/IRT-Open-Source/imsced/issues/108)
+Fix resize feature in user interface
+
+
+
 ## 0.8.0 (Jul, 1, 2020)
 
 ### Enhancements
