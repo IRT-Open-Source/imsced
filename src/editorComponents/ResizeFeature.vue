@@ -36,7 +36,7 @@ export default {
       topRight: [this.incWidth, this.decHeight, this.incTop],
       right: [this.incWidth],
       bottomRight: [this.incWidth, this.incHeight],
-      bottom: [this.incWidth, this.incHeight],
+      bottom: [this.incHeight],
       bottomLeft: [this.decWidth, this.incHeight, this.incLeft],
       left: [this.decWidth, this.incLeft]
     };
