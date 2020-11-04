@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="requirements">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="requirement"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="collection">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="areas">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="area"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="usecases">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="usecase"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="requirementStatuses">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="requirementStatus"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="implementationStatuses">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="implementationStatus"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="priorities">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="priority"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="releases">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element maxOccurs="unbounded" ref="release"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element ref="requirements"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="area">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="requirement">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description"/>
+                    <xs:element maxOccurs="unbounded" name="requirementArea">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="area"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element maxOccurs="unbounded" name="requirementUsecase">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="usecase"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="created" type="xs:date"/>
+                    <xs:element name="reviewStatus">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="requirementStatus"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="requirementPriority">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element minOccurs="0" ref="priority"> </xs:element>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="link" type="xs:anyURI" minOccurs="0"/>
+                    <xs:element minOccurs="0" name="requirementImplementationStatus">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element minOccurs="0" ref="implementationStatus"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="info" minOccurs="0"/>
+                    <xs:element minOccurs="0" name="requirementRelease">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="release"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="title"/>
+    <xs:element name="description"/>
+    <xs:element name="usecase">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="requirementStatus">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description" minOccurs="0"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="implementationStatus">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description" minOccurs="0"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="priority">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description" minOccurs="0"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="release">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element name="IDREF" type="xs:IDREF"/>
+                <xs:sequence>
+                    <xs:element name="ID" type="xs:ID"/>
+                    <xs:element ref="title"/>
+                    <xs:element ref="description" minOccurs="0"/>
+                    <xs:element name="releaseDate" type="xs:date"/>
+                </xs:sequence>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
